@@ -8,8 +8,10 @@ import ProductScreen from './src/ProductScreen';
 import DetailProductScreen from './src/DetailProductScreen';
 import LeaveRequestScreen from './src/Request/LeaveRequestScreen';
 import RequestMain from './src/Request/RequestMain';
-
-
+import DetailRequest from './src/Request/DetailRequest';
+import OvertimeScreen from './src/Request/OvertimeScreen';
+import DetailOvertime from './src/Request/DetailOvertime';
+import ScheduleScreen from './ScheduleScreen';
 
 export{
     LoginScreen,
@@ -22,4 +24,8 @@ export{
     DetailProductScreen,
     LeaveRequestScreen,
     RequestMain,
+    DetailRequest,
+    OvertimeScreen,
+    DetailOvertime,
+    ScheduleScreen,
 }

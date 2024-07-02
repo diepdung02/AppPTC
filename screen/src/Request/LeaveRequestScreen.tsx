@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import COLORS from '../../../constants/Color'; 
 import { StackNavigationProp } from '@react-navigation/stack'; 
 import RNPickerSelect from 'react-native-picker-select'; 
@@ -49,6 +50,12 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name="arrow-left" size={20} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Xin nghỉ phép</Text>
+      </View>
       <View style={styles.formGroup}>
         <Text style={styles.label}>Ngày bắt đầu:</Text>
         <TouchableOpacity
@@ -56,7 +63,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
           onPress={() => showDatePicker('start')}
         >
           <Text style={styles.dateText}>{startDate ? startDate.toDateString() : 'Chọn ngày bắt đầu'}</Text>
-          <FontAwesome name="calendar" size={20} color="black" style={styles.calendarIcon} />
+          <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible && selectedDateField === 'start'}
@@ -72,7 +79,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
           onPress={() => showDatePicker('end')}
         >
           <Text style={styles.dateText}>{endDate ? endDate.toDateString() : 'Chọn ngày kết thúc'}</Text>
-          <FontAwesome name="calendar" size={20} color="black" style={styles.calendarIcon} />
+          <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
         </TouchableOpacity>
         <DateTimePickerModal
           isVisible={isDatePickerVisible && selectedDateField === 'end'}
@@ -116,30 +123,30 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   formGroup: {
-    margin: 20,
+    margin: wp('5%'),
   },
   label: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: wp('4%'),
+    marginBottom: hp('1%'),
     color: '#000',
   },
   input: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 40,
+    height: hp('6%'),
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
-    paddingLeft: 10,
+    paddingLeft: wp('2%'),
     backgroundColor: 'white',
   },
   dateText: {
     flex: 1,
     color: 'black',
-    fontSize: 16,
+    fontSize: wp('4%'),
   },
   calendarIcon: {
-    marginRight: 10,
+    marginRight: wp('2%'),
   },
   pickerContainer: {
     borderWidth: 1,
@@ -149,55 +156,61 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   button: {
-    margin:50,
+    margin: wp('10%'),
     backgroundColor: '#2738C2',
     borderRadius: 5,
-    padding: 15,
+    padding: hp('2%'),
     alignItems: 'center',
   },
   buttonText: {
-    fontSize: 18,
+    fontSize: wp('4.5%'),
     color: 'white',
     fontWeight: 'bold',
   },
-  inputNote:{
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: 250,
+  inputNote: {
+    height: hp('20%'),
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 5,
-    paddingLeft: 10,
+    paddingLeft: wp('2%'),
     backgroundColor: 'white',
-  }
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: 'white',
+  },
+  headerTitle: {
+    fontSize: 18,
+    marginLeft: 10,
+  },
 });
-
-
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
-    height: 40,
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
+    height: hp('6%'),
+    fontSize: wp('4%'),
+    paddingVertical: hp('1.5%'),
+    paddingHorizontal: wp('2%'),
     borderWidth: 1,
     borderColor: 'white',
     borderRadius: 4,
     color: 'black',
     backgroundColor: 'white',
-    paddingRight: 30,
+    paddingRight: wp('7.5%'),
   },
   inputAndroid: {
-    height: 40,
-    fontSize: 16,
-    paddingVertical: 8,
-    paddingHorizontal: 10,
+    height: hp('6%'),
+    fontSize: wp('4%'),
+    paddingVertical: hp('1%'),
+    paddingHorizontal: wp('2%'),
     borderWidth: 0.5,
     borderColor: 'white',
     borderRadius: 4,
     color: 'black',
     backgroundColor: 'white',
-    paddingRight: 30,
+    paddingRight: wp('7.5%'),
   },
   placeholder: {
     color: 'gray',

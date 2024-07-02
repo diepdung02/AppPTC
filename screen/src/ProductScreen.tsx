@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, SafeAreaView, FlatList, StatusBar, Image, Touch
 import { SearchBar } from '@rneui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator/natigation';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 type DataItem = {
   id: number;
@@ -31,6 +32,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ data, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      
+      <View style={styles.header}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+          <FontAwesome name="arrow-left" size={20} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Lịch sản xuất</Text>
+      
+      </View>
       <SearchBar
         placeholder='Tìm kiếm'
         inputContainerStyle={{ backgroundColor: 'white' }}
@@ -41,6 +50,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ data, navigation }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
+      
     </SafeAreaView>
   );
 };
@@ -65,6 +75,16 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+  },
+  headerTitle: {
+    fontSize: 18,
+    marginLeft: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    backgroundColor: 'white',
   },
 });
 

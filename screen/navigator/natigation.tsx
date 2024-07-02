@@ -1,5 +1,4 @@
 
-
 export type DetailItem = {
     key: string;
     info: string;
@@ -18,6 +17,10 @@ export type RootStackParamList = {
     Product: undefined;
     LeaveRequest: undefined;
     RequestMain:undefined;
+    Overtime:undefined;
+    Schedule:undefined;
+    DetailOvertime:{ item: DataItem };
+    DetailRequest:{ item: DataItem };
     ProductDetail: { item: DataItem };
   };
   

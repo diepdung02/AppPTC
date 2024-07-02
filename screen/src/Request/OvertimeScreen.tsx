@@ -9,13 +9,12 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons,FontAwesome } from "@expo/vector-icons";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigator/natigation";
-import { SearchBar } from "@rneui/themed";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { SearchBar } from '@rneui/themed';
 
 type DataItem = {
   id: number;
@@ -26,16 +25,15 @@ type DataItem = {
 
 type RequestMainProps = {
   data: DataItem[];
-  navigation: StackNavigationProp<RootStackParamList, "RequestMain">;
+  navigation: StackNavigationProp<RootStackParamList, 'Overtime'>;
 };
 
-const RequestMain: React.FC<RequestMainProps> = ({ data, navigation }) => {
+const OvertimeScreen: React.FC<RequestMainProps> = ({ data, navigation }) => {
+
   const renderItem = ({ item }: { item: DataItem }) => (
     <View style={styles.itemContainer}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("DetailRequest", { item })}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate('DetailOvertime', {item})}>
         <Text>{item.title}</Text>
         {item.detail.map((detailItem) => (
           <Text key={detailItem.key}>{detailItem.info}</Text>
@@ -46,32 +44,23 @@ const RequestMain: React.FC<RequestMainProps> = ({ data, navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+        <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Lịch sản xuất</Text>
+        <Text style={styles.headerTitle}>Tăng ca</Text>
       </View>
       <SearchBar
-        placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: "white" }}
-        containerStyle={{
-          backgroundColor: "transparent",
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
+        placeholder='Tìm kiếm'
+        inputContainerStyle={{ backgroundColor: 'white' }}
+        containerStyle={{ backgroundColor: 'transparent', borderBottomWidth: 0, borderTopWidth: 0 }}
       />
       <FlatList
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("LeaveRequest")}
-        style={styles.addButton}
-      >
-        <MaterialCommunityIcons name="plus-circle" size={50} color="white" />
-      </TouchableOpacity>
+
     </SafeAreaView>
   );
 };
@@ -83,11 +72,11 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 10,
     borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
   },
   addButton: {
     position: "absolute",
@@ -143,10 +132,10 @@ const styles = StyleSheet.create({
     color: "black",
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 15,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   headerTitle: {
     fontSize: 18,
@@ -154,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RequestMain;
+export default OvertimeScreen;

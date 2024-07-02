@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import COLORS from '../../constants/Color';
 import { ApiResponse, fetchUser } from '../../API'; 
 import { SearchBar } from '@rneui/themed';
@@ -50,60 +51,61 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View>
         <SearchBar
-        placeholder='Tìm kiếm '
-        inputContainerStyle = {{backgroundColor:"white"}}
-        
+          placeholder='Tìm kiếm '
+          inputContainerStyle={{ backgroundColor: "white" }}
           containerStyle={{ backgroundColor: 'transparent', borderBottomWidth: 2, borderTopColor: 'transparent' }}
-        onChangeText={updateSearch}
-        value={search}
-        ></SearchBar>
+          onChangeText={updateSearch}
+          value={search}
+        />
       </View>
-      <View style={styles.iconContainer}>
-        <TouchableOpacity >
-          <Image source={require('../../assets/check .png')} style={styles.icon} />
-          <Text style={styles.txt} >Kiểm hàng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Product')}>
-          <Image source={require('../../assets/Product.png')} style={styles.icon} />
-          <Text style={styles.txt}>Sản Phẩm</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/Output.png')} style={styles.icon} />
-          <Text style={styles.txt}>Output</Text>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('RequestMain')}>
-          <Image source={require('../../assets/leave 1.png')} style={styles.icon} />
-          <Text style={styles.txt}>Nghỉ phép</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/Error.png')} style={styles.icon} />
-          <Text style={styles.txt}>Báo lỗi</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/ot request.png')} style={styles.icon} />
-          <Text style={styles.txt}>Tăng ca</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/Group 23.png')} style={styles.icon} />
-          <Text style={styles.txt}>Lịch</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/evaluate.png')} style={styles.icon} />
-          <Text style={styles.txt}>Đánh giá</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/gmail.png')} style={styles.icon} />
-          <Text style={styles.txt}>Thư</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/Group 12573.png')} style={styles.icon} />
-          <Text style={styles.txt}>Giấy ra cổng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity >
-          <Image source={require('../../assets/Group 12574.png')} style={styles.icon} />
-          <Text style={styles.txt}>Rời khỏi bộ phận</Text>
-        </TouchableOpacity>
-      </View>
+      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <View style={styles.iconContainer}>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/checklist.png')} style={styles.icon} />
+            <Text style={styles.txt}>Kiểm hàng</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Product')}>
+            <Image source={require('../../assets/product.png')} style={styles.icon} />
+            <Text style={styles.txt}>Sản Phẩm</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/output.png')} style={styles.icon} />
+            <Text style={styles.txt}>Output</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('RequestMain')}>
+            <Image source={require('../../assets/leave.png')} style={styles.icon} />
+            <Text style={styles.txt}>Nghỉ phép</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/error.png')} style={styles.icon} />
+            <Text style={styles.txt}>Báo lỗi</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Overtime')}>
+            <Image source={require('../../assets/overtime.png')} style={styles.icon} />
+            <Text style={styles.txt}>Tăng ca</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Schedule')}>
+            <Image source={require('../../assets/calendar.png')} style={styles.icon} />
+            <Text style={styles.txt}>Lịch</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/evaluate.png')} style={styles.icon} />
+            <Text style={styles.txt}>Đánh giá</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/vote.png')} style={styles.icon} />
+            <Text style={styles.txt}>Bầu chọn</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/left_dept.png')} style={styles.icon} />
+            <Text style={styles.txt}>Giấy ra cổng</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}>
+            <Image source={require('../../assets/transfer_dept.png')} style={styles.icon} />
+            <Text style={styles.txt}>Rời khỏi bộ phận</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
       </View>
@@ -116,47 +118,37 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.colorMain,
   },
-  avatar: {
-    width: 75,
-    height: 75,
-    marginTop: 70,
-    marginLeft: 20,
-  },
-  inforContainer: {
-    flexDirection: 'row',
+  scrollViewContainer: {
     alignItems: 'center',
-  },
-  txtInfor: {
-    marginTop: 70,
-    paddingLeft: 10,
-  },
-  txtName: {
-    fontSize: 20,
-  },
-  txtDept: {
-    fontSize: 18,
+    paddingBottom: hp('2%'),
   },
   iconContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: 50,
+    marginTop: hp('10%'),
+  },
+  iconWrapper: {
+    alignItems: 'center',
+    width: wp('25%'), 
+    marginVertical: hp('1%'),
   },
   icon: {
-    width: 75,
-    height: 75,
-    margin: 20,
+    width: wp('10%'),
+    height: wp('10%'),
+    marginBottom: hp('1%'),
   },
-  txt:{
-    textAlign:"center",
+  txt: {
+    textAlign: 'center',
+    fontSize: hp('2%'),
   },
   timeContainer: {
     position: 'absolute',
-    bottom: 20,
+    bottom: hp('2%'),
     alignSelf: 'center',
   },
   timeText: {
-    fontSize: 16,
+    fontSize: hp('2%'),
     color: 'red',
   },
 });
