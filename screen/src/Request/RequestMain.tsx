@@ -7,7 +7,7 @@ import {
   SafeAreaView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import COLORS from "../../../constants/Color"; // Ensure this path is correct for your color constants
+import COLORS from "../../../constants/Color"; 
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/natigation";
 
