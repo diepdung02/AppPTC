@@ -3,15 +3,19 @@ import HomeScreen from './home/HomeScreen';
 import MailScreen from './home/MailScreen';
 import NotificationScreen from './home/NotificationScreen';
 import UserScreen from './home/UserScreen';
-import VoteScreen from './home/VoteScreen';
-import ProductScreen from './src/ProductScreen';
-import DetailProductScreen from './src/DetailProductScreen';
+import NewsScreen from './home/NewsScreen';
+import ProductScreen from './src/Product/ProductScreen';
+import DetailProductScreen from './src/Product/DetailProductScreen';
 import LeaveRequestScreen from './src/Request/LeaveRequestScreen';
 import RequestMain from './src/Request/RequestMain';
 import DetailRequest from './src/Request/DetailRequest';
 import OvertimeScreen from './src/Request/OvertimeScreen';
 import DetailOvertime from './src/Request/DetailOvertime';
-import ScheduleScreen from './ScheduleScreen';
+import ScheduleScreen from './src/Product/ScheduleScreen';
+import NewsDetailScreen from './home/NewsDetailScreen';
+import MailDetailScreen from './home/MailDetailScreen';
+import SendEmailScreen from './home/SendEmailScreen';
+import NotificationDetailScreen from './home/NotificationDetailScreen';
 
 export{
     LoginScreen,
@@ -19,7 +23,7 @@ export{
     MailScreen,
     NotificationScreen,
     UserScreen,
-    VoteScreen,
+    NewsScreen,
     ProductScreen,
     DetailProductScreen,
     LeaveRequestScreen,
@@ -28,4 +32,8 @@ export{
     OvertimeScreen,
     DetailOvertime,
     ScheduleScreen,
+    NewsDetailScreen,
+    MailDetailScreen,
+    SendEmailScreen,
+    NotificationDetailScreen
 }

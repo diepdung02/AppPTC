@@ -7,7 +7,7 @@ import {
   NotificationScreen,
   UserScreen,
   MailScreen,
-  VoteScreen,
+  NewsScreen,
   ProductScreen,
   DetailProductScreen,
   LeaveRequestScreen,
@@ -16,6 +16,10 @@ import {
   DetailOvertime,
   OvertimeScreen,
   ScheduleScreen,
+  NewsDetailScreen,
+  MailDetailScreen,
+  SendEmailScreen,
+  NotificationDetailScreen,
 } from "./screen/index";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
@@ -24,54 +28,6 @@ import { RootStackParamList } from "./screen/navigator/natigation";
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
-
-const sampleData = [
-  {
-    id: 1,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Sản phẩm 1",
-    detail: [
-      { key: "Mô tả", info: "Chi tiết 1" },
-      { key: "Giá", info: "1000 VND" },
-    ],
-  },
-  {
-    id: 2,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Sản phẩm 2",
-    detail: [
-      { key: "Mô tả", info: "Chi tiết 2" },
-      { key: "Giá", info: "2000 VND" },
-    ],
-  },
-  {
-    id: 3,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Sản phẩm 3",
-    detail: [
-      { key: "Mô tả", info: "Chi tiết 3" },
-      { key: "Giá", info: "3000 VND" },
-    ],
-  },
-  {
-    id: 4,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Sản phẩm 4",
-    detail: [
-      { key: "Mô tả", info: "Chi tiết 4" },
-      { key: "Giá", info: "4000 VND" },
-    ],
-  },
-  {
-    id: 5,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Sản phẩm 5",
-    detail: [
-      { key: "Mô tả", info: "Chi tiết 5" },
-      { key: "Giá", info: "5000 VND" },
-    ],
-  },
-];
 
 const HomeTabNavigator: React.FC = () => {
   return (
@@ -99,7 +55,7 @@ const HomeTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="News"
-        component={MailScreen}
+        component={NewsScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -110,7 +66,7 @@ const HomeTabNavigator: React.FC = () => {
       />
       <Tab.Screen
         name="Mail"
-        component={VoteScreen}
+        component={MailScreen}
         options={{
           headerShown: false,
           tabBarIcon: ({ color, size }) => (
@@ -162,8 +118,9 @@ const App: React.FC = () => {
         <Stack.Screen
           name="Overtime"
           options={{ headerShown: false }}
+          component={OvertimeScreen}
         >
-          {(props) => <OvertimeScreen {...props} data={sampleData} />}
+  
         </Stack.Screen>
         <Stack.Screen
           name="DetailOvertime"
@@ -173,8 +130,8 @@ const App: React.FC = () => {
         <Stack.Screen
           name="RequestMain"
           options={{ headerShown: false }}
+          component={RequestMain}
         >
-          {(props) => <RequestMain {...props} data={sampleData} />}
         </Stack.Screen>
         <Stack.Screen
           name="DetailRequest"
@@ -188,10 +145,10 @@ const App: React.FC = () => {
         />
         <Stack.Screen
           name="Product"
+          component={ProductScreen}
           options={{ headerShown: false }}
-        >
-          {(props) => <ProductScreen {...props} data={sampleData} />}
-        </Stack.Screen>
+        />
+
         <Stack.Screen
           name="Schedule"
           component={ScheduleScreen}
@@ -200,6 +157,26 @@ const App: React.FC = () => {
         <Stack.Screen
           name="ProductDetail"
           component={DetailProductScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NewsDetail"
+          component={NewsDetailScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="MailDetail"
+          component={MailDetailScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SendMail"
+          component={SendEmailScreen} 
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="NotificationDetail"
+          component={NotificationDetailScreen} 
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

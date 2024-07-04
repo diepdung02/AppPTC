@@ -17,20 +17,68 @@ import { RootStackParamList } from "../../navigator/natigation";
 import { SearchBar } from "@rneui/themed";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-type DataItem = {
+type DataRequest = {
   id: number;
   imageUrl: string;
   title: string;
   detail: { key: string; info: string }[];
 };
 
+const request:DataRequest[] = [
+  {
+    id: 1,
+    imageUrl: "https://via.placeholder.com/150",
+    title: "Xin nghỉ phép",
+    detail: [
+      { key: "Lí do", info: "Nghỉ bệnh" },
+      { key: "Ngày", info: "10-7-2024" },
+    ],
+  },
+  {
+    id: 2,
+    imageUrl: "https://via.placeholder.com/150",
+    title: "Xin nghỉ phép",
+    detail: [
+      { key: "Lí do", info: "Nghỉ bệnh" },
+      { key: "Ngày", info: "10-7-2024" },
+    ],
+  },
+  {
+    id: 3,
+    imageUrl: "https://via.placeholder.com/150",
+    title: "Xin nghỉ phép",
+    detail: [
+      { key: "Lí do", info: "Nghỉ bệnh" },
+      { key: "Ngày", info: "10-7-2024" },
+    ],
+  },
+  {
+    id: 4,
+    imageUrl: "https://via.placeholder.com/150",
+    title: "Xin nghỉ phép",
+    detail: [
+      { key: "Lí do", info: "Nghỉ bệnh" },
+      { key: "Ngày", info: "10-7-2024" },
+    ],
+  },
+  {
+    id: 5,
+    imageUrl: "https://via.placeholder.com/150",
+    title: "Xin nghỉ phép",
+    detail: [
+      { key: "Lí do", info: "Nghỉ bệnh" },
+      { key: "Ngày", info: "10-7-2024" },
+    ],
+  },
+  
+];
+
 type RequestMainProps = {
-  data: DataItem[];
   navigation: StackNavigationProp<RootStackParamList, "RequestMain">;
 };
 
-const RequestMain: React.FC<RequestMainProps> = ({ data, navigation }) => {
-  const renderItem = ({ item }: { item: DataItem }) => (
+const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
+  const renderItem = ({ item }: { item: DataRequest }) => (
     <View style={styles.itemContainer}>
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
       <TouchableOpacity
@@ -47,10 +95,10 @@ const RequestMain: React.FC<RequestMainProps> = ({ data, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Lịch sản xuất</Text>
+        <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
       </View>
       <SearchBar
         placeholder="Tìm kiếm"
@@ -62,7 +110,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ data, navigation }) => {
         }}
       />
       <FlatList
-        data={data}
+        data={request}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
@@ -142,16 +190,21 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "black",
   },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    backgroundColor: "white",
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  goBack:{
+    height:60,
+    width:60,
+    alignItems:'center',
+    justifyContent:'center',
+  }
 });
 
 export default RequestMain;

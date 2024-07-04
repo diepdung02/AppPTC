@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, FlatList, SafeAreaView, TouchableOpacity } from
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Calendar } from 'react-native-calendars';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../constants/Color'; 
+import COLORS from '../../../constants/Color'; 
 
 type Props = {
   navigation: StackNavigationProp<{}>;
@@ -45,7 +45,7 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Lịch sản xuất</Text>
@@ -73,15 +73,20 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.colorMain,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: 'white',
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  goBack:{
+    height:60,
+    width:60,
+    alignItems:'center',
+    justifyContent:'center',
   },
   calendar: {
     marginBottom: 10,

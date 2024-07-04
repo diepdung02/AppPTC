@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color'; 
 import { RootStackParamList } from '../navigator/natigation';
 
 
-type NotificationItem = {
+type NewsItem = {
   id: string;
   title: string;
   summary: string;
@@ -15,20 +16,20 @@ type NotificationItem = {
 };
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
+  navigation: StackNavigationProp<RootStackParamList, 'News'>;
 };
 
-const notification: NotificationItem[] = [
+const newsData: NewsItem[] = [
   {
     id: "1",
-    title: "Nghỉ lễ Tết",
+    title: "Báo cáo doanh thu quý",
     summary: "Doanh thu của công ty trong quý vừa qua vượt xa kỳ vọng.",
     image: "https://via.placeholder.com/150",
     date: "30-06-2024",
   },
   {
     id: "2",
-    title: "Thông báo",
+    title: "Khai trương văn phòng mới",
     summary: "Chúng tôi rất vui mừng thông báo về việc khai trương văn phòng mới tại New York.",
     image: "https://example.com/images/new_office.jpg",
     date: "25-06-2024",
@@ -56,17 +57,17 @@ const notification: NotificationItem[] = [
   },
 ];
 
-const NotificationScreen: React.FC<Props> = ({ navigation }) => {
+const NewsScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<NotificationItem[]>(notification);
+  const [filteredData, setFilteredData] = useState<NewsItem[]>(newsData);
 
-  const handleItemPress = (item: NotificationItem) => {
-    navigation.navigate('NotificationDetail', { notification: item });
+  const handleItemPress = (item: NewsItem) => {
+    navigation.navigate('NewsDetail', { newsItem: item });
   };
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    const filtered = notification.filter(item =>
+    const filtered = newsData.filter(item =>
       item.title.toLowerCase().includes(text.toLowerCase()) ||
       item.summary.toLowerCase().includes(text.toLowerCase())
     );
@@ -79,11 +80,11 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Thông báo</Text>
+        <Text style={styles.headerTitle}>Tin Tức Nhân Viên</Text>
       </View>
       <TextInput
         style={styles.searchInput}
-        placeholder="Tìm kiếm thông báo..."
+        placeholder="Tìm kiếm tin tức..."
         value={search}
         onChangeText={handleSearch}
       />
@@ -164,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NotificationScreen;
+export default NewsScreen;

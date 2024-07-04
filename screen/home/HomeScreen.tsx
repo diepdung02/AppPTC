@@ -53,12 +53,12 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
         <SearchBar
           placeholder='Tìm kiếm '
           inputContainerStyle={{ backgroundColor: "white" }}
-          containerStyle={{ backgroundColor: 'transparent', borderBottomWidth: 2, borderTopColor: 'transparent' }}
+          containerStyle={{ backgroundColor: 'transparent', borderBottomWidth: 1, borderTopColor: 'transparent' }}
           onChangeText={updateSearch}
           value={search}
         />
       </View>
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+      
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.iconWrapper}>
             <Image source={require('../../assets/checklist.png')} style={styles.icon} />
@@ -105,7 +105,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
             <Text style={styles.txt}>Rời khỏi bộ phận</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
+     
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
       </View>
@@ -118,29 +118,27 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.colorMain,
   },
-  scrollViewContainer: {
-    alignItems: 'center',
-    paddingBottom: hp('2%'),
-  },
   iconContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'center',
-    marginTop: hp('10%'),
+    marginTop: hp('5%'),
   },
   iconWrapper: {
     alignItems: 'center',
-    width: wp('25%'), 
+    width: wp('27%'), 
     marginVertical: hp('1%'),
+    marginHorizontal: hp('1%'),
   },
   icon: {
-    width: wp('10%'),
-    height: wp('10%'),
+    width: wp('20%'),
+    height: wp('20%'),
     marginBottom: hp('1%'),
   },
   txt: {
     textAlign: 'center',
     fontSize: hp('2%'),
+    width:wp('100%'), 
   },
   timeContainer: {
     position: 'absolute',

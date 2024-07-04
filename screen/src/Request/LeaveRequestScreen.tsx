@@ -51,7 +51,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Xin nghỉ phép</Text>
@@ -175,16 +175,21 @@ const styles = StyleSheet.create({
     paddingLeft: wp('2%'),
     backgroundColor: 'white',
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 15,
-    backgroundColor: 'white',
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  goBack:{
+    height:60,
+    width:60,
+    alignItems:'center',
+    justifyContent:'center',
+  }
 });
 
 const pickerSelectStyles = StyleSheet.create({

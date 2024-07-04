@@ -20,7 +20,7 @@ const DetailRequest: React.FC<Props> = ({ route,navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
        <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
@@ -43,19 +43,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: COLORS.colorMain,
   },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: 15,
-    backgroundColor: '#fff',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
-    color: '#333',
-    fontWeight: 'bold',
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  goBack:{
+    height:60,
+    width:60,
+    alignItems:'center',
+    justifyContent:'center',
   },
   image: {
     width: '100%',
