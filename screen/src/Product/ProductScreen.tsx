@@ -29,7 +29,7 @@ const products: Product[] = [
   {
     id: 2,
     name: 'Ghế',
-    pdfUri: 'https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf',
+    pdfUri: 'https://heyzine.com/flip-book/48eaf42380.html',
     image: 'https://via.placeholder.com/150',
     PTCcode: 'HIJ890',
     ClientCode: 'NH-789'

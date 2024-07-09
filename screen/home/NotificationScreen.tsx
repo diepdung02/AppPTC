@@ -4,6 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color'; 
 import { RootStackParamList } from '../navigator/natigation';
+import { SearchBar } from "@rneui/themed";
 
 
 type NotificationItem = {
@@ -81,11 +82,16 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Thông báo</Text>
       </View>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Tìm kiếm thông báo..."
+      <SearchBar
+        placeholder="Tìm kiếm"
+        inputContainerStyle={{ backgroundColor: "white" }}
         value={search}
         onChangeText={handleSearch}
+        containerStyle={{
+          backgroundColor: "transparent",
+          borderBottomWidth: 0,
+          borderTopWidth: 0,
+        }}
       />
       <FlatList
         data={filteredData}
@@ -124,15 +130,6 @@ const styles = StyleSheet.create({
     width:60,
     alignItems:'center',
     justifyContent:'center',
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 10,
-    paddingLeft: 10,
-    backgroundColor: '#fff',
   },
   itemContainer: {
     flexDirection: 'row',

@@ -1,74 +1,74 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import COLORS from '../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator/natigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-type EmailItem = {
-  id: string;
-  sender: string;
-  subject: string;
-  date: string;
-};
+import { SearchBar } from "@rneui/themed";
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/overtime/store';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Mail'>;
 };
 
-const emailData: EmailItem[] = [
-  {
-    id: "1",
-    sender: "nguyenvana@example.com",
-    subject: "Thông báo báo cáo tháng 6",
-    date: "04-05-2024",
-  },
-  {
-    id: "2",
-    sender: "tranthib@example.com",
-    subject: "Kế hoạch tổ chức sự kiện",
-    date: "03-07-2024",
-  },
-  {
-    id: "3",
-    sender: "levanc@example.com",
-    subject: "Lịch họp tuần sau",
-    date: "02-07-2024",
-  },
-];
-
 const MailScreen: React.FC<Props> = ({ navigation }) => {
+  const emails = useSelector((state: RootState) => state.email.emails);
   const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState(emailData);
+  const [filteredData, setFilteredData] = useState(emails);
 
-  const handleItemPress = (item: EmailItem) => {
+  useEffect(() => {
+    setFilteredData(emails);
+  }, [emails]);
+
+  const handleItemPress = (item: any) => {
     navigation.navigate('MailDetail', { emailItem: item });
+  };
+
+  const handleSearch = (text: string) => {
+    setSearch(text);
+    const filtered = emails.filter(item =>
+      item.message.toLowerCase().includes(text.toLowerCase()) ||
+      item.subject.toLowerCase().includes(text.toLowerCase()) ||
+      item.to.toLowerCase().includes(text.toLowerCase()) 
+    );
+    setFilteredData(filtered);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-     <View style={styles.header}>
+      <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Mail</Text>
       </View>
+      <SearchBar
+        placeholder="Tìm kiếm"
+        inputContainerStyle={{ backgroundColor: "white" }}
+        value={search}
+        onChangeText={handleSearch}
+        containerStyle={{
+          backgroundColor: "transparent",
+          borderBottomWidth: 0,
+          borderTopWidth: 0,
+        }}
+      />
       <FlatList
         data={filteredData}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.itemContainer} onPress={() => handleItemPress(item)}>
-
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemSender}>{item.sender}</Text>
               <Text style={styles.itemSubject}>{item.subject}</Text>
-              <Text style={styles.itemDate}>{item.date}</Text>
+              <Text style={styles.itemSender}>{item.message}</Text>
+              <Text style={styles.itemDate}>{item.to}</Text>
             </View>
           </TouchableOpacity>
         )}
       />
-       <TouchableOpacity
+      <TouchableOpacity
         onPress={() => navigation.navigate("SendMail")}
         style={styles.addButton}
       >
@@ -81,7 +81,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.colorMain,
   },
   headerTitle: {
     fontSize: 18,
@@ -91,13 +91,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginVertical:5,
+    marginVertical: 5,
   },
-  goBack:{
-    height:60,
-    width:60,
-    alignItems:'center',
-    justifyContent:'center',
+  goBack: {
+    height: 60,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   itemContainer: {
     flexDirection: 'row',
@@ -105,11 +105,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     marginBottom: 1,
     alignItems: 'center',
-  },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
   },
   itemTextContainer: {
     marginLeft: 10,

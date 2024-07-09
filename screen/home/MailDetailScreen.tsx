@@ -1,20 +1,17 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator/natigation';
+import COLORS from '../../constants/Color';
 
-type EmailItem = {
-  id: string;
-  sender: string;
-  subject: string;
-  date: string;
-};
+type MailDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MailDetail'>;
+type MailDetailScreenRouteProp = RouteProp<RootStackParamList, 'MailDetail'>;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'MailDetail'>;
-  route: RouteProp<RootStackParamList, 'MailDetail'>;
+  navigation: MailDetailScreenNavigationProp;
+  route: MailDetailScreenRouteProp;
 };
 
 const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
@@ -26,17 +23,18 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chi tiết email</Text>
+        <Text style={styles.headerTitle}>Chi tiết Email</Text>
       </View>
-      <View style={styles.detailContainer}>
-        {/* <Image source={require('../../assets/email-icon.png')} style={styles.image} /> */}
-        <View style={styles.detailTextContainer}>
-          <Text style={styles.detailSender}>{emailItem.sender}</Text>
-          <Text style={styles.detailSubject}>{emailItem.subject}</Text>
-          <Text style={styles.detailDate}>{emailItem.date}</Text>
-        </View>
+      <View style={styles.content}>
+        <Text style={styles.label}>To:</Text>
+        <Text style={styles.text}>{emailItem.to}</Text>
+        <Text style={styles.label}>Chủ đề:</Text>
+        <Text style={styles.text}>{emailItem.subject}</Text>
+        <Text style={styles.label}>Nội dung:</Text>
+        <Text style={styles.text}>{emailItem.message}</Text>
+        <Text style={styles.label}>Thời gian gửi mail:</Text>
+        <Text style={styles.text}>{emailItem.timestamp}</Text>
       </View>
-      {/* Hiển thị nội dung email hoặc các phần khác */}
     </SafeAreaView>
   );
 };
@@ -44,49 +42,36 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
+    backgroundColor: COLORS.colorMain,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: 'white',
-    marginVertical:5,
+    padding: 15,
   },
-  goBack:{
-    height:60,
-    width:60,
-    alignItems:'center',
-    justifyContent:'center',
-  },
-  detailContainer: {
-    flexDirection: 'row',
-    padding: 20,
-    backgroundColor: '#fff',
+  goBack: {
+    height: 40,
+    width: 40,
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    justifyContent: 'center',
   },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  detailTextContainer: {
+  headerTitle: {
+    fontSize: 18,
     marginLeft: 10,
-    flex: 1,
   },
-  detailSender: {
+  content: {
+    padding: 20,
+  },
+  label: {
     fontWeight: 'bold',
+    fontSize: 16,
+    marginTop: 20,
   },
-  detailSubject: {
-    color: '#666',
-  },
-  detailDate: {
-    color: '#888',
+  text: {
+    fontSize: 16,
+    marginTop: 5,
+    color: '#333',
   },
 });
 

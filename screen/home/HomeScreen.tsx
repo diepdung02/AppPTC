@@ -61,47 +61,47 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
       
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/checklist.png')} style={styles.icon} />
+            <Image source={{uri:'https://img.upanh.tv/2024/07/09/checklist.png'}} style={styles.icon} />
             <Text style={styles.txt}>Kiểm hàng</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Product')}>
-            <Image source={require('../../assets/product.png')} style={styles.icon} />
+            <Image source={{uri:'https://img.upanh.tv/2024/07/09/product.png'}} style={styles.icon} />
             <Text style={styles.txt}>Sản Phẩm</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/output.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/output.png'}} style={styles.icon} />
             <Text style={styles.txt}>Output</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('RequestMain')}>
-            <Image source={require('../../assets/leave.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/leave.png'}} style={styles.icon} />
             <Text style={styles.txt}>Nghỉ phép</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/error.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/error.png'}} style={styles.icon} />
             <Text style={styles.txt}>Báo lỗi</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Overtime')}>
-            <Image source={require('../../assets/overtime.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/overtime.png'}} style={styles.icon} />
             <Text style={styles.txt}>Tăng ca</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Schedule')}>
-            <Image source={require('../../assets/calendar.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/calendar.png'}} style={styles.icon} />
             <Text style={styles.txt}>Lịch</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/evaluate.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/evaluate.png'}} style={styles.icon} />
             <Text style={styles.txt}>Đánh giá</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/vote.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/vote.png'}} style={styles.icon} />
             <Text style={styles.txt}>Bầu chọn</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/left_dept.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/left_dept.png'}} style={styles.icon} />
             <Text style={styles.txt}>Giấy ra cổng</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={require('../../assets/transfer_dept.png')} style={styles.icon} />
+          <Image source={{uri:'https://img.upanh.tv/2024/07/09/transfer_dept.png'}} style={styles.icon} />
             <Text style={styles.txt}>Rời khỏi bộ phận</Text>
           </TouchableOpacity>
         </View>

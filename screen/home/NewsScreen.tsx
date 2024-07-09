@@ -5,7 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color'; 
 import { RootStackParamList } from '../navigator/natigation';
-
+import { SearchBar } from "@rneui/themed";
 
 type NewsItem = {
   id: string;
@@ -69,7 +69,8 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
     setSearch(text);
     const filtered = newsData.filter(item =>
       item.title.toLowerCase().includes(text.toLowerCase()) ||
-      item.summary.toLowerCase().includes(text.toLowerCase())
+      item.summary.toLowerCase().includes(text.toLowerCase()) ||
+      item.date.toLowerCase().includes(text.toLowerCase()) 
     );
     setFilteredData(filtered);
   };
@@ -82,11 +83,16 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tin Tức Nhân Viên</Text>
       </View>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Tìm kiếm tin tức..."
+      <SearchBar
+        placeholder="Tìm kiếm"
+        inputContainerStyle={{ backgroundColor: "white" }}
         value={search}
         onChangeText={handleSearch}
+        containerStyle={{
+          backgroundColor: "transparent",
+          borderBottomWidth: 0,
+          borderTopWidth: 0,
+        }}
       />
       <FlatList
         data={filteredData}
@@ -125,15 +131,6 @@ const styles = StyleSheet.create({
     width:60,
     alignItems:'center',
     justifyContent:'center',
-  },
-  searchInput: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    borderRadius: 5,
-    margin: 10,
-    paddingLeft: 10,
-    backgroundColor: '#fff',
   },
   itemContainer: {
     flexDirection: 'row',

@@ -1,95 +1,68 @@
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
-  Image,
-  FlatList,
-} from "react-native";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import COLORS from "../../../constants/Color";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../../navigator/natigation";
-import { SearchBar } from "@rneui/themed";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-
-type DataRequest = {
-  id: number;
-  imageUrl: string;
-  title: string;
-  detail: { key: string; info: string }[];
-};
-
-const request:DataRequest[] = [
-  {
-    id: 1,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Xin nghỉ phép",
-    detail: [
-      { key: "Lí do", info: "Nghỉ bệnh" },
-      { key: "Ngày", info: "10-7-2024" },
-    ],
-  },
-  {
-    id: 2,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Xin nghỉ phép",
-    detail: [
-      { key: "Lí do", info: "Nghỉ bệnh" },
-      { key: "Ngày", info: "10-7-2024" },
-    ],
-  },
-  {
-    id: 3,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Xin nghỉ phép",
-    detail: [
-      { key: "Lí do", info: "Nghỉ bệnh" },
-      { key: "Ngày", info: "10-7-2024" },
-    ],
-  },
-  {
-    id: 4,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Xin nghỉ phép",
-    detail: [
-      { key: "Lí do", info: "Nghỉ bệnh" },
-      { key: "Ngày", info: "10-7-2024" },
-    ],
-  },
-  {
-    id: 5,
-    imageUrl: "https://via.placeholder.com/150",
-    title: "Xin nghỉ phép",
-    detail: [
-      { key: "Lí do", info: "Nghỉ bệnh" },
-      { key: "Ngày", info: "10-7-2024" },
-    ],
-  },
-  
-];
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, FlatList } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/overtime/store'; // Ensure RootState is correctly imported
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../navigator/natigation'; // Corrected import path
+import { SearchBar } from '@rneui/themed';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import COLORS from '../../../constants/Color'; // Assuming you have a 'Colors' file for styling
+import { LeaveRequest } from '../../../redux/overtime/leaveSlice';
 
 type RequestMainProps = {
-  navigation: StackNavigationProp<RootStackParamList, "RequestMain">;
+  navigation: StackNavigationProp<RootStackParamList, 'RequestMain'>;
 };
 
 const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
-  const renderItem = ({ item }: { item: DataRequest }) => (
-    <View style={styles.itemContainer}>
-      <Image source={{ uri: item.imageUrl }} style={styles.image} />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("DetailRequest", { item })}
-      >
-        <Text>{item.title}</Text>
-        {item.detail.map((detailItem) => (
-          <Text key={detailItem.key}>{detailItem.info}</Text>
-        ))}
-      </TouchableOpacity>
-    </View>
+  const [search, setSearch] = useState('');
+  const leaveRequests = useSelector((state: RootState) => state.leave.requests);
+  const [filteredData, setFilteredData] = useState<LeaveRequest[]>(leaveRequests || []);
+
+  const handleSearch = (text: string) => {
+    setSearch(text);
+    if (!leaveRequests) {
+      setFilteredData([]);
+      return;
+    }
+    const filtered = leaveRequests.filter(item => {
+      const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
+      const leaveTypeMatch = item.leaveType.toLowerCase().includes(text.toLowerCase());
+      return dateMatch || leaveTypeMatch;
+    });
+    setFilteredData(filtered);
+  };
+
+  const renderItem = ({ item }: { item: LeaveRequest }) => (
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigation.navigate('DetailRequest', { item })}
+    >
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>Tăng ca</Text>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Ngày bắt đầu: </Text>
+          <Text style={styles.itemText}>{item.startDate}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Ngày kết thúc: </Text>
+          <Text style={styles.itemText}>{item.endDate}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Loại nghỉ phép: </Text>
+          <Text style={styles.itemText}>{item.leaveType}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Lí do: </Text>
+          <Text style={styles.itemText}>{item.reason}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Trạng thái </Text>
+          <Text style={styles.itemText}>{item.status}</Text>
+        </View>
+      
+      </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -102,22 +75,21 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       </View>
       <SearchBar
         placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: "white" }}
+        inputContainerStyle={{ backgroundColor: 'white' }}
+        value={search}
+        onChangeText={handleSearch}
         containerStyle={{
-          backgroundColor: "transparent",
+          backgroundColor: 'transparent',
           borderBottomWidth: 0,
           borderTopWidth: 0,
         }}
       />
       <FlatList
-        data={request}
-        renderItem={renderItem}
+        data={filteredData}
+        renderItem={({ item }) => renderItem({ item })}
         keyExtractor={(item) => item.id.toString()}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("LeaveRequest")}
-        style={styles.addButton}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate('LeaveRequest')} style={styles.addButton}>
         <MaterialCommunityIcons name="plus-circle" size={50} color="white" />
       </TouchableOpacity>
     </SafeAreaView>
@@ -133,9 +105,27 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+  },
+  detailsContainer: {
+    flex: 1,
+  },
+  title: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 5,
+  },
+  detailText: {
+    fontSize: 16,
+    marginBottom: 3,
+    fontWeight:'600',
+  },
+  itemText: {
+    fontSize: 16,
+    fontStyle: 'italic',
   },
   addButton: {
     position: "absolute",
@@ -146,64 +136,34 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 8,
   },
-  centerContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-    borderRadius: 25,
-  },
-  leaveItem: {
-    width: 120,
-    height: 100,
-    margin: 20,
-    borderRadius: 3,
-    borderWidth: 3,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontSize: 18,
-    textAlign: "center",
-  },
-  status: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  button: {
-    width: 100,
-    height: 40,
-    marginHorizontal: 10,
-    borderWidth: 3,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    borderColor: "#29D6D6",
-  },
-  statusText: {
-    textAlign: "center",
-    color: "black",
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
-  goBack:{
-    height:60,
-    width:60,
-    alignItems:'center',
-    justifyContent:'center',
+  goBack: {
+    height: 40,
+    width: 40,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  status: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+  },
+  statusText: {
+    textAlign: "center",
+    fontSize: 12,
+  },
+  detail:{
+    flexDirection:'row'
   }
 });
 

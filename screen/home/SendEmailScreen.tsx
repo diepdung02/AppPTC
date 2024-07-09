@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaView, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../../constants/Color'; 
+import COLORS from '../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator/natigation';
+import { useDispatch } from 'react-redux';
+import { addEmail } from '../../redux/overtime/mailSlice';
+import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'SendMail'>;
@@ -14,15 +17,28 @@ const fixedRecipientEmail = 'example@example.com';
 const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
+  const dispatch = useDispatch();
+
   const handleSendEmail = () => {
     if (!subject || !message) {
-      Alert.alert('Lỗi', 'Vui lòng điển đầy đủ thông tin');
+      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
+
+    const emailPayload = {
+      id: uuidv4(),
+      to: fixedRecipientEmail,
+      subject,
+      message,
+      timestamp: new Date().toLocaleString(), // Ensure timestamp is included
+    };
+
+    dispatch(addEmail(emailPayload));
 
     Alert.alert('Thành công', 'Đã gửi mail thành công');
     setSubject('');
     setMessage('');
+    navigation.goBack();
   };
 
   return (
@@ -31,7 +47,7 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Send Email</Text>
+        <Text style={styles.headerTitle}>Gửi Email</Text>
       </View>
       <View style={styles.inputContainer}>
         <Text>To:</Text>
@@ -65,7 +81,7 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: COLORS.colorMain,
   },
   header: {
     flexDirection: 'row',
@@ -92,22 +108,8 @@ const styles = StyleSheet.create({
   textArea: {
     height: 100,
   },
-  imageButton: {
-    backgroundColor: '#ccc',
-    padding: 15,
-    borderRadius: 5,
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  imagePreview: {
-    width: '100%',
-    height: 200,
-    resizeMode: 'cover',
-    marginBottom: 10,
-    borderRadius: 5,
-  },
   button: {
-    backgroundColor: '#ccc',
+    backgroundColor: COLORS.blue,
     padding: 15,
     borderRadius: 5,
     alignItems: 'center',

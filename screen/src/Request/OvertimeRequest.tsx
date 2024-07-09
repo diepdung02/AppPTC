@@ -1,34 +1,31 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import COLORS from '../../../constants/Color'; // Ensure your color constants are correctly imported
+import COLORS from '../../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RNPickerSelect from 'react-native-picker-select';
+import { useDispatch } from 'react-redux';
+import { addOvertimeRequest, OvertimeRequest } from '../../../redux/overtime/overtimeSlice';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice'; // Adjust path as per your project structure
 
 type Props = {
   navigation: StackNavigationProp<{}>;
 }
 
-const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
+const RequestOverTime: React.FC<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [leaveType, setLeaveType] = useState<string | null>(null);
+  const [date, setDate] = useState<Date | null>(null);
+  const [startTime, setStartTime] = useState<Date | null>(null);
+  const [endTime, setEndTime] = useState<Date | null>(null);
   const [reason, setReason] = useState<string>('');
 
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
-  const [selectedDateField, setSelectedDateField] = useState<'start' | 'end' | null>(null);
+  const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState<boolean>(false);
+  const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState<boolean>(false);
 
-  const leaveTypes = ['Nghỉ phép năm', 'Nghỉ bệnh', 'Nghỉ thai sản', 'Nghỉ không lương'];
-
-  const showDatePicker = (field: 'start' | 'end') => {
-    setSelectedDateField(field);
+  const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
 
@@ -36,43 +33,74 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
     setDatePickerVisibility(false);
   };
 
-  const handleConfirmDate = (date: Date) => {
-    if (selectedDateField === 'start') {
-      setStartDate(date);
-    } else if (selectedDateField === 'end') {
-      setEndDate(date);
-    }
+  const handleConfirmDate = (selectedDate: Date) => {
+    setDate(selectedDate);
     hideDatePicker();
   };
 
+  const showTimePicker = (field: 'start' | 'end') => {
+    if (field === 'start') {
+      setStartTimePickerVisibility(true);
+    } else if (field === 'end') {
+      setEndTimePickerVisibility(true);
+    }
+  };
+
+  const hideTimePicker = () => {
+    setStartTimePickerVisibility(false);
+    setEndTimePickerVisibility(false);
+  };
+
+  const handleConfirmTime = (time: Date) => {
+    if (isStartTimePickerVisible) {
+      setStartTime(time);
+    } else if (isEndTimePickerVisible) {
+      setEndTime(time);
+    }
+    hideTimePicker();
+  };
   const handleReasonChange = (text: string) => {
     const cleanedText = text.replace(/^\s*\n/gm, '');
     setReason(cleanedText);
   };
 
+  const handleKeyPress = (event: any) => {
+    // Xử lý khi người dùng nhấn phím Enter
+    if (event.nativeEvent.key === 'Enter') {
+      setReason(reason ); 
+    }
+  };
+
   const handleSubmit = async () => {
-    if (startDate && endDate && leaveType && reason) {
-      const newRequest: LeaveRequest = {
+    if (date && startTime && endTime && reason) {
+      const startDateTime = new Date(date);
+      startDateTime.setHours(startTime.getHours());
+      startDateTime.setMinutes(startTime.getMinutes());
+  
+      const endDateTime = new Date(date);
+      endDateTime.setHours(endTime.getHours());
+      endDateTime.setMinutes(endTime.getMinutes());
+  
+      const newRequest: OvertimeRequest = {
         id: Math.random(),
-        startDate: startDate.toLocaleDateString(),
-        endDate: endDate.toLocaleDateString(),
-        leaveType,
+        startDate: startDateTime.toLocaleDateString(),
+        startTime: startDateTime.toLocaleTimeString(),
+        endTime: endDateTime.toLocaleTimeString(),
         reason,
         status: 'Đang chờ duyệt',
       };
-
-      dispatch(addLeaveRequest(newRequest));
-
+  
+      dispatch(addOvertimeRequest(newRequest));
+  
       try {
-        const existingRequests = await AsyncStorage.getItem('leaveRequests');
+        const existingRequests = await AsyncStorage.getItem('overtimeRequests');
         let parsedRequests = existingRequests ? JSON.parse(existingRequests) : [];
         parsedRequests.push(newRequest);
-        await AsyncStorage.setItem('leaveRequests', JSON.stringify(parsedRequests));
+        await AsyncStorage.setItem('overtimeRequests', JSON.stringify(parsedRequests));
       } catch (error) {
-        console.error('Error saving leave request:', error);
+        console.error('Error saving overtime request:', error);
       }
-
-      console.log('New Leave Request:', newRequest);
+      console.log('New Overtime Request:', newRequest);
       navigation.goBack();
       Alert.alert('Đã gửi đơn');
     } else {
@@ -92,60 +120,65 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
               <FontAwesome name="arrow-left" size={20} color="black" />
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>Xin nghỉ phép</Text>
+            <Text style={styles.headerTitle}>Xin tăng ca</Text>
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Ngày bắt đầu:</Text>
+            <Text style={styles.label}>Ngày tăng ca:</Text>
             <TouchableOpacity
               style={styles.input}
-              onPress={() => showDatePicker('start')}
+              onPress={showDatePicker}
             >
-              <Text style={styles.dateText}>{startDate ? startDate.toDateString() : 'Chọn ngày bắt đầu'}</Text>
+              <Text style={styles.dateText}>{date ? date.toDateString() : 'Chọn ngày tăng ca'}</Text>
               <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
             </TouchableOpacity>
             <DateTimePickerModal
-              isVisible={isDatePickerVisible && selectedDateField === 'start'}
+              isVisible={isDatePickerVisible}
               mode="date"
               onConfirm={handleConfirmDate}
               onCancel={hideDatePicker}
             />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Ngày kết thúc:</Text>
+            <Text style={styles.label}>Giờ bắt đầu:</Text>
             <TouchableOpacity
               style={styles.input}
-              onPress={() => showDatePicker('end')}
+              onPress={() => showTimePicker('start')}
             >
-              <Text style={styles.dateText}>{endDate ? endDate.toDateString() : 'Chọn ngày kết thúc'}</Text>
+              <Text style={styles.dateText}>{startTime ? startTime.toLocaleTimeString() : 'Chọn giờ bắt đầu'}</Text>
               <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
             </TouchableOpacity>
             <DateTimePickerModal
-              isVisible={isDatePickerVisible && selectedDateField === 'end'}
-              mode="date"
-              onConfirm={handleConfirmDate}
-              onCancel={hideDatePicker}
+              isVisible={isStartTimePickerVisible}
+              mode="time"
+              onConfirm={handleConfirmTime}
+              onCancel={hideTimePicker}
             />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Lựa chọn loại nghỉ phép:</Text>
-            <View style={styles.pickerContainer}>
-              <RNPickerSelect
-                onValueChange={(value) => setLeaveType(value)}
-                items={leaveTypes.map((type) => ({ label: type, value: type }))}
-                style={pickerSelectStyles}
-                placeholder={{ label: 'Chọn loại nghỉ phép', value: null }}
-                value={leaveType}
-              />
-            </View>
+            <Text style={styles.label}>Giờ kết thúc:</Text>
+            <TouchableOpacity
+              style={styles.input}
+              onPress={() => showTimePicker('end')}
+            >
+              <Text style={styles.dateText}>{endTime ? endTime.toLocaleTimeString() : 'Chọn giờ kết thúc'}</Text>
+              <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
+            </TouchableOpacity>
+            <DateTimePickerModal
+              isVisible={isEndTimePickerVisible}
+              mode="time"
+              onConfirm={handleConfirmTime}
+              onCancel={hideTimePicker}
+            />
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Lý do xin nghỉ:</Text>
+            <Text style={styles.label}>Lý do:</Text>
             <TextInput
               style={styles.inputNote}
               multiline
-              placeholder="Nhập lý do xin nghỉ"
+              placeholder="Nhập lý do xin tăng ca"
               value={reason}
               onChangeText={handleReasonChange}
+              onKeyPress={handleKeyPress}
             />
           </View>
           <TouchableOpacity style={styles.button} onPress={handleSubmit}>
@@ -188,13 +221,6 @@ const styles = StyleSheet.create({
   calendarIcon: {
     marginRight: wp('2%'),
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    color: 'black',
-  },
   button: {
     margin: wp('10%'),
     backgroundColor: '#2738C2',
@@ -214,7 +240,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: wp('2%'),
     backgroundColor: 'white',
-    textAlignVertical: 'top',
+    textAlignVertical: 'top'
   },
   headerTitle: {
     fontSize: 18,
@@ -233,34 +259,4 @@ const styles = StyleSheet.create({
   }
 });
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    height: hp('6%'),
-    fontSize: wp('4%'),
-    paddingVertical: hp('1.5%'),
-    paddingHorizontal: wp('2%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 4,
-    color: 'black',
-    backgroundColor: 'white',
-    paddingRight: wp('7.5%'),
-  },
-  inputAndroid: {
-    height: hp('6%'),
-    fontSize: wp('4%'),
-    paddingVertical: hp('1%'),
-    paddingHorizontal: wp('2%'),
-    borderWidth: 0.5,
-    borderColor: 'white',
-    borderRadius: 4,
-    color: 'black',
-    backgroundColor: 'white',
-    paddingRight: wp('7.5%'),
-  },
-  placeholder: {
-    color: 'gray',
-  },
-});
-
-export default LeaveRequestScreen;
+export default RequestOverTime;
