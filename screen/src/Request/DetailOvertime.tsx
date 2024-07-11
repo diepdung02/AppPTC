@@ -1,10 +1,8 @@
-import React from 'react';
-import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity } from 'react-native';
+import React  from 'react';
+import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigator/natigation'; // Đảm bảo đường dẫn import đúng
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-
 import COLORS from '../../../constants/Color';
 
 type DetailOvertimeScreenRouteProp = RouteProp<RootStackParamList, 'DetailOvertime'>;
@@ -16,11 +14,6 @@ type Props = {
 const DetailOvertime: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { item } = route.params;
-
-  // Chuyển đổi chuỗi thành đối tượng Date
-  const startDate = new Date(item.startDate);
-  const startTime = item.startTime; // Giả sử startTime đã là chuỗi
-  const endTime = item.endTime; // Giả sử endTime đã là chuỗi
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -38,15 +31,15 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Ngày tăng ca:</Text>
-        <Text style={styles.detailText}>{startDate.toLocaleDateString()}</Text>
+        <Text style={styles.detailText}>{item.startDate}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Thời gian bắt đầu:</Text>
-        <Text style={styles.detailText}>{startTime}</Text>
+        <Text style={styles.detailText}>{item.startTime}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Thời gian kết thúc:</Text>
-        <Text style={styles.detailText}>{endTime}</Text>
+        <Text style={styles.detailText}>{item.endTime}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Trạng thái:</Text>
@@ -71,47 +64,45 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.colorMain,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#FFFFFF',
+    marginTop: StatusBar.currentHeight || 0,
   },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  detailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    marginHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    paddingBottom: 10,
   },
   detailLabel: {
+    width: 150,
     fontSize: 16,
     fontWeight: 'bold',
-    width: 120,
     color: 'black',
   },
   detailText: {
     flex: 1,
     fontSize: 16,
     color: 'black',
-    marginLeft:10,
-  },
-  detailContainer: {
-    flexDirection: 'row',
-    margin: 10,
   },
 });
 

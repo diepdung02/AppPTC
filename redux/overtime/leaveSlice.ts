@@ -22,7 +22,7 @@ const leaveSlice = createSlice({
   initialState,
   reducers: {
     addLeaveRequest: (state, action: PayloadAction<LeaveRequest>) => {
-      state.requests.push(action.payload);
+      state.requests.unshift(action.payload)
     },
     updateLeaveRequestStatus: (state, action: PayloadAction<LeaveRequest>) => {
       const index = state.requests.findIndex(req => req.id === action.payload.id);
@@ -30,8 +30,11 @@ const leaveSlice = createSlice({
         state.requests[index] = action.payload;
       }
     },
+    deleteLeaveRequest: (state, action: PayloadAction<number>) => {
+      state.requests = state.requests.filter(request => request.id !== action.payload);
+    },
   },
 });
 
-export const { addLeaveRequest, updateLeaveRequestStatus } = leaveSlice.actions;
+export const { addLeaveRequest, updateLeaveRequestStatus, deleteLeaveRequest } = leaveSlice.actions;
 export default leaveSlice.reducer;

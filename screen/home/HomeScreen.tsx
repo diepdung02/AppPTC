@@ -68,7 +68,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
             <Image source={{uri:'https://img.upanh.tv/2024/07/09/product.png'}} style={styles.icon} />
             <Text style={styles.txt}>Sản Phẩm</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('OutputList', { completedCount: 0, completedProducts: [] })}>
           <Image source={{uri:'https://img.upanh.tv/2024/07/09/output.png'}} style={styles.icon} />
             <Text style={styles.txt}>Output</Text>
           </TouchableOpacity>

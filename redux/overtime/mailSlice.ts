@@ -7,7 +7,7 @@ type Email = {
   to: string;
   subject: string;
   message: string;
-  timestamp: string; // Ensure this property is defined
+  timestamp: string; 
 };
 
 type EmailState = {

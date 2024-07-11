@@ -22,7 +22,7 @@ const overtimeSlice = createSlice({
   initialState,
   reducers: {
     addOvertimeRequest: (state, action: PayloadAction<OvertimeRequest>) => {
-      state.requests.push(action.payload);
+      state.requests.unshift(action.payload);
     },
     updateOvertimeRequestStatus: (state, action: PayloadAction<OvertimeRequest>) => {
       const index = state.requests.findIndex(req => req.id === action.payload.id);

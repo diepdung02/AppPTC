@@ -28,7 +28,8 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
     const filtered = leaveRequests.filter(item => {
       const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
       const leaveTypeMatch = item.leaveType.toLowerCase().includes(text.toLowerCase());
-      return dateMatch || leaveTypeMatch;
+      const statusMatch = item.status.toLowerCase().includes(text.toLowerCase());
+      return dateMatch || leaveTypeMatch || statusMatch;
     });
     setFilteredData(filtered);
   };
@@ -39,7 +40,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       onPress={() => navigation.navigate('DetailRequest', { item })}
     >
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Tăng ca</Text>
+        <Text style={styles.title}>Thông tin tăng ca:</Text>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Ngày bắt đầu: </Text>
           <Text style={styles.itemText}>{item.startDate}</Text>
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     marginBottom: 3,
-    fontWeight:'600',
+    fontWeight:'600'
   },
   itemText: {
     fontSize: 16,

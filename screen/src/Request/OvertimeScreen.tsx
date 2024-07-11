@@ -17,19 +17,14 @@ import { RootState } from "../../../redux/overtime/store";
 import { SearchBar } from '@rneui/themed';
 import {
   OvertimeRequest,
-  deleteOvertimeRequest
 } from "../../../redux/overtime/overtimeSlice";
 
 type OvertimeItemProps = {
   item: OvertimeRequest;
   navigation: StackNavigationProp<RootStackParamList, "Overtime">;
-  onDelete: (id: number) => void;
 };
 
-const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation, onDelete }) => {
-  const handleDelete = () => {
-    onDelete(item.id);
-  };
+const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
 
   return (
     <View style={styles.itemContainer}>
@@ -57,9 +52,6 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation, onDelete 
           <Text style={styles.itemText}>{item.status}</Text>
         </View>
       </TouchableOpacity>
-      <TouchableOpacity onPress={handleDelete} style={styles.deleteButton}>
-        <FontAwesome name="trash" size={24} color="red" />
-      </TouchableOpacity>
     </View>
   );
 };
@@ -69,7 +61,6 @@ const OvertimeScreen: React.FC<{ navigation: StackNavigationProp<RootStackParamL
   const overtimeRequests = useSelector(
     (state: RootState) => state.overtime.requests
   );
-  const dispatch = useDispatch();
   const [search, setSearch] = useState('');
   const [filteredData, setFilteredData] = useState<OvertimeRequest[]>(overtimeRequests || []);
 
@@ -89,13 +80,10 @@ const OvertimeScreen: React.FC<{ navigation: StackNavigationProp<RootStackParamL
     setFilteredData(filtered);
   };
 
-  const handleDelete = (id: number) => {
-    dispatch(deleteOvertimeRequest(id));
-    setFilteredData(filteredData.filter(item => item.id !== id));
-  };
+
 
   const renderItem = ({ item }: { item: OvertimeRequest }) => (
-    <OvertimeItem item={item} navigation={navigation} onDelete={handleDelete} />
+    <OvertimeItem item={item} navigation={navigation} />
   );
 
   return (

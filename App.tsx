@@ -25,7 +25,9 @@ import {
   MailDetailScreen,
   SendEmailScreen,
   NotificationDetailScreen,
-  OvertimeRequest
+  OvertimeRequest,
+  OutputScreen,
+  OutputList,
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/natigation";
 import store, { persistor } from './redux/overtime/store';
@@ -107,7 +109,7 @@ const App: React.FC = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -181,6 +183,16 @@ const App: React.FC = () => (
         <Stack.Screen
           name="OvertimeRequest"
           component={OvertimeRequest}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OutputScreen"
+          component={OutputScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="OutputList"
+          component={OutputList}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

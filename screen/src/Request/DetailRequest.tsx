@@ -5,7 +5,6 @@ import { RootStackParamList } from '../../navigator/natigation'; // Ensure corre
 import COLORS from '../../../constants/Color';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
-
 type DetailOvertimeScreenRouteProp = RouteProp<RootStackParamList, 'DetailRequest'>;
 
 type Props = {
@@ -16,9 +15,6 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { item } = route.params;
 
-  // Convert string back to Date
-  const startDate = new Date(item.startDate);
-  const endDate = new Date(item.endDate);
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: `Chi tiết tăng ca`,
@@ -36,11 +32,11 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
 
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Ngày bắt đầu nghỉ:</Text>
-        <Text style={styles.detailText}>{startDate.toLocaleDateString()}</Text>
+        <Text style={styles.detailText}>{item.startDate}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Ngày kết thúc nghỉ:</Text>
-        <Text style={styles.detailText}>{endDate.toLocaleDateString()}</Text>
+        <Text style={styles.detailText}>{item.endDate}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Loại nghỉ phép:</Text>
@@ -75,52 +71,43 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
     marginTop: StatusBar.currentHeight || 0,
   },
-    title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  detail: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  status: {
-    fontSize: 16,
-    marginTop: 10,
-    fontStyle: 'italic',
-  },
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: 'bold',
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  detailContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 5,
+    marginHorizontal: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: 'black',
+    paddingBottom: 10,
   },
   detailLabel: {
+    width: 150,
     fontSize: 16,
     fontWeight: 'bold',
-    width: 120,
     color: 'black',
   },
   detailText: {
     flex: 1,
     fontSize: 16,
     color: 'black',
-    marginLeft:10,
-  },
-  detailContainer: {
-    flexDirection: 'row',
-    margin: 10,
   },
 });
 

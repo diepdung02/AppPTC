@@ -17,6 +17,8 @@ import MailDetailScreen from './home/MailDetailScreen';
 import SendEmailScreen from './home/SendEmailScreen';
 import NotificationDetailScreen from './home/NotificationDetailScreen';
 import OvertimeRequest from './src/Request/OvertimeRequest';
+import OutputScreen from './src/Product/OutputScreen';
+import OutputList from './src/Product/OutputList';
 
 export{
     LoginScreen,
@@ -38,4 +40,6 @@ export{
     SendEmailScreen,
     NotificationDetailScreen,
     OvertimeRequest,
+    OutputScreen,
+    OutputList
 }
