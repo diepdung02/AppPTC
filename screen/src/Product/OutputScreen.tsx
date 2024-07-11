@@ -3,8 +3,9 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, SafeAreaView
 import { useDispatch } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/natigation'; // Check your import path
+import { RootStackParamList } from '../../navigator/natigation';
 import COLORS from '../../../constants/Color';
+import { completeProducts } from '../../../redux/overtime/productSlice';
 
 type OutputProps = {
   navigation: StackNavigationProp<RootStackParamList, 'OutputScreen'>;
@@ -15,44 +16,38 @@ interface Product {
   name: string;
   image: string;
   description: string;
+  components: {
+    name: string;
+    isCompleted: boolean;
+  }[];
 }
 
 const initialProducts: Product[] = [
-  { id: 1, name: 'Bộ phận 1', image: 'https://via.placeholder.com/150', description: 'Mô tả bộ phận 1' },
-  { id: 2, name: 'Bộ phận 2', image: 'https://via.placeholder.com/150', description: 'Mô tả Bộ phận 2' },
-  { id: 3, name: 'Bộ phận 3', image: 'https://via.placeholder.com/150', description: 'Mô tả Bộ phận 3' },
-  { id: 4, name: 'Bộ phận 4', image: 'https://via.placeholder.com/150', description: 'Mô tả Bộ phận 4' },
-  { id: 5, name: 'Bộ phận 5', image: 'https://via.placeholder.com/150', description: 'Mô tả Bộ phận 5' },
-]
+  { id: 1, name: 'Bộ phận 1', image: 'https://via.placeholder.com/150', description: 'Mô tả bộ phận 1', components: [{ name: 'Component A', isCompleted: false }] },
+  { id: 2, name: 'Bộ phận 2', image: 'https://via.placeholder.com/150', description: 'Mô tả bộ phận 2', components: [{ name: 'Component B', isCompleted: false }] },
+  // Add more products with components as needed
+];
 
 const OutputScreen: React.FC<OutputProps> = ({ navigation }) => {
   const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [selectedProducts, setSelectedProducts] = useState<number[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<{ id: number, componentIndex: number }[]>([]);
   const dispatch = useDispatch();
 
-  const handleSelectProduct = (id: number) => {
-    setSelectedProducts((prevSelected) =>
-      prevSelected.includes(id) ? prevSelected.filter((productId) => productId !== id) : [...prevSelected, id]
-    );
+  const handleSelectProduct = (id: number, componentIndex: number) => {
+    const index = selectedProducts.findIndex((product) => product.id === id && product.componentIndex === componentIndex);
+    if (index >= 0) {
+      setSelectedProducts((prevSelected) => prevSelected.filter((_, i) => i !== index));
+    } else {
+      setSelectedProducts((prevSelected) => [...prevSelected, { id, componentIndex }]);
+    }
   };
 
   const handleComplete = () => {
-    const completedProducts = selectedProducts.map(productId => ({
-      id: productId,
-      componentIndex: ,
-    }));
-  
-    dispatch({ type: 'COMPLETE_PRODUCTS', payload: { completed: completedProducts.length } });
-  
-    navigation.navigate('OutputList', {
-      completedCount: completedProducts.length,
-      completedProducts: completedProducts,
-    });
-  
+    dispatch(completeProducts(selectedProducts));
+    navigation.navigate('OutputList', { completedProducts: selectedProducts });
     setSelectedProducts([]);
     Alert.alert('Thông báo', 'Đã gửi báo cáo hoàn thành sản phẩm.');
   };
-  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,19 +61,26 @@ const OutputScreen: React.FC<OutputProps> = ({ navigation }) => {
         data={products}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <TouchableOpacity
-            style={[
-              styles.productItem,
-              selectedProducts.includes(item.id) && styles.selectedProductItem,
-            ]}
-            onPress={() => handleSelectProduct(item.id)}
-          >
-            <Image source={{ uri: item.image }} style={styles.productImage} />
-            <View style={styles.productDetails}>
-              <Text style={styles.productName}>{item.name}</Text>
-              <Text style={styles.productDescription}>{item.description}</Text>
-            </View>
-          </TouchableOpacity>
+          <View>
+            <Text style={styles.productName}>{item.name}</Text>
+            {item.components.map((component, index) => (
+              <TouchableOpacity
+                key={`${item.id}_${index}`}
+                style={[
+                  styles.productItem,
+                  selectedProducts.some(
+                    (selected) => selected.id === item.id && selected.componentIndex === index
+                  ) && styles.selectedProductItem,
+                ]}
+                onPress={() => handleSelectProduct(item.id, index)}
+              >
+                <Image source={{ uri: item.image }} style={styles.productImage} />
+                <View style={styles.productDetails}>
+                  <Text style={styles.productDescription}>{component.name}</Text>
+                </View>
+              </TouchableOpacity>
+            ))}
+          </View>
         )}
       />
       <TouchableOpacity onPress={handleComplete} disabled={selectedProducts.length === 0} style={styles.send}>
@@ -95,17 +97,17 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 18,
