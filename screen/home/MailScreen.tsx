@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import COLORS from '../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigator/natigation';
+import { RootStackParamList } from '../navigator/navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from "@rneui/themed";
 import { useSelector } from 'react-redux';

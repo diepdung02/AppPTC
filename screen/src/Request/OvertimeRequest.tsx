@@ -65,7 +65,7 @@ const RequestOverTime: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleKeyPress = (event: any) => {
-    // Xử lý khi người dùng nhấn phím Enter
+    
     if (event.nativeEvent.key === 'Enter') {
       setReason(reason ); 
     }

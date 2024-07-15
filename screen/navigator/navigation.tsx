@@ -61,12 +61,22 @@ export type EmailItem = {
 
 export type Product = {
   id: number;
+  image: string;
   name: string;
-  pdfUri: string;
+  pdfUri: string; 
   PTCcode: string;
   ClientCode: string;
-  completionCount: number;
+  components: Component[];
+  remainingComponents: Component[];
 };
+
+export type Component = {
+  id: number;
+  name: string;
+};
+
+
+
 
 export type RootStackParamList = {
   Login: undefined;
@@ -81,13 +91,14 @@ export type RootStackParamList = {
   Notifications: undefined;
   Mail: undefined;
   SendMail: undefined;
-   OutputScreen: { productId: number; components: { name: string; isCompleted: boolean; }[] };
-  OutputList: { completedCount: number; completedProducts: { id: number, componentIndex: number }[] };
+  LeftDeptScreen: undefined;
+  OutputScreen: { product: Product; productId: number; components: Component[]; productName: string, productClient:string,productCode:string,productImage:string,productPDF:string,   };
+  OutputList: undefined;
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };
   NewsDetail: { newsItem: NewsItem };
   MailDetail: { emailItem: EmailItem };
   NotificationDetail: { notification: NotificationItem };
-  ProductScreen: { products: Product[] };
+  ProductScreen: { products: Product[] }; 
 };

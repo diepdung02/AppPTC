@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-na
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import { RootStackParamList } from '../navigator/natigation';
+import { RootStackParamList } from '../navigator/navigation';
 import COLORS from '../../constants/Color';
 
 type MailDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MailDetail'>;

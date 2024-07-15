@@ -28,8 +28,9 @@ import {
   OvertimeRequest,
   OutputScreen,
   OutputList,
+  LeftDeptScreen
 } from "./screen/index";
-import { RootStackParamList } from "./screen/navigator/natigation";
+import { RootStackParamList } from "./screen/navigator/navigation";
 import store, { persistor } from './redux/overtime/store';
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -193,6 +194,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="OutputList"
           component={OutputList}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="LeftDeptScreen"
+          component={LeftDeptScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

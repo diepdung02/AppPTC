@@ -5,7 +5,7 @@ import COLORS from '../../constants/Color';
 import { ApiResponse, fetchUser } from '../../API'; 
 import { SearchBar } from '@rneui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigator/natigation';
+import { RootStackParamList, Product } from '../navigator/navigation';
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>; 
@@ -68,7 +68,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
             <Image source={{uri:'https://img.upanh.tv/2024/07/09/product.png'}} style={styles.icon} />
             <Text style={styles.txt}>Sản Phẩm</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('OutputList', { completedCount: 0, completedProducts: [] })}>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('OutputList')}>
           <Image source={{uri:'https://img.upanh.tv/2024/07/09/output.png'}} style={styles.icon} />
             <Text style={styles.txt}>Output</Text>
           </TouchableOpacity>
@@ -96,7 +96,7 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           <Image source={{uri:'https://img.upanh.tv/2024/07/09/vote.png'}} style={styles.icon} />
             <Text style={styles.txt}>Bầu chọn</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
+          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('LeftDeptScreen')}>
           <Image source={{uri:'https://img.upanh.tv/2024/07/09/left_dept.png'}} style={styles.icon} />
             <Text style={styles.txt}>Giấy ra cổng</Text>
           </TouchableOpacity>

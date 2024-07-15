@@ -10,7 +10,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import COLORS from "../../constants/Color";
-import { RootStackParamList } from "../navigator/natigation";
+import { RootStackParamList } from "../navigator/navigation";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Notifications">;

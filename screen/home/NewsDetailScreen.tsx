@@ -4,7 +4,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color';
-import { RootStackParamList } from '../navigator/natigation';
+import { RootStackParamList } from '../navigator/navigation';
 
 
 

@@ -11,7 +11,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigator/natigation"; // Assuming 'navigation' is correctly imported
+import { RootStackParamList } from "../../navigator/navigation"; 
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../redux/overtime/store";
 import { SearchBar } from '@rneui/themed';

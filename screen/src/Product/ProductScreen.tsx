@@ -1,12 +1,28 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, SafeAreaView, FlatList, StatusBar, TouchableOpacity, Image, Animated, Easing } from 'react-native';
-import { SearchBar } from '@rneui/themed';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/natigation'; // Corrected typo in import path
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import * as MediaLibrary from 'expo-media-library';
-import { WebView } from 'react-native-webview';
-import COLORS from '../../../constants/Color'; // Ensure the correct path to your color constants
+import React, { useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  StatusBar,
+  TouchableOpacity,
+  Image,
+  Animated,
+  Easing,
+} from "react-native";
+import { SearchBar } from "@rneui/themed";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigator/navigation";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import * as MediaLibrary from "expo-media-library";
+import { WebView } from "react-native-webview";
+import COLORS from "../../../constants/Color";
+
+type Component = {
+  id: number;
+  name: string;
+};
 
 type Product = {
   id: number;
@@ -15,52 +31,79 @@ type Product = {
   pdfUri: string;
   PTCcode: string;
   ClientCode: string;
-}
+  components: Component[];
+  remainingComponents: Component[];
+};
 
 const products: Product[] = [
   {
     id: 1,
-    name: 'Bàn',
-    pdfUri: 'https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf',
-    image: 'https://via.placeholder.com/150',
-    PTCcode: 'ABC090',
-    ClientCode: 'AN-868'
+    name: "Bàn",
+    pdfUri: "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
+    image: "https://via.placeholder.com/150",
+    PTCcode: "ABC090",
+    ClientCode: "AN-868",
+    components: [
+      { id: 1, name: "Chân bàn" },
+      { id: 2, name: "Mặt bàn" },
+      { id: 3, name: "Ống bàn" },
+      { id: 4, name: "Bánh xe" },
+      { id: 5, name: "Vít" },
+    ],
+    remainingComponents: [],
   },
   {
     id: 2,
-    name: 'Ghế',
-    pdfUri: 'https://heyzine.com/flip-book/48eaf42380.html',
-    image: 'https://via.placeholder.com/150',
-    PTCcode: 'HIJ890',
-    ClientCode: 'NH-789'
+    name: "Ghế",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image: "https://via.placeholder.com/150",
+    PTCcode: "HIJ890",
+    ClientCode: "NH-789",
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
   },
   {
     id: 3,
-    name: 'Ghế',
-    pdfUri: 'https://heyzine.com/flip-book/48eaf42380.html',
-    image: 'https://via.placeholder.com/150',
-    PTCcode: 'HIJ890',
-    ClientCode: 'NH-789'
+    name: "Ghế",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image: "https://via.placeholder.com/150",
+    PTCcode: "HIJ890",
+    ClientCode: "NH-789",
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
   },
 ];
 
 type ProductScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Product'>;
+  navigation: StackNavigationProp<RootStackParamList, "Product">;
 };
 
 const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   const [showPdf, setShowPdf] = React.useState(false);
-  const [pdfUri, setPdfUri] = React.useState<string>('');
+  const [pdfUri, setPdfUri] = React.useState<string>("");
   const [selectedProductId, setSelectedProductId] = React.useState<number | null>(null);
   const [outputMenuVisible, setOutputMenuVisible] = React.useState<number | null>(null);
 
   const animatedValue = React.useRef(new Animated.Value(0)).current;
+  const [searchKeyword, setSearchKeyword] = React.useState<string>("");
 
   useEffect(() => {
     (async () => {
       const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== 'granted') {
-        // Handle permission not granted
+      if (status !== "granted") {
+        console.log("Media Library permission not granted");
       }
     })();
   }, []);
@@ -102,14 +145,38 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     });
   };
 
-  const renderItem = ({ item, index }: { item: Product; index: number }) => {
+  const handleOutputPress = (product: Product) => {
+    const { id, name, components, ClientCode, image, pdfUri, PTCcode, remainingComponents } = product;
+
+    navigation.navigate("OutputScreen", {
+      product: {
+        id,
+        name,
+        components,
+        PTCcode,
+        ClientCode,
+        image,
+        pdfUri,
+        remainingComponents,
+      },
+      productId: id,
+      productName: name,
+      components,
+      productClient: ClientCode,
+      productImage: image,
+      productPDF: pdfUri,
+      productCode: PTCcode,
+    });
+  };
+
+  const renderItem = ({ item }: { item: Product }) => {
     const translateY = animatedValue.interpolate({
       inputRange: [0, 1],
       outputRange: [-100, 0],
     });
 
     return (
-      <View key={item.id} style={[styles.itemContainer]}>
+      <View key={item.id} style={styles.itemContainer}>
         <TouchableOpacity style={styles.productContainer} onPress={() => handleProductPress(item)}>
           <Image source={{ uri: item.image }} style={styles.image} />
           <View style={styles.textContainer}>
@@ -123,20 +190,13 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
         {selectedProductId === item.id && (
           <Animated.View style={[styles.outputMenu, { transform: [{ translateY }] }]}>
-            <TouchableOpacity
-              style={styles.outputMenuItem}
-              onPress={() =>
-                navigation.navigate('OutputScreen', {
-                  productId: item.id,
-                  components: [
-                    { name: 'Component 1', isCompleted: false },
-                    { name: 'Component 2', isCompleted: true },
-                    { name: 'Component 3', isCompleted: false },
-                    { name: 'Component 4', isCompleted: true },
-                    { name: 'Component 5', isCompleted: false },
-                  ],
-                })
-              }>
+            {/* <Text style={styles.outputMenuTitle}>Các bộ phận</Text>
+            {item.components.map((component) => (
+              <View key={component.id} style={styles.componentItem}>
+                <Text style={styles.componentText}>{component.name}</Text>
+              </View>
+            ))} */}
+            <TouchableOpacity style={styles.outputMenuItem} onPress={() => handleOutputPress(item)}>
               <Text style={styles.outputMenuItemText}>Báo Output</Text>
             </TouchableOpacity>
           </Animated.View>
@@ -144,6 +204,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       </View>
     );
   };
+
+  const handleSearch = (text: string) => {
+    setSearchKeyword(text);
+  };
+
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchKeyword.toLowerCase())
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -163,9 +231,11 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
               borderBottomWidth: 0,
               borderTopWidth: 0,
             }}
+            onChangeText={handleSearch}
+            value={searchKeyword}
           />
           <FlatList
-            data={products}
+            data={filteredProducts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
             contentContainerStyle={styles.list}
@@ -185,80 +255,80 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff',
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#ffffff",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
   goBack: {
-    height: 40,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginRight: 10,
   },
   headerTitle: {
     fontSize: 18,
-    marginLeft: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
+    textAlign: "center",
+    flex: 1,
   },
   list: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
   },
   itemContainer: {
-    flexDirection: 'column',
-    alignItems: 'stretch',
-    backgroundColor: '#f9f9f9',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    borderRadius: 10,
-    marginBottom: 10,
-    overflow: 'hidden',
+    padding: 10,
+    margin:2,
+    borderWidth:1
   },
   productContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 5,
-    position: 'relative',
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  image: {
+    width: 50,
+    height: 50,
+    marginRight: 10,
   },
   textContainer: {
     flex: 1,
   },
   itemName: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: "bold",
   },
   itemText: {
     fontSize: 14,
-    color: '#666',
-  },
-  image: {
-    width: 60,
-    height: 60,
-    marginRight: 15,
-    borderRadius: 30,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    color: "#555555",
   },
   menuButton: {
-    marginLeft: 'auto',
-    padding: 30,
-    borderWidth: 2,
+    padding: 10,
   },
   outputMenu: {
-    backgroundColor: 'white',
-    elevation: 5,
-    borderRadius: 10,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
+    backgroundColor: "white",
+    // padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
-  outputMenuItem: {
+  outputMenuTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  componentItem: {
     paddingVertical: 5,
   },
+  componentText: {
+    fontSize: 14,
+  },
+  outputMenuItem: {
+    // marginTop: 10,
+    backgroundColor: "#007bff",
+    padding: 10,
+    borderRadius: 5,
+  },
   outputMenuItemText: {
-    fontSize: 16,
+    color: "white",
+    textAlign: "center",
+    fontWeight: "bold",
   },
 });
 

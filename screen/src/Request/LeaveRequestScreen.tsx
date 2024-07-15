@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import COLORS from '../../../constants/Color'; // Ensure your color constants are correctly imported
+import COLORS from '../../../constants/Color'; 
 import { StackNavigationProp } from '@react-navigation/stack';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice'; // Adjust path as per your project structure
+import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice'; 
 
 type Props = {
   navigation: StackNavigationProp<{}>;

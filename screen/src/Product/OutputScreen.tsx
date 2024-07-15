@@ -1,90 +1,236 @@
-import React, { useState } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, SafeAreaView, Image } from 'react-native';
-import { useDispatch } from 'react-redux';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/';
-import COLORS from '../../../constants/Color';
-import { completeProducts } from '../../../redux/overtime/productSlice';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  FlatList,
+  Alert,
+} from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { SearchBar } from "@rneui/themed";
+import {
+  RootStackParamList,
+  Component,
+  Product,
+} from "../../navigator/navigation";
+import COLORS from "../../../constants/Color";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-type OutputProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'OutputScreen'>;
+type OutputScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "OutputScreen"
+  
+>;
+type OutputScreenRouteProp = RouteProp<RootStackParamList, "OutputScreen">;
+type ProductScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, "Product">;
 };
 
-interface Product {
-  id: number;
-  name: string;
-  image: string;
-  description: string;
-  components: {
-    name: string;
-    isCompleted: boolean;
-  }[];
-}
+const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
+  const route = useRoute<OutputScreenRouteProp>();
+  const {
+    productName,
+    components,
+    productId,
+    productClient,
+    productImage,
+    productPDF,
+    productCode,
+  } = route.params;
+  const [search, setSearch] = useState("");
+  const [filteredComponents, setFilteredComponents] = useState<Component[]>([]);
+  const [selectedComponents, setSelectedComponents] = useState<Component[]>([]);
+  const [remainingComponents, setRemainingComponents] = useState<Component[]>(
+    []
+  );
+  const [completedComponents, setCompletedComponents] = useState<Component[]>(
+    []
+  );
 
-const initialProducts: Product[] = [
-  { id: 1, name: 'Bộ phận 1', image: 'https://via.placeholder.com/150', description: 'Mô tả bộ phận 1', components: [{ name: 'Component A', isCompleted: false }] },
-  { id: 2, name: 'Bộ phận 2', image: 'https://via.placeholder.com/150', description: 'Mô tả bộ phận 2', components: [{ name: 'Component B', isCompleted: false }] },
-  // Add more products with components as needed
-];
+  useEffect(() => {
+    const loadComponents = async () => {
+      try {
+        const storedRemainingComponents = await AsyncStorage.getItem(
+          `remainingComponents_${productId}`
+        );
+        const storedCompletedComponents = await AsyncStorage.getItem(
+          `completedComponents_${productId}`
+        );
 
-const OutputScreen: React.FC<OutputProps> = ({ navigation }) => {
-  const [products, setProducts] = useState<Product[]>(initialProducts);
-  const [selectedProducts, setSelectedProducts] = useState<{ id: number, componentIndex: number }[]>([]);
-  const dispatch = useDispatch();
+        if (storedRemainingComponents) {
+          setRemainingComponents(JSON.parse(storedRemainingComponents));
+        } else {
+          setRemainingComponents(components); // Initialize with components if nothing stored
+        }
 
-  const handleSelectProduct = (id: number, componentIndex: number) => {
-    const index = selectedProducts.findIndex((product) => product.id === id && product.componentIndex === componentIndex);
-    if (index >= 0) {
-      setSelectedProducts((prevSelected) => prevSelected.filter((_, i) => i !== index));
+        if (storedCompletedComponents) {
+          setCompletedComponents(JSON.parse(storedCompletedComponents));
+        } else {
+          setCompletedComponents([]); // Initialize with empty array if nothing stored
+        }
+      } catch (error) {
+        console.error("Error loading data:", error);
+      }
+    };
+
+    loadComponents();
+
+    const unsubscribe = navigation.addListener("focus", () => {
+      setSelectedComponents([]);
+    });
+
+    return unsubscribe;
+  }, [navigation, productId, components]);
+
+  useEffect(() => {
+    setFilteredComponents(
+      remainingComponents.filter((component) =>
+        component.name.toLowerCase().includes(search.toLowerCase())
+      )
+    );
+  }, [search, remainingComponents]);
+
+  const handleSelectComponent = (component: Component) => {
+    const index = selectedComponents.findIndex((c) => c.id === component.id);
+    if (index !== -1) {
+      setSelectedComponents(
+        selectedComponents.filter((item) => item.id !== component.id)
+      );
     } else {
-      setSelectedProducts((prevSelected) => [...prevSelected, { id, componentIndex }]);
+      setSelectedComponents([...selectedComponents, component]);
     }
   };
 
-  const handleComplete = () => {
-    dispatch(completeProducts(selectedProducts));
-    navigation.navigate('OutputList', { completedProducts: selectedProducts });
-    setSelectedProducts([]);
-    Alert.alert('Thông báo', 'Đã gửi báo cáo hoàn thành sản phẩm.');
+  const handleSubmit = async () => {
+    if (selectedComponents.length === 0) {
+      Alert.alert(
+        "Không có bộ phận nào được chọn",
+        "Vui lòng chọn ít nhất một bộ phận trước khi gửi."
+      );
+      return;
+    }
+
+    try {
+      // Update remaining and completed components
+      const updatedRemainingComponents = remainingComponents.filter(
+        (comp) => !selectedComponents.some((selComp) => selComp.id === comp.id)
+      );
+      const updatedCompletedComponents = [
+        ...completedComponents,
+        ...selectedComponents,
+      ];
+
+      // Save updated components to AsyncStorage
+      await AsyncStorage.setItem(
+        `remainingComponents_${productId}`,
+        JSON.stringify(updatedRemainingComponents)
+      );
+      await AsyncStorage.setItem(
+        `completedComponents_${productId}`,
+        JSON.stringify(updatedCompletedComponents)
+      );
+
+      // Save updated completed products to AsyncStorage
+      const storedProducts = await AsyncStorage.getItem("completedOutput");
+      let parsedProducts: Product[] = storedProducts
+        ? JSON.parse(storedProducts)
+        : [];
+      const existingProductIndex = parsedProducts.findIndex(
+        (prod) => prod.id === productId
+      );
+
+      if (existingProductIndex !== -1) {
+        parsedProducts[existingProductIndex].components =
+          updatedCompletedComponents;
+      } else {
+        parsedProducts.push({
+          id: productId,
+          name: productName,
+          components: updatedCompletedComponents,
+          ClientCode: productClient,
+          image: productImage,
+          pdfUri: productPDF,
+          PTCcode: productCode,
+          remainingComponents,
+        });
+      }
+
+      await AsyncStorage.setItem(
+        "completedOutput",
+        JSON.stringify(parsedProducts)
+      );
+
+      // Update state with updated components
+      setRemainingComponents(updatedRemainingComponents);
+      setCompletedComponents(updatedCompletedComponents);
+      setSelectedComponents([]);
+
+      Alert.alert("Thành công", "Đã gửi báo cáo hoàn thành.");
+    } catch (error) {
+      console.error("Lỗi khi lưu dữ liệu:", error);
+      Alert.alert(
+        "Lỗi",
+        "Đã xảy ra lỗi khi lưu dữ liệu. Vui lòng thử lại sau."
+      );
+    }
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
+        <Text style={styles.headerTitle}>Sản phẩm</Text>
       </View>
+      <SearchBar
+        placeholder="Tìm kiếm bộ phận..."
+        onChangeText={setSearch}
+        value={search}
+        lightTheme
+        round
+        containerStyle={styles.searchBarContainer}
+        inputContainerStyle={styles.searchBarInput}
+      />
+      <Text style={styles.productName}>{productName}</Text>
+      <Text style={styles.sectionTitle}>Bộ phận chưa hoàn thành</Text>
       <FlatList
-        data={products}
-        keyExtractor={(item) => item.id.toString()}
+        data={filteredComponents}
         renderItem={({ item }) => (
-          <View>
-            <Text style={styles.productName}>{item.name}</Text>
-            {item.components.map((component, index) => (
-              <TouchableOpacity
-                key={`${item.id}_${index}`}
-                style={[
-                  styles.productItem,
-                  selectedProducts.some(
-                    (selected) => selected.id === item.id && selected.componentIndex === index
-                  ) && styles.selectedProductItem,
-                ]}
-                onPress={() => handleSelectProduct(item.id, index)}
-              >
-                <Image source={{ uri: item.image }} style={styles.productImage} />
-                <View style={styles.productDetails}>
-                  <Text style={styles.productDescription}>{component.name}</Text>
-                </View>
-              </TouchableOpacity>
-            ))}
+          <TouchableOpacity
+            style={[
+              styles.componentButton,
+              selectedComponents.some((c) => c.id === item.id) &&
+                styles.selectedComponentButton,
+            ]}
+            onPress={() => handleSelectComponent(item)}
+          >
+            <Text style={styles.componentText}>{item.name}</Text>
+          </TouchableOpacity>
+        )}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.listContainer}
+      />
+      <Text style={styles.sectionTitle}>Bộ phận đã hoàn thành</Text>
+      <FlatList
+        data={completedComponents}
+        renderItem={({ item }) => (
+          <View style={styles.completedComponent}>
+            <Text style={styles.componentText}>{item.name}</Text>
           </View>
         )}
+        keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={styles.listContainer}
       />
-      <TouchableOpacity onPress={handleComplete} disabled={selectedProducts.length === 0} style={styles.send}>
-        <Text style={styles.txtSend}>Gửi</Text>
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>Gửi</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -93,80 +239,83 @@ const OutputScreen: React.FC<OutputProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 16,
     backgroundColor: COLORS.colorMain,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: COLORS.white,
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   goBack: {
-    height: 40,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginRight: 10,
   },
   headerTitle: {
     fontSize: 18,
-    marginLeft: 10,
-  },
-  productItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    marginVertical: 8,
-    marginHorizontal: 16,
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.2,
-    shadowRadius: 1.41,
-    elevation: 2,
-  },
-  selectedProductItem: {
-    backgroundColor: '#d1e7dd',
-    borderWidth: 2,
-    borderColor: '#0d6efd',
-  },
-  productImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 5,
-  },
-  productDetails: {
-    marginLeft: 10,
+    fontWeight: "bold",
+    textAlign: "center",
     flex: 1,
   },
+  searchBarContainer: {
+    backgroundColor: "transparent",
+    borderBottomColor: "transparent",
+    borderTopColor: "transparent",
+    paddingHorizontal: 0,
+    marginBottom: 16,
+  },
+  searchBarInput: {
+    backgroundColor: COLORS.white,
+    borderRadius: 8,
+  },
   productName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: COLORS.darkGray,
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: COLORS.primary,
+    marginVertical: 8,
+  },
+  listContainer: {
+    paddingBottom: 16,
+  },
+  componentButton: {
+    backgroundColor: COLORS.white,
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 8,
+    borderColor: COLORS.border,
+    borderWidth: 1,
+  },
+  selectedComponentButton: {
+    backgroundColor: COLORS.primaryLight,
+  },
+  componentText: {
     fontSize: 18,
-    color: '#495057',
+    color: COLORS.text,
   },
-  productDescription: {
-    fontSize: 14,
-    color: '#6c757d',
+  completedComponent: {
+    backgroundColor: COLORS.successLight,
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 8,
   },
-  send: {
-    borderWidth: 2,
-    height: 40,
-    width: 200,
-    backgroundColor: COLORS.blue,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    borderRadius: 5,
-    marginTop: 20,
+  submitButton: {
+    backgroundColor: COLORS.primary,
+    padding: 16,
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
   },
-  txtSend: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-    textAlign: 'center',
+  submitButtonText: {
+    color: COLORS.white,
+    fontSize: 18,
   },
 });
 

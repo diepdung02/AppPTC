@@ -1,7 +1,7 @@
 import React  from 'react';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../../navigator/natigation'; // Đảm bảo đường dẫn import đúng
+import { RootStackParamList } from '../../navigator/navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color';
 

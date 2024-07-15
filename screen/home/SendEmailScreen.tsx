@@ -3,7 +3,7 @@ import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaVie
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../navigator/natigation';
+import { RootStackParamList } from '../navigator/navigation';
 import { useDispatch } from 'react-redux';
 import { addEmail } from '../../redux/overtime/mailSlice';
 import { v4 as uuidv4 } from 'uuid';

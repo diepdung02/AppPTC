@@ -19,6 +19,7 @@ import NotificationDetailScreen from './home/NotificationDetailScreen';
 import OvertimeRequest from './src/Request/OvertimeRequest';
 import OutputScreen from './src/Product/OutputScreen';
 import OutputList from './src/Product/OutputList';
+import LeftDeptScreen from './src/Request/LeftDeptScreen';
 
 export{
     LoginScreen,
@@ -41,5 +42,6 @@ export{
     NotificationDetailScreen,
     OvertimeRequest,
     OutputScreen,
-    OutputList
+    OutputList,
+    LeftDeptScreen,
 }

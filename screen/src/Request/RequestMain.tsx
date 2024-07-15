@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/overtime/store'; // Ensure RootState is correctly imported
+import { RootState } from '../../../redux/overtime/store'; 
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/natigation'; // Corrected import path
+import { RootStackParamList } from '../../navigator/navigation';
 import { SearchBar } from '@rneui/themed';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../../../constants/Color'; // Assuming you have a 'Colors' file for styling
+import COLORS from '../../../constants/Color'; 
 import { LeaveRequest } from '../../../redux/overtime/leaveSlice';
 
 type RequestMainProps = {
