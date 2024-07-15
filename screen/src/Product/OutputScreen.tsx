@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity, StyleSheet, Alert, SafeAreaView
 import { useDispatch } from 'react-redux';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/natigation';
+import { RootStackParamList } from '../../navigator/';
 import COLORS from '../../../constants/Color';
 import { completeProducts } from '../../../redux/overtime/productSlice';
 
