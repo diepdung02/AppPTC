@@ -81,7 +81,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   Mail: undefined;
   SendMail: undefined;
-  OutputScreen: { productId: number; components: { name: string; isCompleted: boolean; }[] };
+   OutputScreen: { productId: number; components: { name: string; isCompleted: boolean; }[] };
   OutputList: { completedCount: number; completedProducts: { id: number, componentIndex: number }[] };
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
@@ -89,5 +89,5 @@ export type RootStackParamList = {
   NewsDetail: { newsItem: NewsItem };
   MailDetail: { emailItem: EmailItem };
   NotificationDetail: { notification: NotificationItem };
-  ProductScreen: { products: Product[] }; // Added ProductScreen with products prop
+  ProductScreen: { products: Product[] };
 };
