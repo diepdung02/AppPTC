@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -6,23 +7,44 @@ import { ApiResponse, fetchUser } from '../../API';
 import { SearchBar } from '@rneui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList, Product } from '../navigator/navigation';
+=======
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from "react-native-responsive-screen";
+import COLORS from "../../constants/Color";
+import { ApiResponse, fetchUser } from "../../API";
+import { SearchBar } from "@rneui/themed";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigator/navigation";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Home'>; 
-}
+  navigation: StackNavigationProp<RootStackParamList, "Home">;
+};
 
-const HomeScreen: React.FC<Props> = ({navigation}) => {
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [userData, setUserData] = useState<any>({});
   const [currentTime, setCurrentTime] = useState<string>("");
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userId = '1'; 
+      const userId = "1";
       const response: ApiResponse<any> = await fetchUser(userId);
       if (response.success) {
-        setUserData(response.data); 
+        setUserData(response.data);
       } else {
-        console.error('Lỗi khi lấy dữ liệu người dùng:', response.error);
+        console.error("Lỗi khi lấy dữ liệu người dùng:", response.error);
       }
     };
 
@@ -37,9 +59,9 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     };
 
     updateCurrentTime();
-    const intervalId = setInterval(updateCurrentTime, 1000); 
+    const intervalId = setInterval(updateCurrentTime, 1000);
 
-    return () => clearInterval(intervalId); 
+    return () => clearInterval(intervalId);
   }, []);
 
   const [search, setSearch] = useState("");
@@ -51,13 +73,18 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
     <SafeAreaView style={styles.container}>
       <View>
         <SearchBar
-          placeholder='Tìm kiếm '
+          placeholder="Tìm kiếm "
           inputContainerStyle={{ backgroundColor: "white" }}
-          containerStyle={{ backgroundColor: 'transparent', borderBottomWidth: 1, borderTopColor: 'transparent' }}
+          containerStyle={{
+            backgroundColor: "transparent",
+            borderBottomWidth: 1,
+            borderTopColor: "transparent",
+          }}
           onChangeText={updateSearch}
           value={search}
         />
       </View>
+<<<<<<< HEAD
       
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.iconWrapper}>
@@ -106,6 +133,111 @@ const HomeScreen: React.FC<Props> = ({navigation}) => {
           </TouchableOpacity>
         </View>
      
+=======
+
+      <View style={styles.iconContainer}>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/checklist.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Kiểm hàng</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconWrapper}
+          onPress={() => navigation.navigate("Product")}
+        >
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/product.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Sản Phẩm</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconWrapper}
+          onPress={() =>
+            navigation.navigate("OutputList", {
+              completedCount: 0,
+              completedProducts: [],
+            })
+          }
+        >
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/output.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Output</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconWrapper}
+          onPress={() => navigation.navigate("RequestMain")}
+        >
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/leave.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Nghỉ phép</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/error.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Báo lỗi</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconWrapper}
+          onPress={() => navigation.navigate("Overtime")}
+        >
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/overtime.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Tăng ca</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.iconWrapper}
+          onPress={() => navigation.navigate("Schedule")}
+        >
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/calendar.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Lịch</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/evaluate.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Đánh giá</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/vote.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Bầu chọn</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{ uri: "https://img.upanh.tv/2024/07/09/left_dept.png" }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Giấy ra cổng</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.iconWrapper}>
+          <Image
+            source={{
+              uri: "https://img.upanh.tv/2024/07/09/transfer_dept.png",
+            }}
+            style={styles.icon}
+          />
+          <Text style={styles.txt}>Rời khỏi bộ phận</Text>
+        </TouchableOpacity>
+      </View>
+
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
       </View>
@@ -119,35 +251,35 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   iconContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    marginTop: hp('5%'),
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+    marginTop: hp("5%"),
   },
   iconWrapper: {
-    alignItems: 'center',
-    width: wp('27%'), 
-    marginVertical: hp('1%'),
-    marginHorizontal: hp('1%'),
+    alignItems: "center",
+    width: wp("27%"),
+    marginVertical: hp("1%"),
+    marginHorizontal: hp("1%"),
   },
   icon: {
-    width: wp('20%'),
-    height: wp('20%'),
-    marginBottom: hp('1%'),
+    width: wp("20%"),
+    height: wp("20%"),
+    marginBottom: hp("1%"),
   },
   txt: {
-    textAlign: 'center',
-    fontSize: hp('2%'),
-    width:wp('100%'), 
+    textAlign: "center",
+    fontSize: hp("2%"),
+    width: wp("100%"),
   },
   timeContainer: {
-    position: 'absolute',
-    bottom: hp('2%'),
-    alignSelf: 'center',
+    position: "absolute",
+    bottom: hp("2%"),
+    alignSelf: "center",
   },
   timeText: {
-    fontSize: hp('2%'),
-    color: 'red',
+    fontSize: hp("2%"),
+    color: "red",
   },
 });
 

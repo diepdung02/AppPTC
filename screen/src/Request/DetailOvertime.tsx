@@ -1,11 +1,30 @@
+<<<<<<< HEAD
 import React  from 'react';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigator/navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color';
+=======
+import React from "react";
+import {
+  Text,
+  View,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  StatusBar,
+} from "react-native";
+import { RouteProp, useNavigation } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigator/navigation";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import COLORS from "../../../constants/Color";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
-type DetailOvertimeScreenRouteProp = RouteProp<RootStackParamList, 'DetailOvertime'>;
+type DetailOvertimeScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "DetailOvertime"
+>;
 
 type Props = {
   route: DetailOvertimeScreenRouteProp;
@@ -24,7 +43,10 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chi tiết tăng ca</Text>
@@ -51,12 +73,12 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
 
 const getStatusText = (status: string) => {
   switch (status) {
-    case 'approved':
-      return 'Đã duyệt';
-    case 'rejected':
-      return 'Không được duyệt';
+    case "approved":
+      return "Đã duyệt";
+    case "rejected":
+      return "Không được duyệt";
     default:
-      return 'Đang chờ duyệt';
+      return "Đang chờ duyệt";
   }
 };
 
@@ -69,40 +91,40 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   detailContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 5,
     marginHorizontal: 20,
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomColor: "black",
     paddingBottom: 10,
   },
   detailLabel: {
     width: 150,
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
   },
   detailText: {
     flex: 1,
     fontSize: 16,
-    color: 'black',
+    color: "black",
   },
 });
 

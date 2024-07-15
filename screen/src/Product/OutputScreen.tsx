@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
+=======
+import React, { useState, useEffect } from "react";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 import {
   View,
   Text,
@@ -11,6 +15,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp, useRoute } from "@react-navigation/native";
+<<<<<<< HEAD
 import { SearchBar } from "@rneui/themed";
 import {
   RootStackParamList,
@@ -19,10 +24,15 @@ import {
 } from "../../navigator/navigation";
 import COLORS from "../../../constants/Color";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+=======
+import { RootStackParamList, Component, Product } from "../../navigator/navigation";
+import COLORS from "../../../constants/Color";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 type OutputScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "OutputScreen"
+<<<<<<< HEAD
   
 >;
 type OutputScreenRouteProp = RouteProp<RootStackParamList, "OutputScreen">;
@@ -31,6 +41,16 @@ type ProductScreenProps = {
 };
 
 const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
+=======
+>;
+type OutputScreenRouteProp = RouteProp<RootStackParamList, "OutputScreen">;
+
+const OutputScreen = ({
+  navigation,
+}: {
+  navigation: OutputScreenNavigationProp;
+}) => {
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
   const route = useRoute<OutputScreenRouteProp>();
   const {
     productName,
@@ -41,6 +61,7 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
     productPDF,
     productCode,
   } = route.params;
+<<<<<<< HEAD
   const [search, setSearch] = useState("");
   const [filteredComponents, setFilteredComponents] = useState<Component[]>([]);
   const [selectedComponents, setSelectedComponents] = useState<Component[]>([]);
@@ -94,6 +115,19 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
     );
   }, [search, remainingComponents]);
 
+=======
+  const [selectedComponents, setSelectedComponents] = useState<Component[]>([]);
+
+  // Effect to reset selected components when navigating back to OutputScreen
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("focus", () => {
+      setSelectedComponents([]); // Reset selectedComponents when screen focuses
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
   const handleSelectComponent = (component: Component) => {
     const index = selectedComponents.findIndex((c) => c.id === component.id);
     if (index !== -1) {
@@ -105,16 +139,36 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
     }
   };
 
+<<<<<<< HEAD
   const handleSubmit = async () => {
     if (selectedComponents.length === 0) {
       Alert.alert(
         "Không có bộ phận nào được chọn",
         "Vui lòng chọn ít nhất một bộ phận trước khi gửi."
+=======
+  const handleRemoveComponent = (componentId: number) => {
+    const updatedComponents = components.filter(comp => comp.id !== componentId);
+    const updatedSelectedComponents = selectedComponents.filter(comp => comp.id !== componentId);
+
+    setSelectedComponents(updatedSelectedComponents);
+    navigation.setParams({
+      ...route.params,
+      components: updatedComponents,
+    });
+  };
+
+  const handleSubmit = async () => {
+    if (selectedComponents.length === 0) {
+      Alert.alert(
+        "Chưa chọn thành phần",
+        "Vui lòng chọn ít nhất một thành phần trước khi gửi."
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
       );
       return;
     }
 
     try {
+<<<<<<< HEAD
       // Update remaining and completed components
       const updatedRemainingComponents = remainingComponents.filter(
         (comp) => !selectedComponents.some((selComp) => selComp.id === comp.id)
@@ -170,6 +224,48 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
       setSelectedComponents([]);
 
       Alert.alert("Thành công", "Đã gửi báo cáo hoàn thành.");
+=======
+      // Lấy dữ liệu từ AsyncStorage
+      const storedProducts = await AsyncStorage.getItem("completedOutput");
+      let parsedProducts: Product[] = storedProducts ? JSON.parse(storedProducts) : [];
+
+      // Đảm bảo parsedProducts là một mảng
+      if (!Array.isArray(parsedProducts)) {
+        parsedProducts = [];
+      }
+
+      // Thêm sản phẩm mới vào danh sách
+      parsedProducts.push({
+        id: productId,
+        name: productName,
+        components: selectedComponents,
+        ClientCode: productClient,
+        image: productImage,
+        pdfUri: productPDF,
+        PTCcode: productCode,
+      });
+
+      // Lưu danh sách đã hoàn thành vào AsyncStorage
+      await AsyncStorage.setItem("completedOutput", JSON.stringify(parsedProducts));
+
+      // Thông báo thành công
+      Alert.alert("Thông báo", "Đã gửi thông tin thành công.");
+
+      // Xóa các thành phần đã chọn khỏi danh sách components
+      const updatedComponents = components.filter(
+        (comp) => !selectedComponents.some((selComp) => selComp.id === comp.id)
+      );
+
+      // Cập nhật lại route.params.components bằng cách gọi setParams
+      navigation.setParams({
+        ...route.params,
+        components: updatedComponents,
+      });
+
+      // Điều hướng quay lại màn hình trước đó
+      navigation.goBack();
+
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
     } catch (error) {
       console.error("Lỗi khi lưu dữ liệu:", error);
       Alert.alert(
@@ -181,6 +277,7 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
+<<<<<<< HEAD
       <View style={styles.header}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -203,6 +300,11 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
       <Text style={styles.sectionTitle}>Bộ phận chưa hoàn thành</Text>
       <FlatList
         data={filteredComponents}
+=======
+      <Text style={styles.productName}>{productName}</Text>
+      <FlatList
+        data={components}
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
@@ -214,6 +316,7 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
           >
             <Text style={styles.componentText}>{item.name}</Text>
           </TouchableOpacity>
+<<<<<<< HEAD
         )}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContainer}
@@ -225,6 +328,8 @@ const OutputScreen: React.FC<ProductScreenProps> = ({navigation}) => {
           <View style={styles.completedComponent}>
             <Text style={styles.componentText}>{item.name}</Text>
           </View>
+=======
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
         )}
         keyExtractor={(item) => item.id.toString()}
         contentContainerStyle={styles.listContainer}
@@ -242,6 +347,7 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: COLORS.colorMain,
   },
+<<<<<<< HEAD
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -282,10 +388,20 @@ const styles = StyleSheet.create({
     color: COLORS.primary,
     marginVertical: 8,
   },
+=======
+  productName: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#343a40",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
   listContainer: {
     paddingBottom: 16,
   },
   componentButton: {
+<<<<<<< HEAD
     backgroundColor: COLORS.white,
     padding: 16,
     borderRadius: 8,
@@ -316,6 +432,33 @@ const styles = StyleSheet.create({
   submitButtonText: {
     color: COLORS.white,
     fontSize: 18,
+=======
+    padding: 15,
+    marginVertical: 8,
+    backgroundColor: "#dee2e6",
+    borderRadius: 8,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectedComponentButton: {
+    backgroundColor: "#a5d6a7",
+  },
+  componentText: {
+    fontSize: 18,
+    color: "#495057",
+  },
+  submitButton: {
+    padding: 15,
+    backgroundColor: "#007bff",
+    borderRadius: 8,
+    alignItems: "center",
+    marginTop: 16,
+  },
+  submitButtonText: {
+    color: "white",
+    fontSize: 18,
+    fontWeight: "bold",
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
   },
 });
 

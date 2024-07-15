@@ -11,13 +11,15 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
+<<<<<<< HEAD
 import { RootStackParamList } from "../../navigator/navigation"; 
+=======
+import { RootStackParamList } from "../../navigator/navigation";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../redux/overtime/store";
-import { SearchBar } from '@rneui/themed';
-import {
-  OvertimeRequest,
-} from "../../../redux/overtime/overtimeSlice";
+import { SearchBar } from "@rneui/themed";
+import { OvertimeRequest } from "../../../redux/overtime/overtimeSlice";
 
 type OvertimeItemProps = {
   item: OvertimeRequest;
@@ -25,7 +27,6 @@ type OvertimeItemProps = {
 };
 
 const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
-
   return (
     <View style={styles.itemContainer}>
       <TouchableOpacity
@@ -56,13 +57,16 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
   );
 };
 
-const OvertimeScreen: React.FC<{ navigation: StackNavigationProp<RootStackParamList, "Overtime">;
+const OvertimeScreen: React.FC<{
+  navigation: StackNavigationProp<RootStackParamList, "Overtime">;
 }> = ({ navigation }) => {
   const overtimeRequests = useSelector(
     (state: RootState) => state.overtime.requests
   );
-  const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<OvertimeRequest[]>(overtimeRequests || []);
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState<OvertimeRequest[]>(
+    overtimeRequests || []
+  );
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -70,17 +74,23 @@ const OvertimeScreen: React.FC<{ navigation: StackNavigationProp<RootStackParamL
       setFilteredData([]);
       return;
     }
-    const filtered = overtimeRequests.filter(item => {
-      const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
-      const TimeMatch = item.startTime.toLowerCase().includes(text.toLowerCase());
-      const ReasonMatch = item.reason.toLowerCase().includes(text.toLowerCase());
-      const StatusMatch = item.status.toLowerCase().includes(text.toLowerCase());
+    const filtered = overtimeRequests.filter((item) => {
+      const dateMatch = item.startDate
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      const TimeMatch = item.startTime
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      const ReasonMatch = item.reason
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      const StatusMatch = item.status
+        .toLowerCase()
+        .includes(text.toLowerCase());
       return dateMatch || TimeMatch || ReasonMatch || StatusMatch;
     });
     setFilteredData(filtered);
   };
-
-
 
   const renderItem = ({ item }: { item: OvertimeRequest }) => (
     <OvertimeItem item={item} navigation={navigation} />
@@ -99,11 +109,11 @@ const OvertimeScreen: React.FC<{ navigation: StackNavigationProp<RootStackParamL
       </View>
       <SearchBar
         placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: 'white' }}
+        inputContainerStyle={{ backgroundColor: "white" }}
         value={search}
         onChangeText={handleSearch}
         containerStyle={{
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           borderBottomWidth: 0,
           borderTopWidth: 0,
         }}
@@ -148,7 +158,7 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     marginBottom: 3,
-    fontWeight:'600'
+    fontWeight: "600",
   },
   addButton: {
     position: "absolute",
@@ -192,13 +202,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 12,
   },
-  itemText:{
-    fontSize:18,
-    paddingLeft:10,
+  itemText: {
+    fontSize: 18,
+    paddingLeft: 10,
     fontStyle: "italic",
   },
-  detail:{
-    flexDirection:'row'
+  detail: {
+    flexDirection: "row",
   },
   deleteButton: {
     marginLeft: 10,

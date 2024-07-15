@@ -2,10 +2,10 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Provider } from 'react-redux';
+import { Provider } from "react-redux";
 import { Image } from "react-native";
 import { MaterialCommunityIcons, FontAwesome5 } from "@expo/vector-icons";
-import { PersistGate } from 'redux-persist/integration/react';
+import { PersistGate } from "redux-persist/integration/react";
 import {
   LoginScreen,
   HomeScreen,
@@ -31,7 +31,11 @@ import {
   LeftDeptScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
+<<<<<<< HEAD
 import store, { persistor } from './redux/overtime/store';
+=======
+import store, { persistor } from "./redux/overtime/store";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
@@ -109,6 +113,7 @@ const HomeTabNavigator: React.FC = () => (
 const App: React.FC = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
+<<<<<<< HEAD
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
@@ -203,6 +208,97 @@ const App: React.FC = () => (
         />
       </Stack.Navigator>
     </NavigationContainer>
+=======
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home">
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Home"
+            component={HomeTabNavigator}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Overtime"
+            component={OvertimeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailOvertime"
+            component={DetailOvertime}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="RequestMain"
+            component={RequestMain}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="DetailRequest"
+            component={DetailRequest}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="LeaveRequest"
+            component={LeaveRequestScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Product"
+            component={ProductScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Schedule"
+            component={ScheduleScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ProductDetail"
+            component={DetailProductScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NewsDetail"
+            component={NewsDetailScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="MailDetail"
+            component={MailDetailScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="SendMail"
+            component={SendEmailScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="NotificationDetail"
+            component={NotificationDetailScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OvertimeRequest"
+            component={OvertimeRequest}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OutputScreen"
+            component={OutputScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="OutputList"
+            component={OutputList}
+            options={{ headerShown: false }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
     </PersistGate>
   </Provider>
 );

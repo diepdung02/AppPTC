@@ -67,12 +67,20 @@ export type Product = {
   PTCcode: string;
   ClientCode: string;
   components: Component[];
+<<<<<<< HEAD
   remainingComponents: Component[];
+=======
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 };
 
 export type Component = {
   id: number;
   name: string;
+<<<<<<< HEAD
+=======
+  isCompleted: boolean;
+  components?: Component[];
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 };
 
 
@@ -91,9 +99,22 @@ export type RootStackParamList = {
   Notifications: undefined;
   Mail: undefined;
   SendMail: undefined;
+<<<<<<< HEAD
   LeftDeptScreen: undefined;
   OutputScreen: { product: Product; productId: number; components: Component[]; productName: string, productClient:string,productCode:string,productImage:string,productPDF:string,   };
   OutputList: undefined;
+=======
+  OutputScreen: { product: Product; productId: number; components: Component[]; productName: string, productClient:string,productCode:string,productImage:string,productPDF:string  };
+  OutputList: {
+    productName: string;
+    components: Component[];
+    productId: number;
+    productClient: string;
+    productImage: string;
+    productPDF: string;
+    productCode: string;
+  };
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };

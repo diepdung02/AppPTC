@@ -1,21 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+<<<<<<< HEAD
 import COLORS from '../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator/navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+=======
+import COLORS from "../../constants/Color";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigator/navigation";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 import { SearchBar } from "@rneui/themed";
-import { useSelector } from 'react-redux';
-import { RootState } from '../../redux/overtime/store';
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/overtime/store";
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Mail'>;
+  navigation: StackNavigationProp<RootStackParamList, "Mail">;
 };
 
 const MailScreen: React.FC<Props> = ({ navigation }) => {
   const emails = useSelector((state: RootState) => state.email.emails);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(emails);
 
   useEffect(() => {
@@ -23,15 +37,16 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
   }, [emails]);
 
   const handleItemPress = (item: any) => {
-    navigation.navigate('MailDetail', { emailItem: item });
+    navigation.navigate("MailDetail", { emailItem: item });
   };
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    const filtered = emails.filter(item =>
-      item.message.toLowerCase().includes(text.toLowerCase()) ||
-      item.subject.toLowerCase().includes(text.toLowerCase()) ||
-      item.to.toLowerCase().includes(text.toLowerCase()) 
+    const filtered = emails.filter(
+      (item) =>
+        item.message.toLowerCase().includes(text.toLowerCase()) ||
+        item.subject.toLowerCase().includes(text.toLowerCase()) ||
+        item.to.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredData(filtered);
   };
@@ -39,7 +54,10 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Mail</Text>
@@ -57,9 +75,12 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
       />
       <FlatList
         data={filteredData}
-        keyExtractor={item => item.id}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.itemContainer} onPress={() => handleItemPress(item)}>
+          <TouchableOpacity
+            style={styles.itemContainer}
+            onPress={() => handleItemPress(item)}
+          >
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemSubject}>{item.subject}</Text>
               <Text style={styles.itemSender}>{item.message}</Text>
@@ -88,36 +109,36 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     marginVertical: 5,
   },
   goBack: {
     height: 60,
     width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   itemContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     marginBottom: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   itemTextContainer: {
     marginLeft: 10,
     flex: 1,
   },
   itemSender: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   itemSubject: {
-    color: '#666',
+    color: "#666",
   },
   itemDate: {
-    color: '#888',
+    color: "#888",
   },
   addButton: {
     position: "absolute",

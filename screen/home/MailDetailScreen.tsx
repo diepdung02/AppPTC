@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -5,9 +6,27 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator/navigation';
 import COLORS from '../../constants/Color';
+=======
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+} from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../navigator/navigation";
+import COLORS from "../../constants/Color";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
-type MailDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MailDetail'>;
-type MailDetailScreenRouteProp = RouteProp<RootStackParamList, 'MailDetail'>;
+type MailDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "MailDetail"
+>;
+type MailDetailScreenRouteProp = RouteProp<RootStackParamList, "MailDetail">;
 
 type Props = {
   navigation: MailDetailScreenNavigationProp;
@@ -20,7 +39,10 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chi tiết Email</Text>
@@ -45,16 +67,16 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
     padding: 15,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   headerTitle: {
     fontSize: 18,
@@ -64,14 +86,14 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   label: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 16,
     marginTop: 20,
   },
   text: {
     fontSize: 16,
     marginTop: 5,
-    color: '#333',
+    color: "#333",
   },
 });
 

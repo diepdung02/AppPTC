@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, StatusBar, FlatList } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -9,15 +10,38 @@ import { SearchBar } from '@rneui/themed';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color'; 
 import { LeaveRequest } from '../../../redux/overtime/leaveSlice';
+=======
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  FlatList,
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/overtime/store";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigator/navigation";
+import { SearchBar } from "@rneui/themed";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import COLORS from "../../../constants/Color";
+import { LeaveRequest } from "../../../redux/overtime/leaveSlice";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 type RequestMainProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'RequestMain'>;
+  navigation: StackNavigationProp<RootStackParamList, "RequestMain">;
 };
 
 const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const leaveRequests = useSelector((state: RootState) => state.leave.requests);
-  const [filteredData, setFilteredData] = useState<LeaveRequest[]>(leaveRequests || []);
+  const [filteredData, setFilteredData] = useState<LeaveRequest[]>(
+    leaveRequests || []
+  );
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -25,10 +49,16 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       setFilteredData([]);
       return;
     }
-    const filtered = leaveRequests.filter(item => {
-      const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
-      const leaveTypeMatch = item.leaveType.toLowerCase().includes(text.toLowerCase());
-      const statusMatch = item.status.toLowerCase().includes(text.toLowerCase());
+    const filtered = leaveRequests.filter((item) => {
+      const dateMatch = item.startDate
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      const leaveTypeMatch = item.leaveType
+        .toLowerCase()
+        .includes(text.toLowerCase());
+      const statusMatch = item.status
+        .toLowerCase()
+        .includes(text.toLowerCase());
       return dateMatch || leaveTypeMatch || statusMatch;
     });
     setFilteredData(filtered);
@@ -37,7 +67,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   const renderItem = ({ item }: { item: LeaveRequest }) => (
     <TouchableOpacity
       style={styles.itemContainer}
-      onPress={() => navigation.navigate('DetailRequest', { item })}
+      onPress={() => navigation.navigate("DetailRequest", { item })}
     >
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>Thông tin tăng ca:</Text>
@@ -61,7 +91,6 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
           <Text style={styles.detailText}>Trạng thái </Text>
           <Text style={styles.itemText}>{item.status}</Text>
         </View>
-      
       </View>
     </TouchableOpacity>
   );
@@ -69,18 +98,21 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
       </View>
       <SearchBar
         placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: 'white' }}
+        inputContainerStyle={{ backgroundColor: "white" }}
         value={search}
         onChangeText={handleSearch}
         containerStyle={{
-          backgroundColor: 'transparent',
+          backgroundColor: "transparent",
           borderBottomWidth: 0,
           borderTopWidth: 0,
         }}
@@ -90,7 +122,10 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         renderItem={({ item }) => renderItem({ item })}
         keyExtractor={(item) => item.id.toString()}
       />
-      <TouchableOpacity onPress={() => navigation.navigate('LeaveRequest')} style={styles.addButton}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("LeaveRequest")}
+        style={styles.addButton}
+      >
         <MaterialCommunityIcons name="plus-circle" size={50} color="white" />
       </TouchableOpacity>
     </SafeAreaView>
@@ -122,11 +157,11 @@ const styles = StyleSheet.create({
   detailText: {
     fontSize: 16,
     marginBottom: 3,
-    fontWeight:'600'
+    fontWeight: "600",
   },
   itemText: {
     fontSize: 16,
-    fontStyle: 'italic',
+    fontStyle: "italic",
   },
   addButton: {
     position: "absolute",
@@ -163,9 +198,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 12,
   },
-  detail:{
-    flexDirection:'row'
-  }
+  detail: {
+    flexDirection: "row",
+  },
 });
 
 export default RequestMain;

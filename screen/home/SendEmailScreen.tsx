@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -7,21 +8,40 @@ import { RootStackParamList } from '../navigator/navigation';
 import { useDispatch } from 'react-redux';
 import { addEmail } from '../../redux/overtime/mailSlice';
 import { v4 as uuidv4 } from 'uuid';
+=======
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+  SafeAreaView,
+} from "react-native";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import COLORS from "../../constants/Color";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../navigator/navigation";
+import { useDispatch } from "react-redux";
+import { addEmail } from "../../redux/overtime/mailSlice";
+import { v4 as uuidv4 } from "uuid";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'SendMail'>;
+  navigation: StackNavigationProp<RootStackParamList, "SendMail">;
 };
 
-const fixedRecipientEmail = 'example@example.com'; 
+const fixedRecipientEmail = "example@example.com";
 
 const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
-  const [subject, setSubject] = useState('');
-  const [message, setMessage] = useState('');
+  const [subject, setSubject] = useState("");
+  const [message, setMessage] = useState("");
   const dispatch = useDispatch();
 
   const handleSendEmail = () => {
     if (!subject || !message) {
-      Alert.alert('Lỗi', 'Vui lòng điền đầy đủ thông tin');
+      Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin");
       return;
     }
 
@@ -35,9 +55,9 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
 
     dispatch(addEmail(emailPayload));
 
-    Alert.alert('Thành công', 'Đã gửi mail thành công');
-    setSubject('');
-    setMessage('');
+    Alert.alert("Thành công", "Đã gửi mail thành công");
+    setSubject("");
+    setMessage("");
     navigation.goBack();
   };
 
@@ -84,10 +104,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.colorMain,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     padding: 15,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   headerTitle: {
     fontSize: 18,
@@ -98,12 +118,12 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 10,
     paddingLeft: 10,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   textArea: {
     height: 100,
@@ -112,10 +132,10 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.blue,
     padding: 15,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
   },
 });

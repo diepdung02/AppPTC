@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 import { View, Text, Image, StyleSheet, FlatList, SafeAreaView, TouchableOpacity } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
@@ -5,9 +6,32 @@ import { RootStackParamList } from '../../navigator/navigation';
 import { StackNavigationProp } from '@react-navigation/stack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color';
+=======
+import React from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+} from "react-native";
+import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../navigator/navigation";
+import { StackNavigationProp } from "@react-navigation/stack";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import COLORS from "../../../constants/Color";
+>>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
-type ProductDetailScreenRouteProp = RouteProp<RootStackParamList, 'ProductDetail'>;
-type ProductDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProductDetail'>;
+type ProductDetailScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "ProductDetail"
+>;
+type ProductDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ProductDetail"
+>;
 
 type Props = {
   route: ProductDetailScreenRouteProp;
@@ -20,7 +44,10 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={styles.goBack}
+        >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chi tiết sản phẩm</Text>
@@ -29,7 +56,9 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
       <Text style={styles.title}>{item.title}</Text>
       <FlatList
         data={item.detail}
-        renderItem={({ item }) => <Text style={styles.detail}>{`${item.key}: ${item.info}`}</Text>}
+        renderItem={({ item }) => (
+          <Text style={styles.detail}>{`${item.key}: ${item.info}`}</Text>
+        )}
         keyExtractor={(detail, index) => index.toString()}
         contentContainerStyle={styles.detailList}
       />
@@ -48,32 +77,32 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "white",
   },
-  goBack:{
-    height:60,
-    width:60,
-    alignItems:'center',
-    justifyContent:'center',
+  goBack: {
+    height: 60,
+    width: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
-    width: '100%',
+    width: "100%",
     height: 300,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginVertical: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
-    textAlign: 'center',
+    fontWeight: "bold",
+    color: "#333",
+    textAlign: "center",
     marginBottom: 20,
   },
   detail: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
     marginVertical: 5,
   },
   detailList: {
