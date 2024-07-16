@@ -1,27 +1,10 @@
-<<<<<<< HEAD
+
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color'; 
 import { RootStackParamList } from '../navigator/navigation';
-=======
-import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  FlatList,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  SafeAreaView,
-} from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import COLORS from "../../constants/Color";
-import { RootStackParamList } from "../navigator/navigation";
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 import { SearchBar } from "@rneui/themed";
 
 type NotificationItem = {

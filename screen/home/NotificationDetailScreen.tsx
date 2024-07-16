@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -6,22 +5,7 @@ import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color';
 import { RootStackParamList } from '../navigator/navigation';
-=======
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import COLORS from "../../constants/Color";
-import { RootStackParamList } from "../navigator/navigation";
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
+
 
 type NewsDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -8,25 +8,6 @@ import { RootStackParamList } from '../navigator/navigation';
 import { useDispatch } from 'react-redux';
 import { addEmail } from '../../redux/overtime/mailSlice';
 import { v4 as uuidv4 } from 'uuid';
-=======
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  SafeAreaView,
-} from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import COLORS from "../../constants/Color";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../navigator/navigation";
-import { useDispatch } from "react-redux";
-import { addEmail } from "../../redux/overtime/mailSlice";
-import { v4 as uuidv4 } from "uuid";
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "SendMail">;

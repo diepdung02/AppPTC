@@ -63,28 +63,18 @@ export type Product = {
   id: number;
   image: string;
   name: string;
-  pdfUri: string; 
+  pdfUri: string;
   PTCcode: string;
   ClientCode: string;
   components: Component[];
-<<<<<<< HEAD
   remainingComponents: Component[];
-=======
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 };
 
 export type Component = {
   id: number;
   name: string;
-<<<<<<< HEAD
-=======
-  isCompleted: boolean;
   components?: Component[];
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 };
-
-
-
 
 export type RootStackParamList = {
   Login: undefined;
@@ -99,27 +89,24 @@ export type RootStackParamList = {
   Notifications: undefined;
   Mail: undefined;
   SendMail: undefined;
-<<<<<<< HEAD
   LeftDeptScreen: undefined;
-  OutputScreen: { product: Product; productId: number; components: Component[]; productName: string, productClient:string,productCode:string,productImage:string,productPDF:string,   };
-  OutputList: undefined;
-=======
-  OutputScreen: { product: Product; productId: number; components: Component[]; productName: string, productClient:string,productCode:string,productImage:string,productPDF:string  };
-  OutputList: {
-    productName: string;
-    components: Component[];
+  OutputScreen: {
+    product: Product;
     productId: number;
+    components: Component[];
+    productName: string;
     productClient: string;
+    productCode: string;
     productImage: string;
     productPDF: string;
-    productCode: string;
+    remainingComponents: Component[];
   };
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
+  OutputList: undefined;
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };
   NewsDetail: { newsItem: NewsItem };
   MailDetail: { emailItem: EmailItem };
   NotificationDetail: { notification: NotificationItem };
-  ProductScreen: { products: Product[] }; 
+  ProductScreen: { products: Product[] };
 };

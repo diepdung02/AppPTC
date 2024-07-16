@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -6,21 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../navigator/navigation';
 import COLORS from '../../constants/Color';
-=======
-import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RouteProp } from "@react-navigation/native";
-import { RootStackParamList } from "../navigator/navigation";
-import COLORS from "../../constants/Color";
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
+
 
 type MailDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

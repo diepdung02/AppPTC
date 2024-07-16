@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React, { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
@@ -7,27 +7,7 @@ import { ApiResponse, fetchUser } from '../../API';
 import { SearchBar } from '@rneui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList, Product } from '../navigator/navigation';
-=======
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
-import {
-  widthPercentageToDP as wp,
-  heightPercentageToDP as hp,
-} from "react-native-responsive-screen";
-import COLORS from "../../constants/Color";
-import { ApiResponse, fetchUser } from "../../API";
-import { SearchBar } from "@rneui/themed";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../navigator/navigation";
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
+
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Home">;
@@ -84,7 +64,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           value={search}
         />
       </View>
-<<<<<<< HEAD
       
         <View style={styles.iconContainer}>
           <TouchableOpacity style={styles.iconWrapper}>
@@ -132,112 +111,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.txt}>Rời khỏi bộ phận</Text>
           </TouchableOpacity>
         </View>
-     
-=======
-
-      <View style={styles.iconContainer}>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/checklist.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Kiểm hàng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={() => navigation.navigate("Product")}
-        >
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/product.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Sản Phẩm</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={() =>
-            navigation.navigate("OutputList", {
-              completedCount: 0,
-              completedProducts: [],
-            })
-          }
-        >
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/output.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Output</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={() => navigation.navigate("RequestMain")}
-        >
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/leave.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Nghỉ phép</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/error.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Báo lỗi</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={() => navigation.navigate("Overtime")}
-        >
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/overtime.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Tăng ca</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.iconWrapper}
-          onPress={() => navigation.navigate("Schedule")}
-        >
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/calendar.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Lịch</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/evaluate.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Đánh giá</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/vote.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Bầu chọn</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{ uri: "https://img.upanh.tv/2024/07/09/left_dept.png" }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Giấy ra cổng</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.iconWrapper}>
-          <Image
-            source={{
-              uri: "https://img.upanh.tv/2024/07/09/transfer_dept.png",
-            }}
-            style={styles.icon}
-          />
-          <Text style={styles.txt}>Rời khỏi bộ phận</Text>
-        </TouchableOpacity>
-      </View>
-
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
       <View style={styles.timeContainer}>
         <Text style={styles.timeText}>{currentTime}</Text>
       </View>

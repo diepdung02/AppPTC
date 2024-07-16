@@ -8,12 +8,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-<<<<<<< HEAD
 import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice'; 
 
-=======
-import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice';
->>>>>>> 253f1e9da31d428032ead5bf14f279c73740b793
 type Props = {
   navigation: StackNavigationProp<{}>;
 }
