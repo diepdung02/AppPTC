@@ -1,26 +1,17 @@
-import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
-import { RouteProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../../navigator/navigation";
-import COLORS from "../../../constants/Color";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-type DetailOvertimeScreenRouteProp = RouteProp<
-  RootStackParamList,
-  "DetailRequest"
->;
+import React from 'react';
+import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../navigator/navigation';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import COLORS from '../../../constants/Color';
+
+type DetailLeftDeptScreenRouteProp = RouteProp<RootStackParamList, "DetailLeftDept">;
 
 type Props = {
-  route: DetailOvertimeScreenRouteProp;
+  route: DetailLeftDeptScreenRouteProp;
 };
 
-const DetailRequest: React.FC<Props> = ({ route }) => {
+const DetailLeftDept: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { item } = route.params;
 
@@ -39,27 +30,22 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
         >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chi tiết tăng ca</Text>
-      </View>
-
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Mã code: </Text>
-        <Text style={styles.detailText}>{item.code}</Text>
+        <Text style={styles.headerTitle}>Chi tiết ra vào cổng</Text>
       </View>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Ngày bắt đầu nghỉ:</Text>
+        <Text style={styles.detailLabel}>Ngày tăng ca:</Text>
         <Text style={styles.detailText}>{item.startDate}</Text>
       </View>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Ngày kết thúc nghỉ:</Text>
-        <Text style={styles.detailText}>{item.endDate}</Text>
+        <Text style={styles.detailLabel}>Thời gian bắt đầu:</Text>
+        <Text style={styles.detailText}>{item.startTime}</Text>
       </View>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Loại nghỉ phép:</Text>
-        <Text style={styles.detailText}>{item.leaveType}</Text>
+        <Text style={styles.detailLabel}>Thời gian kết thúc:</Text>
+        <Text style={styles.detailText}>{item.endTime}</Text>
       </View>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Lí do:</Text>
+        <Text style={styles.detailLabel}>Lí do: </Text>
         <Text style={styles.detailText}>{item.reason}</Text>
       </View>
       <View style={styles.detailContainer}>
@@ -127,4 +113,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DetailRequest;
+export default DetailLeftDept;

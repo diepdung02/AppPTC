@@ -5,8 +5,15 @@ import { Calendar } from 'react-native-calendars';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color'; 
 
+type RootStackParamList = {
+  Product: undefined; // Define your screen names here
+  // Add more screen names as needed
+};
+
+type ScheduleScreenNavigationProp = StackNavigationProp<RootStackParamList>;
+
 type Props = {
-  navigation: StackNavigationProp<{}>;
+  navigation: ScheduleScreenNavigationProp;
 };
 
 type Day = {
@@ -20,18 +27,25 @@ type Day = {
 const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  const tasks = [
-    { id: '1', code: 'RH9829', route: '392', name: 'Table', quantity: 20 },
-    { id: '2', code: 'RB833', route: 'H832', name: 'Table', quantity: 15 },
-    { id: '3', code: 'RB833', route: 'H832', name: 'Table', quantity: 15 },
-  ];
+  const tasksByDate: Record<string, { id: string, code: string, route: string, name: string, quantity: number }[]> = {
+    '2024-07-16': [
+      { id: '1', code: 'RH9829', route: '392', name: 'Table', quantity: 20 },
+      { id: '2', code: 'RB833', route: 'H832', name: 'Chair', quantity: 15 },
+    ],
+    '2024-07-17': [
+      { id: '3', code: 'RB833', route: 'H832', name: 'Chair', quantity: 15 },
+      { id: '4', code: 'RB833', route: 'H832', name: 'Desk', quantity: 10 },
+    ],
+  };
 
   const renderTask = ({ item }: { item: { code: string; route: string; name: string; quantity: number } }) => (
     <View style={styles.taskContainer}>
-      <Text style={styles.taskText}>Mã Hàng: {item.code}</Text>
-      <Text style={styles.taskText}>Route Code: {item.route}</Text>
-      <Text style={styles.taskText}>Tên Hàng: {item.name}</Text>
-      <Text style={styles.taskText}>Số Lượng: {item.quantity}</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('Product')}>
+        <Text style={styles.taskText}>Mã Hàng: {item.code}</Text>
+        <Text style={styles.taskText}>Route Code: {item.route}</Text>
+        <Text style={styles.taskText}>Tên Hàng: {item.name}</Text>
+        <Text style={styles.taskText}>Số Lượng: {item.quantity}</Text>
+      </TouchableOpacity>
     </View>
   );
 
@@ -41,6 +55,8 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
       [selectedDate]: { selected: true, marked: true, selectedColor: 'blue' }
     };
   };
+
+  const tasksToShow = selectedDate ? tasksByDate[selectedDate] || [] : [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -58,7 +74,7 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.selectedDate}>{selectedDate ? new Date(selectedDate).toDateString() : 'Chọn ngày'}</Text>
       <Text style={styles.detailTitle}>Chi tiết công việc:</Text>
       <FlatList
-        data={tasks}
+        data={tasksToShow}
         renderItem={renderTask}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.taskList}
@@ -112,12 +128,6 @@ const styles = StyleSheet.create({
   },
   taskList: {
     paddingHorizontal: 15,
-  },
-  bottomNav: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-    backgroundColor: '#ADD8E6',
   },
 });
 

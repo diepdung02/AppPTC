@@ -28,7 +28,9 @@ import {
   OvertimeRequest,
   OutputScreen,
   OutputList,
-  LeftDeptScreen
+  LeftDeptScreen,
+  CreateLeftDept,
+  DetailLeftDept
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -202,6 +204,16 @@ const App: React.FC = () => (
         <Stack.Screen
           name="LeftDeptScreen"
           component={LeftDeptScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateLeftDept"
+          component={CreateLeftDept}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetailLeftDept"
+          component={DetailLeftDept}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

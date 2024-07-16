@@ -1,3 +1,4 @@
+
 export type DetailItem = {
   key: string;
   info: string;
@@ -10,6 +11,8 @@ export type OvertimeRequest = {
   endTime: string;
   reason: string;
   status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
+  code:string;
+  createdAt:string;
 };
 
 export type LeaveRequest = {
@@ -17,6 +20,16 @@ export type LeaveRequest = {
   startDate: string;
   endDate: string;
   leaveType: string;
+  reason: string;
+  status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
+  code:string;
+  createdAt:string;
+};
+export type CreateLeftDept = {
+  id: number;
+  startDate: string;
+  startTime: string;
+  endTime: string;
   reason: string;
   status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
 };
@@ -90,6 +103,8 @@ export type RootStackParamList = {
   Mail: undefined;
   SendMail: undefined;
   LeftDeptScreen: undefined;
+  DetailLeftDept: {item: CreateLeftDept};
+  CreateLeftDept: undefined;
   OutputScreen: {
     product: Product;
     productId: number;

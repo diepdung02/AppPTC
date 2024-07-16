@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   FlatList,
   Alert,
+  Image,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -26,11 +27,11 @@ type OutputScreenNavigationProp = StackNavigationProp<
 >;
 type OutputScreenRouteProp = RouteProp<RootStackParamList, "OutputScreen">;
 
-const OutputScreen = ({
-  navigation,
-}: {
+type OutputScreenProps = {
   navigation: OutputScreenNavigationProp;
-}) => {
+}
+
+const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
   const route = useRoute<OutputScreenRouteProp>();
   const {
     productName,
@@ -199,7 +200,10 @@ const OutputScreen = ({
         containerStyle={styles.searchBarContainer}
         inputContainerStyle={styles.searchBarInput}
       />
-      <Text style={styles.productName}>{productName}</Text>
+      <Image source={{ uri: productImage }} style={styles.image} />
+      <Text style={styles.productName}>Tên sản phẩm: {productName}</Text>
+      <Text style={styles.productName}>PTC Code: {productCode}</Text>
+      <Text style={styles.productName}>Client Code: {productClient}</Text>
       <Text style={styles.sectionTitle}>Bộ phận chưa hoàn thành</Text>
       <FlatList
         data={filteredComponents}
@@ -270,10 +274,10 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   productName: {
-    fontSize: 24,
+    fontSize: 18,
     fontWeight: "bold",
     color: COLORS.darkGray,
-    marginBottom: 16,
+    marginBottom: 5,
     textAlign: "center",
   },
   sectionTitle: {
@@ -317,6 +321,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: COLORS.white,
     fontWeight: "bold",
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+    alignSelf:'center'
   },
 });
 

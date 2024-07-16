@@ -4,16 +4,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { persistReducer, persistStore } from 'redux-persist';
 import rootReducer from './reducers';
 
-// Tạo cấu hình persist
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
 };
 
-// Thêm reducer leave vào rootReducer đã persist
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Tạo store Redux Toolkit với middleware custom
+
 const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

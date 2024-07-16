@@ -17,9 +17,7 @@ type RequestMainProps = {
 const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const leaveRequests = useSelector((state: RootState) => state.leave.requests);
-  const [filteredData, setFilteredData] = useState<LeaveRequest[]>(
-    leaveRequests || []
-  );
+  const [filteredData, setFilteredData] = useState<LeaveRequest[]>(leaveRequests || []);
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -28,58 +26,53 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       return;
     }
     const filtered = leaveRequests.filter((item) => {
-      const dateMatch = item.startDate
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      const leaveTypeMatch = item.leaveType
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      const statusMatch = item.status
-        .toLowerCase()
-        .includes(text.toLowerCase());
+      const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
+      const leaveTypeMatch = item.leaveType.toLowerCase().includes(text.toLowerCase());
+      const statusMatch = item.status.toLowerCase().includes(text.toLowerCase());
       return dateMatch || leaveTypeMatch || statusMatch;
     });
     setFilteredData(filtered);
   };
 
-  const renderItem = ({ item }: { item: LeaveRequest }) => (
-    <TouchableOpacity
-      style={styles.itemContainer}
-      onPress={() => navigation.navigate("DetailRequest", { item })}
-    >
-      <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Thông tin tăng ca:</Text>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Ngày bắt đầu: </Text>
-          <Text style={styles.itemText}>{item.startDate}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Ngày kết thúc: </Text>
-          <Text style={styles.itemText}>{item.endDate}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Loại nghỉ phép: </Text>
-          <Text style={styles.itemText}>{item.leaveType}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Lí do: </Text>
-          <Text style={styles.itemText}>{item.reason}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Trạng thái </Text>
-          <Text style={styles.itemText}>{item.status}</Text>
-        </View>
+ const renderItem = ({ item }: { item: LeaveRequest }) => (
+  <TouchableOpacity
+    style={styles.itemContainer}
+    onPress={() => navigation.navigate("DetailRequest", { item })}
+  >
+    <View style={styles.detailsContainer}>
+      <View style={styles.createdAtContainer}>
+      <Text style={styles.title}>Thông tin tăng ca:</Text>
+        <Text style={[styles.itemText, styles.createdAt]}>{item.createdAt}-{item.code}</Text>
       </View>
-    </TouchableOpacity>
-  );
+      <View style={styles.detail}>
+        <Text style={styles.detailText}>Ngày bắt đầu: </Text>
+        <Text style={styles.itemText}>{item.startDate}</Text>
+      </View>
+      <View style={styles.detail}>
+        <Text style={styles.detailText}>Ngày kết thúc: </Text>
+        <Text style={styles.itemText}>{item.endDate}</Text>
+      </View>
+      <View style={styles.detail}>
+        <Text style={styles.detailText}>Loại nghỉ phép: </Text>
+        <Text style={styles.itemText}>{item.leaveType}</Text>
+      </View>
+      <View style={styles.detail}>
+        <Text style={styles.detailText}>Lí do: </Text>
+        <Text style={styles.itemText}>{item.reason}</Text>
+      </View>
+      <View style={styles.detail}>
+        <Text style={styles.detailText}>Trạng thái: </Text>
+        <Text style={styles.itemText}>{item.status}</Text>
+      </View>
+        
+    </View>
+  </TouchableOpacity>
+);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBack}
-        >
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
@@ -97,7 +90,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       />
       <FlatList
         data={filteredData}
-        renderItem={({ item }) => renderItem({ item })}
+        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
       />
       <TouchableOpacity
@@ -110,42 +103,51 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+
+export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS.colorMain,
     marginTop: StatusBar.currentHeight || 0,
   },
   itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: 'white',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    marginVertical: 5,
+    marginHorizontal: 20,
+    borderRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  itemText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  detail: {
+    flexDirection: 'row',
+  },
+  detailText: {
+    width: 150,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
   },
   detailsContainer: {
     flex: 1,
   },
   title: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
   },
-  detailText: {
-    fontSize: 16,
-    marginBottom: 3,
-    fontWeight: "600",
-  },
-  itemText: {
-    fontSize: 16,
-    fontStyle: "italic",
-  },
   addButton: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
     bottom: 20,
-    backgroundColor: "#29D6D6",
+    backgroundColor: COLORS.addButton,
     borderRadius: 30,
     padding: 10,
     elevation: 8,
@@ -155,29 +157,37 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'white',
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
   goBack: {
     height: 40,
     width: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   status: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
   },
   statusText: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 12,
   },
-  detail: {
-    flexDirection: "row",
+  createdAtContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+  createdAt: {
+    fontWeight:'600',
+    // margin:10,
+    padding:10,
+    marginBottom:2,
   },
 });
 

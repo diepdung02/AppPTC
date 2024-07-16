@@ -13,8 +13,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBar } from "@rneui/themed";
 import { Component, Product } from "../../navigator/navigation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import COLORS from "../../../constants/Color";
 
-const OutputList = ({ navigation }: { navigation: any }) => {
+interface OutputListProps {
+  navigation: any; 
+}
+
+const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
   const [completedProducts, setCompletedProducts] = useState<Product[]>([]);
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [search, setSearch] = useState('');
@@ -116,8 +121,8 @@ const OutputList = ({ navigation }: { navigation: any }) => {
         <Image source={{ uri: item.image }} style={styles.image} />
         <View style={styles.textContainer}>
           <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
-          <Text style={styles.itemText}>Client Code: {item.ClientCode}</Text>
           <Text style={styles.itemText}>PTC Code: {item.PTCcode}</Text>
+          <Text style={styles.itemText}>Client Code: {item.ClientCode}</Text>
         </View>
       </TouchableOpacity>
       {selectedProductId === item.id && (
@@ -188,7 +193,7 @@ const OutputList = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#f0f0f0",
+    backgroundColor: COLORS.colorMain,
     paddingHorizontal: 16,
     paddingTop: 16,
   },
@@ -203,7 +208,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: COLORS.border,
   },
   image: {
     width: 80,
@@ -226,11 +231,11 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
   detailsContainer: {
-    backgroundColor: "#fff",
+    backgroundColor: COLORS.colorMain,
     padding: 10,
     borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: COLORS.border,
   },
   sectionTitle: {
     fontSize: 18,
@@ -250,7 +255,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   componentContainer: {
-    backgroundColor: "#f5f5f5",
+    backgroundColor: COLORS.lightGray,
     padding: 8,
     borderRadius: 8,
     marginBottom: 8,

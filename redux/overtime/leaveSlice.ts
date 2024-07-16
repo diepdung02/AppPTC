@@ -7,7 +7,10 @@ export type LeaveRequest = {
   leaveType: string;
   reason: string;
   status: 'Đang chờ duyệt' | 'Đã được duyệt' | 'Đã bị từ chối';
+  createdAt: string; 
+  code:string;
 };
+
 
 type LeaveState = {
   requests: LeaveRequest[];

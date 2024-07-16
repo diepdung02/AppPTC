@@ -28,6 +28,10 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
       <TouchableOpacity
         onPress={() => navigation.navigate("DetailOvertime", { item })}
       >
+        <View style={styles.createdAtContainer}>
+      <Text style={styles.title}>Thông tin tăng ca:</Text>
+        <Text style={[styles.itemText, styles.createdAt]}>{item.createdAt}-{item.code}</Text>
+      </View>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Ngày tăng ca:</Text>
           <Text style={styles.itemText}>{item.startDate.toString()}</Text>
@@ -136,12 +140,29 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   itemContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+    backgroundColor: 'white',
     padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ccc",
+    marginVertical: 5,
+    marginHorizontal: 20,
+    borderRadius: 5,
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
+  },
+  itemText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  detail: {
+    flexDirection: 'row',
+  },
+  detailText: {
+    width: 150,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
   },
   detailsContainer: {
     flex: 1,
@@ -151,16 +172,11 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 5,
   },
-  detailText: {
-    fontSize: 16,
-    marginBottom: 3,
-    fontWeight: "600",
-  },
   addButton: {
     position: "absolute",
     right: 20,
     bottom: 20,
-    backgroundColor: "#29D6D6",
+    backgroundColor: COLORS.addButton,
     borderRadius: 30,
     padding: 10,
     elevation: 8,
@@ -198,16 +214,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 12,
   },
-  itemText: {
-    fontSize: 18,
-    paddingLeft: 10,
-    fontStyle: "italic",
-  },
-  detail: {
-    flexDirection: "row",
-  },
   deleteButton: {
     marginLeft: 10,
+  },
+  createdAtContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+  createdAt: {
+    fontWeight:'600',
+    // margin:10,
+    padding:10,
+    marginBottom:2,
   },
 });
 

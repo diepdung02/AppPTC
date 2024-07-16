@@ -20,6 +20,9 @@ import OvertimeRequest from './src/Request/OvertimeRequest';
 import OutputScreen from './src/Product/OutputScreen';
 import OutputList from './src/Product/OutputList';
 import LeftDeptScreen from './src/Request/LeftDeptScreen';
+import CreateLeftDept from './src/Request/CreateLeftDept';
+import DetailLeftDept from './src/Request/DetailLeftDept';
+import evalute from './src/evalute/evalute';
 
 export{
     LoginScreen,
@@ -44,4 +47,7 @@ export{
     OutputScreen,
     OutputList,
     LeftDeptScreen,
+    CreateLeftDept,
+    DetailLeftDept,
+    evalute,
 }

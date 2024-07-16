@@ -1,5 +1,5 @@
 const COLORS = {
-    colorMain:"#DCDCDC",
+    colorMain:"#E8E8E8",
     blue: "#09648C",
     lightGray: "#F3F3F3",
   white: "#FFFFFF",
@@ -9,5 +9,6 @@ const COLORS = {
   text: "#333333",
   primaryLight: "#D0E7FF",
   successLight: "#D4EDDA",
+  addButton:'#29D6D6',
   };
   export default COLORS;

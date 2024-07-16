@@ -1,217 +1,173 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, TouchableWithoutFeedback, Keyboard, Modal } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  SafeAreaView,
+  StatusBar,
+  FlatList,
+} from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/overtime/store';
+import { SearchBar } from '@rneui/themed';
 import COLORS from '../../../constants/Color';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import RNPickerSelect from 'react-native-picker-select';
+import { CreateLeftDept } from '../../../redux/overtime/leftDeptSlice';
+import { RootStackParamList } from '../../navigator/navigation';
 
-const LeftDeptScreen: React.FC = () => {
-  const [direction, setDirection] = useState('');
-  const [workerName, setWorkerName] = useState('');
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState(false);
-  const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState(false);
-  const [isDropdownVisible, setDropdownVisibility] = useState(false);
+type LeftDeptItemProps = {
+  item: CreateLeftDept;
+  navigation: StackNavigationProp<RootStackParamList, 'LeftDeptScreen'>;
+};
 
-  const handleSave = () => {
-    // Lưu thông tin vào hệ thống hoặc gửi lên server
-    console.log(`Đã lưu thông tin: ${direction}, ${workerName}, ${startDate}, ${endDate}`);
-    // Đặt lại các trường nhập liệu
-    setDirection('');
-    setWorkerName('');
-    setStartDate(null);
-    setEndDate(null);
-  };
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirmDate = (selectedDate: Date) => {
-    if (startDate && selectedDate < startDate) {
-      alert('Ngày kết thúc không được nhỏ hơn ngày bắt đầu!');
-      return;
-    }
-    setEndDate(selectedDate);
-    hideDatePicker();
-  };
-
-  const showStartTimePicker = () => {
-    setStartTimePickerVisibility(true);
-  };
-
-  const hideStartTimePicker = () => {
-    setStartTimePickerVisibility(false);
-  };
-
-  const handleConfirmStartTime = (time: Date) => {
-    setStartDate(time);
-    hideStartTimePicker();
-  };
-
-  const showEndTimePicker = () => {
-    setEndTimePickerVisibility(true);
-  };
-
-  const hideEndTimePicker = () => {
-    setEndTimePickerVisibility(false);
-  };
-
-  const handleConfirmEndTime = (time: Date) => {
-    if (startDate && time < startDate) {
-      alert('Giờ kết thúc không được nhỏ hơn giờ bắt đầu!');
-      return;
-    }
-    setEndDate(time);
-    hideEndTimePicker();
-  };
-
-  const toggleDropdown = () => {
-    setDropdownVisibility(!isDropdownVisible);
-  };
-
+const LeftDeptItem: React.FC<LeftDeptItemProps> = ({ item, navigation }) => {
   return (
-    <View style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View>
-          <Text style={styles.label}>Chọn vào hoặc ra:</Text>
-          <RNPickerSelect
-            onValueChange={(value) => setDirection(value)}
-            items={[
-              { label: 'Vào', value: 'Vào' },
-              { label: 'Ra', value: 'Ra' },
-            ]}
-            value={direction}
-            style={pickerSelectStyles}
-            useNativeAndroidPickerStyle={false}
-          />
-
-          <Text style={styles.label}>Chọn ngày:</Text>
-          <TouchableOpacity
-            style={styles.input}
-            onPress={showDatePicker}
-          >
-            <Text>{endDate ? endDate.toDateString() : startDate ? startDate.toDateString() : 'Chọn ngày'}</Text>
-            <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.icon} />
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isDatePickerVisible}
-            mode="date"
-            onConfirm={handleConfirmDate}
-            onCancel={hideDatePicker}
-          />
-
-          <Text style={styles.label}>Chọn giờ bắt đầu:</Text>
-          <TouchableOpacity
-            style={styles.input}
-            onPress={showStartTimePicker}
-          >
-            <Text>{startDate ? startDate.toLocaleTimeString() : 'Chọn giờ bắt đầu'}</Text>
-            <FontAwesome name="clock-o" size={wp('5%')} color="black" style={styles.icon} />
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isStartTimePickerVisible}
-            mode="time"
-            onConfirm={handleConfirmStartTime}
-            onCancel={hideStartTimePicker}
-          />
-
-          <Text style={styles.label}>Chọn giờ kết thúc:</Text>
-          <TouchableOpacity
-            style={styles.input}
-            onPress={showEndTimePicker}
-          >
-            <Text>{endDate ? endDate.toLocaleTimeString() : 'Chọn giờ kết thúc'}</Text>
-            <FontAwesome name="clock-o" size={wp('5%')} color="black" style={styles.icon} />
-          </TouchableOpacity>
-          <DateTimePickerModal
-            isVisible={isEndTimePickerVisible}
-            mode="time"
-            onConfirm={handleConfirmEndTime}
-            onCancel={hideEndTimePicker}
-          />
-
-          <TouchableOpacity style={styles.button} onPress={handleSave}>
-            <Text style={styles.buttonText}>Lưu thông tin</Text>
-          </TouchableOpacity>
+    <View style={styles.itemContainer}>
+      <TouchableOpacity onPress={() => navigation.navigate('DetailLeftDept', { item })}>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Ngày:</Text>
+          <Text style={styles.itemText}>{item.startDate}</Text>
         </View>
-      </TouchableWithoutFeedback>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Giờ bắt đầu:</Text>
+          <Text style={styles.itemText}>{item.startTime}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Giờ kết thúc:</Text>
+          <Text style={styles.itemText}>{item.endTime}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Lí do:</Text>
+          <Text style={styles.itemText}>{item.reason}</Text>
+        </View>
+        <View style={styles.detail}>
+          <Text style={styles.detailText}>Trạng thái:</Text>
+          <Text style={styles.itemText}>{item.status}</Text>
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: wp('4%'),
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1.5%'),
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    color: 'black',
-    paddingRight: wp('10%'),
-    marginBottom: hp('2%'),
-    backgroundColor: 'white',
-  },
-  inputAndroid: {
-    fontSize: wp('4%'),
-    paddingHorizontal: wp('3%'),
-    paddingVertical: hp('1.5%'),
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    color: 'black',
-    paddingRight: wp('10%'),
-    marginBottom: hp('2%'),
-    backgroundColor: 'white',
-  },
-});
+const LeftDeptScreen: React.FC<{
+  navigation: StackNavigationProp<RootStackParamList, 'LeftDeptScreen'>;
+}> = ({ navigation }) => {
+  const overtimeRequests = useSelector((state: RootState) => state.leftDept.requests);
+  const [search, setSearch] = useState('');
+  const [filteredData, setFilteredData] = useState<CreateLeftDept[]>(overtimeRequests || []);
+
+  const handleSearch = (text: string) => {
+    setSearch(text);
+    if (!overtimeRequests) {
+      setFilteredData([]);
+      return;
+    }
+    const filtered = overtimeRequests.filter((item) => {
+      const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
+      const timeMatch = item.startTime.toLowerCase().includes(text.toLowerCase());
+      const reasonMatch = item.reason.toLowerCase().includes(text.toLowerCase());
+      const statusMatch = item.status.toLowerCase().includes(text.toLowerCase());
+      return dateMatch || timeMatch || reasonMatch || statusMatch;
+    });
+    setFilteredData(filtered);
+  };
+
+  const renderItem = ({ item }: { item: CreateLeftDept }) => (
+    <LeftDeptItem item={item} navigation={navigation} />
+  );
+
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+          <FontAwesome name="arrow-left" size={20} color="black" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Xin phép ra vào cổng</Text>
+      </View>
+      <SearchBar
+        placeholder="Tìm kiếm"
+        inputContainerStyle={{ backgroundColor: 'white' }}
+        value={search}
+        onChangeText={handleSearch}
+        containerStyle={{
+          backgroundColor: 'transparent',
+          borderBottomWidth: 0,
+          borderTopWidth: 0,
+        }}
+      />
+      <FlatList
+        data={filteredData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+      />
+      <TouchableOpacity
+        onPress={() => navigation.navigate('CreateLeftDept')}
+        style={styles.addButton}
+      >
+        <FontAwesome name="plus-circle" size={50} color="white" />
+      </TouchableOpacity>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: COLORS.colorMain,
+    marginTop: StatusBar.currentHeight || 0,
   },
-  label: {
-    fontSize: wp('4%'),
-    marginBottom: hp('1%'),
-    color: 'black',
+  headerTitle: {
+    fontSize: 18,
+    marginLeft: 10,
+    fontWeight: 'bold',
   },
-  input: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: hp('6%'),
-    width: wp('80%'),
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    paddingHorizontal: wp('3%'),
-    marginBottom: hp('2%'),
     backgroundColor: 'white',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
-  icon: {
-    marginLeft: 'auto',
+  goBack: {
+    height: 40,
+    width: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  button: {
-    backgroundColor: '#2738C2',
-    paddingVertical: hp('2%'),
-    paddingHorizontal: wp('10%'),
+  addButton: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    backgroundColor: COLORS.addButton,
+    borderRadius: 50,
+    padding: 10,
+  },
+  itemContainer: {
+    backgroundColor: 'white',
+    padding: 10,
+    marginVertical: 5,
+    marginHorizontal: 20,
     borderRadius: 5,
-    marginTop: hp('2%'),
+    shadowColor: 'black',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 5,
   },
-  buttonText: {
-    color: 'white',
-    fontSize: wp('4%'),
-    textAlign: 'center',
+  itemText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  detail: {
+    flexDirection: 'row',
+  },
+  detailText: {
+    width: 150,
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'black',
   },
 });
 

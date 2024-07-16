@@ -1,43 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-export type OvertimeRequest = {
+export type CreateLeftDept = {
   id: number;
   startDate: string; 
   startTime: string;
   endTime: string;
   reason: string;
   status: 'Đang chờ duyệt' | 'Đã được duyệt' | 'Đã bị từ chối';
-  code:string;
-  createdAt:string;
 };
 
-type OvertimeState = {
-  requests: OvertimeRequest[];
+type LeftDeptState = {
+  requests: CreateLeftDept[];
 };
 
-const initialState: OvertimeState = {
+const initialState: LeftDeptState = {
   requests: [],
 };
 
-const overtimeSlice = createSlice({
-  name: 'overtime',
+const leftDeptSlice = createSlice({
+  name: 'LeftDeptScreen',
   initialState,
   reducers: {
-    addOvertimeRequest: (state, action: PayloadAction<OvertimeRequest>) => {
+    addCreateLeftDept: (state, action: PayloadAction<CreateLeftDept>) => {
       state.requests.unshift(action.payload);
     },
-    updateOvertimeRequestStatus: (state, action: PayloadAction<OvertimeRequest>) => {
+    updateCreateLeftDeptStatus: (state, action: PayloadAction<CreateLeftDept>) => {
       const index = state.requests.findIndex(req => req.id === action.payload.id);
       if (index !== -1) {
         state.requests[index] = action.payload;
       }
     },
-    deleteOvertimeRequest: (state, action: PayloadAction<number>) => {
+    deleteCreateLeftDept: (state, action: PayloadAction<number>) => {
       state.requests = state.requests.filter(request => request.id !== action.payload);
     },
   },
 });
 
-export const { addOvertimeRequest, updateOvertimeRequestStatus, deleteOvertimeRequest } = overtimeSlice.actions;
+export const { addCreateLeftDept, updateCreateLeftDeptStatus, deleteCreateLeftDept } = leftDeptSlice.actions;
 
-export default overtimeSlice.reducer;
+export default leftDeptSlice.reducer;

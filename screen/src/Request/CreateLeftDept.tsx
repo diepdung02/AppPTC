@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import COLORS from '../../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
-import { addOvertimeRequest, OvertimeRequest } from '../../../redux/overtime/overtimeSlice';
+import { addCreateLeftDept, CreateLeftDept as LeftDeptType } from '../../../redux/overtime/leftDeptSlice'; // Rename the import to avoid conflict
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -13,7 +13,7 @@ type Props = {
   navigation: StackNavigationProp<{}>;
 }
 
-const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
+const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => { // Rename the component to resolve conflict
   const dispatch = useDispatch();
 
   const [date, setDate] = useState<Date | null>(null);
@@ -24,21 +24,6 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
   const [isStartTimePickerVisible, setStartTimePickerVisibility] = useState<boolean>(false);
   const [isEndTimePickerVisible, setEndTimePickerVisibility] = useState<boolean>(false);
-  const [currentRequestNumber, setCurrentRequestNumber] = useState<number>(1);
-
-  useEffect(() => {
-    const loadRequestNumber = async () => {
-      try {
-        const savedNumber = await AsyncStorage.getItem('currentRequestNumber');
-        if (savedNumber !== null) {
-          setCurrentRequestNumber(parseInt(savedNumber));
-        }
-      } catch (error) {
-        console.error('Error loading currentRequestNumber:', error);
-      }
-    };
-    loadRequestNumber();
-  }, []);
 
   const showDatePicker = () => {
     setDatePickerVisibility(true);
@@ -86,66 +71,43 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const saveRequestNumber = async (number: number) => {
-    try {
-      await AsyncStorage.setItem('currentRequestNumber', number.toString());
-    } catch (error) {
-      console.error('Error saving currentRequestNumber:', error);
-    }
-  };
-
-  const generateRequestCode = (): string => {
-    const requestCode = `202407${currentRequestNumber.toString().padStart(2, '0')}RTC`;
-    return requestCode;
-  };
-
   const handleSubmit = async () => {
     if (date && startTime && endTime && reason) {
       const startDateTime = new Date(date);
       startDateTime.setHours(startTime.getHours());
       startDateTime.setMinutes(startTime.getMinutes());
-  
+
       const endDateTime = new Date(date);
       endDateTime.setHours(endTime.getHours());
       endDateTime.setMinutes(endTime.getMinutes());
-  
-      const newRequest: OvertimeRequest = {
+
+      const newRequest: LeftDeptType = {
         id: Math.random(),
         startDate: startDateTime.toLocaleDateString(),
         startTime: startDateTime.toLocaleTimeString(),
         endTime: endDateTime.toLocaleTimeString(),
         reason,
         status: 'Đang chờ duyệt',
-        createdAt: new Date().toLocaleDateString(),
-        code: generateRequestCode(),
       };
-  
-      dispatch(addOvertimeRequest(newRequest));
-  
+
+      dispatch(addCreateLeftDept(newRequest));
+
       try {
-        const existingRequests = await AsyncStorage.getItem('overtimeRequests');
+        const existingRequests = await AsyncStorage.getItem('leftDeptRequests');
         let parsedRequests = existingRequests ? JSON.parse(existingRequests) : [];
         parsedRequests.push(newRequest);
-        await AsyncStorage.setItem('overtimeRequests', JSON.stringify(parsedRequests));
-  
-        setCurrentRequestNumber((prev) => {
-          const newRequestNumber = prev + 1;
-          saveRequestNumber(newRequestNumber);
-          return newRequestNumber;
-        });
-  
-        console.log('New Overtime Request:', newRequest);
-        navigation.goBack();
-        Alert.alert('Đã gửi đơn');
+        await AsyncStorage.setItem('leftDeptRequests', JSON.stringify(parsedRequests));
       } catch (error) {
-        console.error('Error saving overtime request:', error);
-        Alert.alert('Đã xảy ra lỗi khi lưu đơn tăng ca.');
+        console.error('Error saving left department request:', error);
       }
+
+      console.log('New Left Department Request:', newRequest);
+      navigation.goBack();
+      Alert.alert('Đã gửi đơn');
     } else {
       Alert.alert('Vui lòng điền đầy đủ thông tin.');
     }
   };
-  
 
   const dismissKeyboard = () => {
     Keyboard.dismiss();
@@ -159,15 +121,15 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
               <FontAwesome name="arrow-left" size={20} color="black" />
             </TouchableOpacity>
-            <Text style={styles.headerTitle}>Xin tăng ca</Text>
+            <Text style={styles.headerTitle}>Xin ra vào cổng</Text>
           </View>
           <View style={styles.formGroup}>
-            <Text style={styles.label}>Ngày tăng ca:</Text>
+            <Text style={styles.label}>Ngày bắt đầu:</Text>
             <TouchableOpacity
               style={styles.input}
               onPress={showDatePicker}
             >
-              <Text style={styles.dateText}>{date ? date.toDateString() : 'Chọn ngày tăng ca'}</Text>
+              <Text style={styles.dateText}>{date ? date.toDateString() : 'Chọn ngày bắt đầu'}</Text>
               <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
             </TouchableOpacity>
             <DateTimePickerModal
@@ -214,7 +176,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
             <TextInput
               style={styles.inputNote}
               multiline
-              placeholder="Nhập lý do xin tăng ca"
+              placeholder="Nhập lý do xin nghỉ phép"
               value={reason}
               onChangeText={handleReasonChange}
               onKeyPress={handleKeyPress}
@@ -260,13 +222,6 @@ const styles = StyleSheet.create({
   calendarIcon: {
     marginRight: wp('2%'),
   },
-  pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    color: 'black',
-  },
   button: {
     margin: wp('10%'),
     backgroundColor: '#2738C2',
@@ -277,6 +232,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: wp('4.5%'),
     color: 'white',
+    fontWeight: 'bold',
   },
   inputNote: {
     height: hp('20%'),
@@ -285,47 +241,23 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: wp('2%'),
     backgroundColor: 'white',
-    textAlignVertical: 'top',
+    textAlignVertical: 'top'
+  },
+  headerTitle: {
+    fontSize: 18,
+    marginLeft: 10,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: COLORS.colorMain,
-    padding: wp('2%'),
+    backgroundColor: 'white',
   },
   goBack: {
-    marginRight: wp('5%'),
-  },
-  headerTitle: {
-    fontSize: wp('5%'),
-    color: 'black',
-    fontWeight: 'bold',
+    height: 60,
+    width: 60,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: wp('4%'),
-    paddingVertical: hp('2%'),
-    paddingHorizontal: wp('2%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    color: 'black',
-    paddingRight: wp('30%'),
-    backgroundColor: 'white',
-  },
-  inputAndroid: {
-    fontSize: wp('4%'),
-    paddingHorizontal: wp('2%'),
-    paddingVertical: hp('2%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    color: 'black',
-    paddingRight: wp('30%'),
-    backgroundColor: 'white',
-  },
-});
-
-export default OverTimeRequest;
+export default CreateLeftDeptScreen;
