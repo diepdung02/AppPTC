@@ -108,7 +108,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconWrapper}>
           <Image source={{uri:'https://img.upanh.tv/2024/07/09/transfer_dept.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Rời khỏi bộ phận</Text>
+            <Text style={styles.txt}>Rời khỏi</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconWrapper}  onPress={() => navigation.navigate('ApproveLeaveScreen')} >
+          <Image source={{uri:'https://img.upanh.tv/2024/07/18/approved.png'}} style={styles.icon} />
+            <Text style={styles.txt}>Duyệt đơn</Text>
           </TouchableOpacity>
         </View>
       <View style={styles.timeContainer}>

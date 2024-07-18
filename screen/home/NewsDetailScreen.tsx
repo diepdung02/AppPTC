@@ -1,12 +1,10 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../constants/Color';
 import { RootStackParamList } from '../navigator/navigation';
-
 
 type NewsDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -23,6 +21,15 @@ type Props = {
 const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { newsItem } = route.params;
 
+  const renderDetailItem = ({ item }: { item: { time: string, activities: string[] } }) => (
+    <View style={styles.detailItem}>
+      <Text style={styles.detailTime}>{item.time}</Text>
+      {item.activities.map((activity, idx) => (
+        <Text key={idx} style={styles.detailActivity}>- {activity}</Text>
+      ))}
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -37,8 +44,15 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
       <View style={styles.content}>
         <Image source={{ uri: newsItem.image }} style={styles.image} />
         <Text style={styles.title}>{newsItem.title}</Text>
-        <Text style={styles.date}>{newsItem.summary}</Text>
-        <Text style={styles.price}>{newsItem.date}</Text>
+        <Text style={styles.date}>{newsItem.date}</Text>
+        
+        {/* Rendering details using FlatList */}
+        <FlatList
+          data={newsItem.details}
+          renderItem={renderDetailItem}
+          keyExtractor={(item, index) => index.toString()}
+          style={styles.detailsContainer}
+        />
       </View>
     </SafeAreaView>
   );
@@ -65,6 +79,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   content: {
+    flex: 1,
     padding: 20,
   },
   image: {
@@ -83,13 +98,20 @@ const styles = StyleSheet.create({
     color: "gray",
     marginBottom: 10,
   },
-  price: {
-    fontSize: 18,
-    marginBottom: 15,
+  detailsContainer: {
+    flex: 1,
+    marginTop: 10,
   },
-  detail: {
-    fontSize: 16,
-    lineHeight: 24,
+  detailItem: {
+    marginTop: 5,
+  },
+  detailTime: {
+    fontWeight: "bold",
+    color: COLORS.darkGray,
+  },
+  detailActivity: {
+    marginLeft: 10,
+    color: "#555",
   },
 });
 

@@ -9,6 +9,9 @@ export type LeaveRequest = {
   status: 'Đang chờ duyệt' | 'Đã được duyệt' | 'Đã bị từ chối';
   createdAt: string; 
   code:string;
+  dayOffs:string,
+  usedDaysOff: string; 
+  remainingDaysOff: string; 
 };
 
 

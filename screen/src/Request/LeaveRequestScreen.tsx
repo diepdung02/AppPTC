@@ -9,6 +9,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LeaveRequest, addLeaveRequest } from '../../../redux/overtime/leaveSlice'; // Adjust path as per your project structure
+import moment from 'moment'; 
 
 type Props = {
   navigation: StackNavigationProp<{}>;
@@ -17,76 +18,123 @@ type Props = {
 const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  // State for form inputs
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [leaveType, setLeaveType] = useState<string | null>(null);
   const [reason, setReason] = useState<string>('');
 
+  // State for date picker visibility and selected date field
   const [isDatePickerVisible, setDatePickerVisibility] = useState<boolean>(false);
   const [selectedDateField, setSelectedDateField] = useState<'start' | 'end' | null>(null);
-  const [currentRequestNumber, setCurrentRequestNumber] = useState<number>(1); // Initialize with 1
 
+  // State for current request number
+  const [currentRequestNumber, setCurrentRequestNumber] = useState<number>(1); 
+
+  // State for remaining days off
+  const [remainingDaysOff, setRemainingDaysOff] = useState<number>(12); // Initialize with 12 days
+
+  // Fetch current request number and remaining days off from AsyncStorage on component mount
   useEffect(() => {
-    // Function to retrieve currentRequestNumber from AsyncStorage
-    const fetchCurrentRequestNumber = async () => {
+    const fetchData = async () => {
       try {
         const number = await AsyncStorage.getItem('currentRequestNumber');
+        const remainingDays = await AsyncStorage.getItem('remainingDaysOff');
         if (number) {
-          setCurrentRequestNumber(parseInt(number, 10)); // Parse retrieved number
+          setCurrentRequestNumber(parseInt(number, 10));
+        }
+        if (remainingDays) {
+          setRemainingDaysOff(parseInt(remainingDays, 10));
         }
       } catch (error) {
-        console.error('Error fetching currentRequestNumber:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchCurrentRequestNumber(); // Call function on component mount
+    fetchData(); 
   }, []);
 
-  const saveRequestNumber = async (number: number) => {
+  // Function to save data to AsyncStorage
+  const saveData = async (key: string, data: string) => {
     try {
-      await AsyncStorage.setItem('currentRequestNumber', number.toString());
+      await AsyncStorage.setItem(key, data);
     } catch (error) {
-      console.error('Error saving currentRequestNumber:', error);
+      console.error(`Error saving ${key}:`, error);
     }
   };
 
-  const generateRequestCode = (): string => {
-    const requestCode = `202407${currentRequestNumber.toString().padStart(2, '0')}RTC`;
-    return requestCode;
+  // Function to generate request code based on current request number
+// Function to generate request code based on current request number and leave type
+const generateRequestCode = (leaveType: string): string => {
+  const currentDate = new Date();
+  const year = currentDate.getFullYear().toString();
+  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+  const day = currentDate.getDate().toString().padStart(2, '0');
+
+  // Extract the code within the parentheses
+  const leaveCodeMatch = leaveType.match(/\(([^)]+)\)/);
+  const leaveCode = leaveCodeMatch ? leaveCodeMatch[1] : '';
+
+  const requestCode = `${year}${month}${day}${currentRequestNumber.toString().padStart(4, '0')} R${leaveCode}`;
+  return requestCode;
+};
+
+
+  // Function to calculate days off between start and end dates
+  const calculateDaysOff = (start: string, end: string): number => {
+    const startMoment = moment(start, 'DD-MM-YYYY');
+    const endMoment = moment(end, 'DD-MM-YYYY');
+    const days = endMoment.diff(startMoment, 'days') + 1;
+    return days;
   };
 
+  // Function to handle form submission
   const handleSubmit = async () => {
     if (startDate && endDate && leaveType && reason) {
-      const newRequest: LeaveRequest = {
-        id: Math.random(),
-        startDate: startDate.toLocaleDateString(),
-        endDate: endDate.toLocaleDateString(),
-        leaveType,
-        reason,
-        status: 'Đang chờ duyệt',
-        createdAt: new Date().toLocaleDateString(),
-        code: generateRequestCode(), // Generate and assign request code
-      };
+      // Calculate days off
+      const daysOff = calculateDaysOff(startDate.toLocaleDateString(), endDate.toLocaleDateString());
 
-      dispatch(addLeaveRequest(newRequest));
+      // Check if there are enough remaining days off
+      if (remainingDaysOff >= daysOff) {
+        // Create new leave request object
+        const newRequest: LeaveRequest = {
+          id: Math.random(),
+          startDate: startDate.toLocaleDateString(),
+          endDate: endDate.toLocaleDateString(),
+          leaveType,
+          reason,
+          status: 'Đang chờ duyệt',
+          createdAt: new Date().toLocaleDateString(),
+          code: generateRequestCode(leaveType),
+          dayOffs: `${daysOff} ngày`,
+          remainingDaysOff: `${remainingDaysOff - daysOff} ngày` , 
+          usedDaysOff: `${12 - (remainingDaysOff - daysOff)} ngày`, 
+        };
 
-      try {
-        const existingRequests = await AsyncStorage.getItem('leaveRequests');
-        let parsedRequests = existingRequests ? JSON.parse(existingRequests) : [];
-        parsedRequests.push(newRequest);
-        await AsyncStorage.setItem('leaveRequests', JSON.stringify(parsedRequests));
+        dispatch(addLeaveRequest(newRequest));
 
-        // Increment currentRequestNumber and save it back to AsyncStorage
-        const incrementedNumber = currentRequestNumber + 1;
-        setCurrentRequestNumber(incrementedNumber);
-        saveRequestNumber(incrementedNumber);
-      } catch (error) {
-        console.error('Error saving leave request:', error);
+        try {
+          const existingRequests = await AsyncStorage.getItem('leaveRequests');
+          const parsedRequests = existingRequests ? JSON.parse(existingRequests) : [];
+          parsedRequests.push(newRequest);
+          await AsyncStorage.setItem('leaveRequests', JSON.stringify(parsedRequests));
+
+          await saveData('remainingDaysOff', newRequest.remainingDaysOff.toString());
+
+          const incrementedNumber = currentRequestNumber + 1;
+          setCurrentRequestNumber(incrementedNumber);
+          saveData('currentRequestNumber', incrementedNumber.toString());
+
+        } catch (error) {
+          console.error('Error saving data:', error);
+        }
+
+        console.log('New Leave Request:', newRequest);
+        navigation.goBack();
+        Alert.alert('Đã gửi đơn');
+      } else {
+        Alert.alert('Ngày nghỉ phép trong năm của bạn đã hết.');
       }
-
-      console.log('New Leave Request:', newRequest);
-      navigation.goBack();
-      Alert.alert('Đã gửi đơn');
     } else {
       Alert.alert('Vui lòng điền đầy đủ thông tin.');
     }
@@ -97,9 +145,11 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
     setDatePickerVisibility(true);
   };
 
+
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
+
 
   const handleConfirmDate = (date: Date) => {
     if (selectedDateField === 'start') {
@@ -119,12 +169,20 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
     Keyboard.dismiss();
   };
 
-  const leaveTypes = ['Nghỉ phép năm', 'Nghỉ bệnh', 'Nghỉ thai sản', 'Nghỉ không lương'];
+
+  const leaveTypes = [
+    'Nghỉ phép năm(AL)',             // Annual leave
+    'Nghỉ bệnh(S)',                 // Sick leave
+    'Nghỉ thai sản(ML)',             // Maternity leave
+    'Nghỉ không lương(U)',          // Unpaid leave
+    'Nghỉ kết hôn(MR)',              // Marriage leave
+    'Nghỉ tang(BR)',                 // Bereavement leave
+];
 
   return (
     <SafeAreaView style={styles.container}>
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
-        <View style={styles.container}>
+        <View style={styles.innerContainer}>
           <View style={styles.header}>
             <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
               <FontAwesome name="arrow-left" size={20} color="black" />
@@ -133,10 +191,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.label}>Ngày bắt đầu:</Text>
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => showDatePicker('start')}
-            >
+            <TouchableOpacity style={styles.input} onPress={() => showDatePicker('start')}>
               <Text style={styles.dateText}>{startDate ? startDate.toDateString() : 'Chọn ngày bắt đầu'}</Text>
               <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
             </TouchableOpacity>
@@ -149,10 +204,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
           </View>
           <View style={styles.formGroup}>
             <Text style={styles.label}>Ngày kết thúc:</Text>
-            <TouchableOpacity
-              style={styles.input}
-              onPress={() => showDatePicker('end')}
-            >
+            <TouchableOpacity style={styles.input} onPress={() => showDatePicker('end')}>
               <Text style={styles.dateText}>{endDate ? endDate.toDateString() : 'Chọn ngày kết thúc'}</Text>
               <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
             </TouchableOpacity>
@@ -197,10 +249,16 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.colorMain, // Assuming you have a colorMain defined in your COLORS constant
+    backgroundColor: COLORS.colorMain,
+  },
+  innerContainer: {
+    flex: 1,
+    backgroundColor: COLORS.colorMain,
+    paddingHorizontal: wp('5%'),
+    paddingTop: hp('2%'),
   },
   formGroup: {
-    margin: wp('5%'),
+    marginBottom: hp('3%'),
   },
   label: {
     fontSize: wp('4%'),
@@ -209,86 +267,73 @@ const styles = StyleSheet.create({
   },
   input: {
     flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    height: hp('6%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    paddingLeft: wp('2%'),
-    backgroundColor: 'white',
+    height: hp('7%'),
+    borderRadius: wp('1%'),
+    paddingHorizontal: wp('3%'),
+    backgroundColor: '#fff',
   },
   dateText: {
-    flex: 1,
-    color: 'black',
     fontSize: wp('4%'),
+    color: '#000',
   },
   calendarIcon: {
-    marginRight: wp('2%'),
+    marginLeft: wp('3%'),
   },
   pickerContainer: {
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    color: 'black',
-  },
-  button: {
-    margin: wp('10%'),
-    backgroundColor: '#2738C2',
-    borderRadius: 5,
-    padding: hp('2%'),
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: wp('4.5%'),
-    color: 'white',
-    fontWeight: 'bold',
+    backgroundColor: '#fff',
+    borderRadius: wp('1%'),
+    paddingHorizontal: wp('3%'),
+    height: hp('7%'),
+    justifyContent: 'center',
   },
   inputNote: {
-    height: hp('20%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    paddingLeft: wp('2%'),
-    backgroundColor: 'white',
+    height: hp('15%'),
+    borderRadius: wp('1%'),
+    paddingHorizontal: wp('3%'),
+    backgroundColor: '#fff',
     textAlignVertical: 'top',
   },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
+  button: {
+    backgroundColor: COLORS.blue,
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: hp('7%'),
+    borderRadius: wp('1%'),
+    marginTop: hp('2%'),
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: wp('4%'),
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
+    marginBottom: hp('3%'),
+  },
+  headerTitle: {
+    fontSize: wp('5%'),
+    fontWeight: 'bold',
+    marginLeft: wp('3%'),
   },
   goBack: {
-    padding: 10,
+    padding: wp('2%'),
   },
 });
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: wp('4%'),
-    paddingHorizontal: 10,
-    paddingVertical: 12,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    color: 'black',
+    paddingHorizontal: wp('3%'),
+    paddingVertical: hp('1.5%'),
+    color: '#000',
   },
   inputAndroid: {
     fontSize: wp('4%'),
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    backgroundColor: 'white',
-    color: 'black',
+    paddingHorizontal: wp('3%'),
+    paddingVertical: hp('1.5%'),
+    color: '#000',
   },
 });
 
