@@ -11,6 +11,7 @@ import { RouteProp, useNavigation } from "@react-navigation/native";
 import { RootStackParamList } from "../../navigator/navigation";
 import COLORS from "../../../constants/Color";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 type DetailOvertimeScreenRouteProp = RouteProp<
   RootStackParamList,
   "DetailRequest"
@@ -29,6 +30,19 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
       headerTitle: `Chi tiết tăng ca`,
     });
   }, [navigation]);
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "Đã được duyệt":
+        return COLORS.green; 
+      case "Đã bị từ chối":
+        return COLORS.red; 
+      case "Đang chờ duyệt":
+        return COLORS.yellow; 
+      default:
+        return COLORS.darkGray; 
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -55,8 +69,16 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
         <Text style={styles.detailText}>{item.endDate}</Text>
       </View>
       <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Loại nghỉ phép:</Text>
-        <Text style={styles.detailText}>{item.leaveType}</Text>
+        <Text style={styles.detailLabel}>Số ngày nghỉ:</Text>
+        <Text style={styles.detailText}>{item.dayOffs}</Text>
+      </View>
+      <View style={styles.detailContainer}>
+        <Text style={styles.detailLabel}>Số ngày phép còn lại:</Text>
+        <Text style={styles.detailText}>{item.remainingDaysOff}</Text>
+      </View>
+      <View style={styles.detailContainer}>
+        <Text style={styles.detailLabel}>Số ngày phép đã sử dụng:</Text>
+        <Text style={styles.detailText}>{item.usedDaysOff}</Text>
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Lí do:</Text>
@@ -64,21 +86,12 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Trạng thái:</Text>
-        <Text style={styles.detailText}>{getStatusText(item.status)}</Text>
+        <Text style={[styles.detailText, { color: getStatusColor(item.status) }]}>
+          {item.status}
+        </Text>
       </View>
     </SafeAreaView>
   );
-};
-
-const getStatusText = (status: string) => {
-  switch (status) {
-    case "approved":
-      return "Đã duyệt";
-    case "rejected":
-      return "Không được duyệt";
-    default:
-      return "Đang chờ duyệt";
-  }
 };
 
 const styles = StyleSheet.create({

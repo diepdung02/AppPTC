@@ -24,6 +24,9 @@ export type LeaveRequest = {
   status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
   code:string;
   createdAt:string;
+  dayOffs:string,
+  usedDaysOff: string; 
+  remainingDaysOff: string; 
 };
 export type CreateLeftDept = {
   id: number;
@@ -54,6 +57,11 @@ export type NewsItem = {
   summary: string;
   image: string;
   date: string;
+  details:ActivityDetail[];
+};
+export type ActivityDetail = {
+  time: string;
+  activities: string[];
 };
 
 export type NotificationItem = {
@@ -105,6 +113,7 @@ export type RootStackParamList = {
   LeftDeptScreen: undefined;
   DetailLeftDept: {item: CreateLeftDept};
   CreateLeftDept: undefined;
+  ApproveLeaveScreen: undefined;
   OutputScreen: {
     product: Product;
     productId: number;

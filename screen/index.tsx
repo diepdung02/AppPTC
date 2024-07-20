@@ -23,6 +23,7 @@ import LeftDeptScreen from './src/Request/LeftDeptScreen';
 import CreateLeftDept from './src/Request/CreateLeftDept';
 import DetailLeftDept from './src/Request/DetailLeftDept';
 import evalute from './src/evalute/evalute';
+import ApproveLeaveScreen from './home/ApproveRequest';
 
 export{
     LoginScreen,
@@ -50,4 +51,5 @@ export{
     CreateLeftDept,
     DetailLeftDept,
     evalute,
+    ApproveLeaveScreen
 }

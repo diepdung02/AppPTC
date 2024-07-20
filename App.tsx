@@ -30,7 +30,8 @@ import {
   OutputList,
   LeftDeptScreen,
   CreateLeftDept,
-  DetailLeftDept
+  DetailLeftDept,
+  ApproveLeaveScreen,
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -214,6 +215,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="DetailLeftDept"
           component={DetailLeftDept}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ApproveLeaveScreen"
+          component={ApproveLeaveScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
