@@ -41,7 +41,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   >
     <View style={styles.detailsContainer}>
       <View style={styles.createdAtContainer}>
-      <Text style={styles.title}>Thông tin nghỉ phép:</Text>
+      <Text style={styles.title}>Thông tin nghir phesp:</Text>
         <Text style={[styles.itemText, styles.createdAt]}>{item.createdAt}-{item.code}</Text>
       </View>
       <View style={styles.detail}>
