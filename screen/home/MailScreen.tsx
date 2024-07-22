@@ -46,15 +46,6 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBack}
-        >
-          <FontAwesome name="arrow-left" size={20} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Mail</Text>
-      </View>
       <SearchBar
         placeholder="Tìm kiếm"
         inputContainerStyle={{ backgroundColor: "white" }}
@@ -100,6 +91,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   header: {
     flexDirection: "row",

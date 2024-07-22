@@ -1,10 +1,9 @@
-import React  from 'react';
+import React from 'react';
 import { Text, View, StyleSheet, SafeAreaView, TouchableOpacity, StatusBar } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigator/navigation';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../constants/Color';
-
 
 type DetailOvertimeScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -24,6 +23,21 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
       headerTitle: `Chi tiết tăng ca`,
     });
   }, [navigation]);
+
+  const getStatusStyle = (status: string) => {
+    switch (status) {
+      case "Đã được duyệt":
+        return { backgroundColor: COLORS.green, color: COLORS.black };
+      case "Đã bị từ chối":
+        return { backgroundColor: COLORS.red, color: COLORS.white };
+      case "Đang chờ duyệt":
+        return { backgroundColor: COLORS.yellow, color: COLORS.black };
+      default:
+        return { backgroundColor: COLORS.darkGray, color: COLORS.black };
+    }
+  };
+
+  const { backgroundColor, color } = getStatusStyle(item.status);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -49,22 +63,22 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
         <Text style={styles.detailText}>{item.endTime}</Text>
       </View>
       <View style={styles.detailContainer}>
+        <Text style={styles.detailLabel}>Lí do:</Text>
+        <Text style={styles.detailText}>{item.reason}</Text>
+      </View>
+      <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Trạng thái:</Text>
-        <Text style={styles.detailText}>{getStatusText(item.status)}</Text>
+        <Text
+          style={[
+            styles.statusText,
+            { backgroundColor, color }
+          ]}
+        >
+          {item.status}
+        </Text>
       </View>
     </SafeAreaView>
   );
-};
-
-const getStatusText = (status: string) => {
-  switch (status) {
-    case "approved":
-      return "Đã duyệt";
-    case "rejected":
-      return "Không được duyệt";
-    default:
-      return "Đang chờ duyệt";
-  }
 };
 
 const styles = StyleSheet.create({
@@ -110,6 +124,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: "black",
+  },
+  statusText: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    fontWeight: "600",
+    alignSelf: "flex-start",
+    borderRadius: 5,
+    fontSize: 16, // Make sure this matches the size used in OvertimeScreen
   },
 });
 

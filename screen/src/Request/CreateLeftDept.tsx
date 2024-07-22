@@ -13,7 +13,7 @@ type Props = {
   navigation: StackNavigationProp<{}>;
 }
 
-const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => { // Rename the component to resolve conflict
+const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => { 
   const dispatch = useDispatch();
 
   const [date, setDate] = useState<Date | null>(null);
@@ -246,6 +246,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   header: {
     flexDirection: 'row',

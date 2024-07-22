@@ -58,6 +58,7 @@ export type NewsItem = {
   image: string;
   date: string;
   details:ActivityDetail[];
+  sender: string;
 };
 export type ActivityDetail = {
   time: string;
@@ -70,6 +71,7 @@ export type NotificationItem = {
   summary: string;
   image: string;
   date: string;
+  icon: string
 };
 
 export type EmailItem = {

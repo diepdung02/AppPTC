@@ -72,7 +72,7 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
     >
       {({ values, touched, errors, handleChange, handleSubmit, handleBlur }) => (
         <View style={styles.container}>
-          <Image source={require('../../assets/logo.png')} style={styles.logo} />
+          <Image  source={{uri:('https://img.upanh.tv/2024/07/22/logo864d13eedac01b24.png')}} style={styles.logo} />
           <View style={styles.inputContainer}>
             <FontAwesome name="user" size={20} color="black" />
             <TextInput

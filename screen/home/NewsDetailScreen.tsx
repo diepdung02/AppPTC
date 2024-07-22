@@ -3,8 +3,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, FlatList
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../../constants/Color';
 import { RootStackParamList } from '../navigator/navigation';
+import COLORS from '../../constants/Color';
 
 type NewsDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -37,7 +37,7 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() => navigation.goBack()}
           style={styles.goBack}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <FontAwesome name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chi tiết tin tức</Text>
       </View>
@@ -45,8 +45,6 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         <Image source={{ uri: newsItem.image }} style={styles.image} />
         <Text style={styles.title}>{newsItem.title}</Text>
         <Text style={styles.date}>{newsItem.date}</Text>
-        
-        {/* Rendering details using FlatList */}
         <FlatList
           data={newsItem.details}
           renderItem={renderDetailItem}
@@ -61,57 +59,68 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.colorMain,
+    backgroundColor: COLORS.colorMain, 
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff', 
+    padding: 10,
+    elevation: 4, 
+  },
+  goBack: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   headerTitle: {
     fontSize: 18,
-    marginLeft: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  goBack: {
-    height: 60,
-    width: 60,
-    alignItems: "center",
-    justifyContent: "center",
+    marginLeft: 15,
+    fontWeight: 'bold',
+    color: '#2c3e50', 
   },
   content: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 10,
   },
   image: {
-    width: "100%",
+    width: '100%',
     height: 200,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 15,
   },
   title: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#3498db', 
     marginBottom: 10,
   },
   date: {
     fontSize: 16,
-    color: "gray",
-    marginBottom: 10,
+    color: '#7f8c8d', 
+    marginBottom: 15,
   },
   detailsContainer: {
     flex: 1,
-    marginTop: 10,
   },
   detailItem: {
-    marginTop: 5,
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: '#ffffff', 
+    borderRadius: 8,
+    elevation: 2, 
   },
   detailTime: {
-    fontWeight: "bold",
-    color: COLORS.darkGray,
+    fontWeight: 'bold',
+    color: '#2c3e50', 
+    marginBottom: 5,
   },
   detailActivity: {
-    marginLeft: 10,
-    color: "#555",
+    fontSize: 16,
+    color: '#7f8c8d', 
+    marginLeft: 5,
   },
 });
 

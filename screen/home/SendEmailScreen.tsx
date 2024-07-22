@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   inputContainer: {
     padding: 20,

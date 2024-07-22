@@ -3,23 +3,21 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView } from 'r
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../../constants/Color';
 import { RootStackParamList } from '../navigator/navigation';
 
-
-type NewsDetailScreenNavigationProp = StackNavigationProp<
+type NotificationDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "NotificationDetail"
 >;
 
-type NewsDetailScreenRouteProp = RouteProp<
+type NotificationDetailScreenRouteProp = RouteProp<
   RootStackParamList,
   "NotificationDetail"
 >;
 
 type Props = {
-  navigation: NewsDetailScreenNavigationProp;
-  route: NewsDetailScreenRouteProp;
+  navigation: NotificationDetailScreenNavigationProp;
+  route: NotificationDetailScreenRouteProp;
 };
 
 const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
@@ -32,14 +30,15 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() => navigation.goBack()}
           style={styles.goBack}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <FontAwesome name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
+        <Text style={styles.headerTitle}>Chi tiết thông báo</Text>
       </View>
       <View style={styles.content}>
         <Image source={{ uri: notification.image }} style={styles.image} />
         <Text style={styles.title}>{notification.title}</Text>
         <Text style={styles.date}>{notification.summary}</Text>
-        <Text style={styles.price}>{notification.date}</Text>
+        <Text style={styles.date}>{notification.date}</Text>
       </View>
     </SafeAreaView>
   );
@@ -48,49 +47,47 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.colorMain,
+    backgroundColor: '#ecf0f1', // Light Gray
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffffff', // White
+    padding: 10,
+    elevation: 4, // Shadow for depth
+  },
+  goBack: {
+    width: 40,
+    height: 40,
+    alignItems: 'center',
+    justifyContent: 'center',
+
   },
   headerTitle: {
     fontSize: 18,
-    marginLeft: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  goBack: {
-    height: 60,
-    width: 60,
-    alignItems: "center",
-    justifyContent: "center",
+    marginLeft: 15,
+    fontWeight: 'bold',
+    color: '#2c3e50', // Dark Gray
   },
   content: {
     padding: 20,
   },
   image: {
-    width: "100%",
+    width: '100%',
     height: 200,
-    borderRadius: 10,
+    borderRadius: 12,
     marginBottom: 15,
   },
   title: {
     fontSize: 22,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    color: '#3498db', // Blue
     marginBottom: 10,
   },
   date: {
     fontSize: 16,
-    color: "gray",
+    color: '#7f8c8d', // Gray
     marginBottom: 10,
-  },
-  price: {
-    fontSize: 18,
-    marginBottom: 15,
-  },
-  detail: {
-    fontSize: 16,
-    lineHeight: 24,
   },
 });
 

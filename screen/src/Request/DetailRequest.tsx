@@ -12,13 +12,13 @@ import { RootStackParamList } from "../../navigator/navigation";
 import COLORS from "../../../constants/Color";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-type DetailOvertimeScreenRouteProp = RouteProp<
+type DetailRequestScreenRouteProp = RouteProp<
   RootStackParamList,
   "DetailRequest"
 >;
 
 type Props = {
-  route: DetailOvertimeScreenRouteProp;
+  route: DetailRequestScreenRouteProp;
 };
 
 const DetailRequest: React.FC<Props> = ({ route }) => {
@@ -31,18 +31,20 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
     });
   }, [navigation]);
 
-  const getStatusColor = (status: string) => {
+  const getStatusStyle = (status: string) => {
     switch (status) {
       case "Đã được duyệt":
-        return COLORS.green; 
+        return { backgroundColor: COLORS.green, color: COLORS.black };
       case "Đã bị từ chối":
-        return COLORS.red; 
+        return { backgroundColor: COLORS.red, color: COLORS.white };
       case "Đang chờ duyệt":
-        return COLORS.yellow; 
+        return { backgroundColor: COLORS.yellow, color: COLORS.black };
       default:
-        return COLORS.darkGray; 
+        return { backgroundColor: COLORS.darkGray, color: COLORS.black };
     }
   };
+
+  const { backgroundColor, color } = getStatusStyle(item.status);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -86,7 +88,12 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
       </View>
       <View style={styles.detailContainer}>
         <Text style={styles.detailLabel}>Trạng thái:</Text>
-        <Text style={[styles.detailText, { color: getStatusColor(item.status) }]}>
+        <Text
+          style={[
+            styles.statusText,
+            { backgroundColor, color }
+          ]}
+        >
           {item.status}
         </Text>
       </View>
@@ -137,6 +144,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: "black",
+  },
+  statusText: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    fontWeight: "600",
+    borderRadius: 5,
+    fontSize: 16, 
   },
 });
 

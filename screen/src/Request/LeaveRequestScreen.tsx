@@ -67,7 +67,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
 // Function to generate request code based on current request number and leave type
 const generateRequestCode = (leaveType: string): string => {
   const currentDate = new Date();
-  const year = currentDate.getFullYear().toString();
+  const year = currentDate.getFullYear().toString().slice(-2);
   const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
   const day = currentDate.getDate().toString().padStart(2, '0');
 

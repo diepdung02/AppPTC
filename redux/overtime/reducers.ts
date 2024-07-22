@@ -3,7 +3,8 @@ import overtimeReducer from './overtimeSlice';
 import leaveReducer from './leaveSlice';
 import emailReducer from './mailSlice';
 import productsReducer from './productSlice';
-import leftDeptReducer from './leftDeptSlice'
+import leftDeptReducer from './leftDeptSlice';
+import notificationsReducer from './notificationsSlice'
 
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   email: emailReducer,
   products: productsReducer,
   leftDept: leftDeptReducer,
+  notifications: notificationsReducer,
 });
 
 export default rootReducer;

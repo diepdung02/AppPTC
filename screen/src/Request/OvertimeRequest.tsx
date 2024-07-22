@@ -94,8 +94,15 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  const generateRequestCode = (): string => {
-    const requestCode = `202407${currentRequestNumber.toString().padStart(2, '0')}RTC`;
+  const generateOvertimeCode = () => {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear().toString().slice(-2);
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate().toString().padStart(2, '0');
+  
+ 
+  
+    const requestCode = `${year}${month}${day}${currentRequestNumber.toString().padStart(4, '0')}`;
     return requestCode;
   };
 
@@ -117,7 +124,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
         reason,
         status: 'Đang chờ duyệt',
         createdAt: new Date().toLocaleDateString(),
-        code: generateRequestCode(),
+        code: generateOvertimeCode(),
       };
   
       dispatch(addOvertimeRequest(newRequest));

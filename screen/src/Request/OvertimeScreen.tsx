@@ -12,7 +12,7 @@ import { FontAwesome } from "@expo/vector-icons";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/navigation";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/overtime/store";
 import { SearchBar } from "@rneui/themed";
 import { OvertimeRequest } from "../../../redux/overtime/overtimeSlice";
@@ -23,18 +23,53 @@ type OvertimeItemProps = {
 };
 
 const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
+  let statusColor, textColor;
+  switch (item.status) {
+    case "Đã được duyệt":
+      statusColor = COLORS.green;
+      textColor = COLORS.black;
+      break;
+    case "Đã bị từ chối":
+      statusColor = COLORS.red;
+      textColor = COLORS.white;
+      break;
+    case "Đang chờ duyệt":
+      statusColor = COLORS.yellow;
+      textColor = COLORS.black;
+      break;
+    default:
+      statusColor = COLORS.darkGray;
+      textColor = COLORS.black;
+      break;
+  }
+
+ 
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
   return (
-    <View style={styles.itemContainer}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("DetailOvertime", { item })}
-      >
+    <TouchableOpacity
+      style={styles.itemContainer}
+      onPress={() => navigation.navigate("DetailOvertime", { item })}
+    >
+      <View style={styles.detailsContainer}>
+        <Text style={styles.title}>Thông tin tăng ca:</Text>
         <View style={styles.createdAtContainer}>
-      <Text style={styles.title}>Thông tin tăng ca:</Text>
-        <Text style={[styles.itemText, styles.createdAt]}>{item.createdAt}-{item.code}</Text>
-      </View>
+          <View style={styles.codeContainer}>
+            {item.code.split("").map((char, index) => (
+              <Text key={index} style={[styles.itemCode, styles.createdAt]}>
+                {char}
+              </Text>
+            ))}
+          </View>
+        </View>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Ngày tăng ca:</Text>
-          <Text style={styles.itemText}>{item.startDate.toString()}</Text>
+          <Text style={styles.itemText}>{item.startDate}</Text>
         </View>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Giờ bắt đầu:</Text>
@@ -46,14 +81,21 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
         </View>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Lí do:</Text>
-          <Text style={styles.itemText}>{item.reason}</Text>
+          <Text style={styles.itemText}>{truncateText(item.reason, 20)}</Text>
         </View>
         <View style={styles.detail}>
           <Text style={styles.detailText}>Trạng thái:</Text>
-          <Text style={styles.itemText}>{item.status}</Text>
+          <Text
+            style={[
+              styles.itemStatus,
+              { backgroundColor: statusColor, color: textColor },
+            ]}
+          >
+            {item.status}
+          </Text>
         </View>
-      </TouchableOpacity>
-    </View>
+      </View>
+    </TouchableOpacity>
   );
 };
 
@@ -78,16 +120,16 @@ const OvertimeScreen: React.FC<{
       const dateMatch = item.startDate
         .toLowerCase()
         .includes(text.toLowerCase());
-      const TimeMatch = item.startTime
+      const timeMatch = item.startTime
         .toLowerCase()
         .includes(text.toLowerCase());
-      const ReasonMatch = item.reason
+      const reasonMatch = item.reason
         .toLowerCase()
         .includes(text.toLowerCase());
-      const StatusMatch = item.status
+      const statusMatch = item.status
         .toLowerCase()
         .includes(text.toLowerCase());
-      return dateMatch || TimeMatch || ReasonMatch || StatusMatch;
+      return dateMatch || timeMatch || reasonMatch || statusMatch;
     });
     setFilteredData(filtered);
   };
@@ -140,29 +182,32 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
   },
   itemContainer: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 10,
     marginVertical: 5,
     marginHorizontal: 20,
     borderRadius: 5,
-    shadowColor: 'black',
+    shadowColor: "black",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
     elevation: 5,
+    height: 220,
   },
   itemText: {
     fontSize: 16,
-    color: 'black',
+    color: "black",
+    flexShrink: 1, // Ensure the text can shrink if needed
   },
   detail: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   detailText: {
     width: 150,
     fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
+    fontWeight: "bold",
+    color: "black",
+    paddingBottom: 10,
   },
   detailsContainer: {
     flex: 1,
@@ -171,6 +216,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "bold",
     marginBottom: 5,
+    marginLeft: 10,
   },
   addButton: {
     position: "absolute",
@@ -184,15 +230,18 @@ const styles = StyleSheet.create({
   headerTitle: {
     fontSize: 18,
     marginLeft: 10,
+    fontWeight: "bold",
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "white",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
   },
   goBack: {
-    height: 60,
-    width: 60,
+    height: 40,
+    width: 40,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -218,15 +267,30 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   createdAtContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent:'center'
+    flexDirection: "column",
+    alignItems: "flex-start",
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
   createdAt: {
-    fontWeight:'600',
-    // margin:10,
-    padding:10,
-    marginBottom:2,
+    fontWeight: "600",
+  },
+  itemStatus: {
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    color: "white",
+    fontWeight: "600",
+    alignSelf: "flex-start",
+    borderRadius: 5,
+  },
+  codeContainer: {
+    flexDirection: "column",
+    flexWrap: "wrap",
+    alignItems: "flex-end",
+  },
+  itemCode: {
+    fontSize: 13,
   },
 });
 

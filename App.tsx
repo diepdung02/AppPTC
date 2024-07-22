@@ -58,7 +58,7 @@ const HomeTabNavigator: React.FC = () => (
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Image
-            source={require("./assets/logo.png")}
+            source={{uri:('https://img.upanh.tv/2024/07/22/logo864d13eedac01b24.png')}}
             style={{ width: 30, height: 30 }}
           />
         ),

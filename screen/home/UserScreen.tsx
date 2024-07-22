@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import CheckBox from "react-native-check-box";
 import COLORS from "../../constants/Color";
 import { RootStackParamList } from "../navigator/navigation";
 
@@ -25,15 +26,6 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBack}
-        >
-          <FontAwesome name="arrow-left" size={20} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Thông tin nhân viên</Text>
-      </View>
       <View style={styles.imgcontainer}>
         <Image
           source={{ uri: "https://img.upanh.tv/2024/07/09/avatar.jpg" }}
@@ -81,35 +73,41 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
             </View>
           </View>
         </TouchableOpacity>
-        <View>
-          <Text style={styles.txtInfor}>Ngôn ngữ:</Text>
+        <View style={styles.languageContainer}>
+          <View style={styles.languageOptions}>
+            <Text style={styles.txtInfor}>Ngôn ngữ:</Text>
+            <TouchableOpacity
+              onPress={() => selectLanguage("english")}
+              style={styles.languageOption}
+            >
+              <View style={styles.checkBoxContainer}>
+                <CheckBox
+                  isChecked={selectedLanguage === "english"}
+                  onClick={() => selectLanguage("english")}
+                  checkBoxColor={COLORS.lightGray}
+                  checkedCheckBoxColor={COLORS.red}
+                  uncheckedCheckBoxColor={COLORS.black}
+                />
+              </View>
+              <Text style={styles.languageText}>EN</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => selectLanguage("vietnamese")}
+              style={styles.languageOption}
+            >
+              <View style={styles.checkBoxContainer}>
+                <CheckBox
+                  isChecked={selectedLanguage === "vietnamese"}
+                  onClick={() => selectLanguage("vietnamese")}
+                  checkBoxColor={COLORS.lightGray}
+                  checkedCheckBoxColor={COLORS.red}
+                  uncheckedCheckBoxColor={COLORS.black}
+                />
+              </View>
+              <Text style={styles.languageText}>VN</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-        <TouchableOpacity onPress={() => selectLanguage("english")}>
-          <View style={styles.infor}>
-            <Text style={styles.txtInfor}>Tiếng Anh:</Text>
-            {selectedLanguage === "english" && (
-              <FontAwesome
-                name="check"
-                size={20}
-                color="black"
-                style={styles.tickIcon}
-              />
-            )}
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => selectLanguage("vietnamese")}>
-          <View style={styles.infor}>
-            <Text style={styles.txtInfor}>Tiếng Việt</Text>
-            {selectedLanguage === "vietnamese" && (
-              <FontAwesome
-                name="check"
-                size={20}
-                color="black"
-                style={styles.tickIcon}
-              />
-            )}
-          </View>
-        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -120,30 +118,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS.colorMain,
   },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-  },
-  goBack: {
-    height: 60,
-    width: 60,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  itemContainer: {
-    flexDirection: "row",
-    backgroundColor: "#fff",
-    alignItems: "center",
-  },
   imgcontainer: {
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
+    marginTop: 50,
   },
   image: {
     width: 200,
@@ -159,11 +137,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   txtInfor: {
-    borderBottomWidth: 2,
-    borderBottomColor: "black",
-    borderColor: "#ccc",
     fontSize: 20,
     padding: 5,
+    width: 200,
+    fontWeight: "500",
   },
   iconContainer: {
     flexDirection: "row",
@@ -175,14 +152,31 @@ const styles = StyleSheet.create({
   txtDetail: {
     fontSize: 18,
     marginTop: 7,
+    marginHorizontal: 75,
+    color: COLORS.red,
   },
-  language: {
+  languageContainer: {
+    marginTop: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: "black",
+  },
+  languageOptions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: 100,
+  },
+  languageOption: {
+    flexDirection: "row",
+    alignSelf: "center",
+    marginLeft:40,
+  },
+  checkBoxContainer: {
+    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
+  },
+  languageText: {
     fontSize: 18,
-    marginLeft: 10,
-  },
-  tickIcon: {
-    marginLeft: "auto",
-    padding: 10,
+    marginLeft: 5,
+    textDecorationLine: "none",
   },
 });
 
