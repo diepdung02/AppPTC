@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: "black",
+    marginLeft:50,
   },
   statusText: {
     paddingHorizontal: 8,
@@ -151,6 +152,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     borderRadius: 5,
     fontSize: 16, 
+    marginLeft:50,
+
   },
 });
 
