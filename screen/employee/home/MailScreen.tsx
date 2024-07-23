@@ -32,6 +32,13 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
   const handleItemPress = (item: any) => {
     navigation.navigate("MailDetail", { emailItem: item });
   };
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
+
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -66,9 +73,10 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
             onPress={() => handleItemPress(item)}
           >
             <View style={styles.itemTextContainer}>
-              <Text style={styles.itemSubject}>{item.subject}</Text>
-              <Text style={styles.itemSender}>{item.message}</Text>
-              <Text style={styles.itemDate}>{item.to}</Text>
+              <Text style={styles.itemSubject}>Chủ đề: {item.subject}</Text>
+              <Text style={styles.itemSender}>Nội dung: {truncateText(item.message, 100)}</Text>
+              <Text style={styles.itemDate}>Gửi đến:{item.to}</Text>
+              <Text style={styles.itemDate}>Thời gian gửi email:{item.timestamp}</Text>
             </View>
           </TouchableOpacity>
         )}
@@ -117,10 +125,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   itemSender: {
-    fontWeight: "bold",
+
   },
   itemSubject: {
     color: "#666",
+    fontWeight:'bold'
   },
   itemDate: {
     color: "#888",

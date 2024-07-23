@@ -188,7 +188,7 @@ const App: React.FC = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="ManagerHomeScreen">
+      <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Login"
           component={LoginScreen}

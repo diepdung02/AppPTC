@@ -1,12 +1,10 @@
-
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigator/navigation';
 import COLORS from '../../../constants/Color';
-
 
 type MailDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -22,6 +20,21 @@ type Props = {
 const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { emailItem } = route.params;
 
+  // Dữ liệu cho FlatList
+  const emailDetails = [
+    { label: 'To:', value: emailItem.to },
+    { label: 'Chủ đề:', value: emailItem.subject },
+    { label: 'Nội dung:', value: emailItem.message },
+    { label: 'Thời gian gửi mail:', value: emailItem.timestamp },
+  ];
+
+  const renderItem = ({ item }: { item: { label: string; value: string } }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.label}>{item.label}</Text>
+      <Text style={styles.text}>{item.value}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -33,16 +46,12 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Chi tiết Email</Text>
       </View>
-      <View style={styles.content}>
-        <Text style={styles.label}>To:</Text>
-        <Text style={styles.text}>{emailItem.to}</Text>
-        <Text style={styles.label}>Chủ đề:</Text>
-        <Text style={styles.text}>{emailItem.subject}</Text>
-        <Text style={styles.label}>Nội dung:</Text>
-        <Text style={styles.text}>{emailItem.message}</Text>
-        <Text style={styles.label}>Thời gian gửi mail:</Text>
-        <Text style={styles.text}>{emailItem.timestamp}</Text>
-      </View>
+      <FlatList
+        data={emailDetails}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.label}
+        contentContainerStyle={styles.content}
+      />
     </SafeAreaView>
   );
 };
@@ -70,16 +79,18 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   content: {
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+  },
+  itemContainer: {
+    marginBottom: 20,
   },
   label: {
     fontWeight: "bold",
     fontSize: 16,
-    marginTop: 20,
   },
   text: {
     fontSize: 16,
-    marginTop: 5,
     color: "#333",
   },
 });
