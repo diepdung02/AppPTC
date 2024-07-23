@@ -32,10 +32,13 @@ import {
   CreateLeftDept,
   DetailLeftDept,
   ApproveLeaveScreen,
+  ManagerHomeScreen,
+  ManagerNotification,
+  ManagerNotificationDetail
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
-import store, { persistor } from './redux/overtime/store';
+import store, { persistor } from './redux/Slice/store';
 
 
 
@@ -111,12 +114,81 @@ const HomeTabNavigator: React.FC = () => (
     />
   </Tab.Navigator>
 );
+const ManagerHomeTabNavigator: React.FC = () => (
+  <Tab.Navigator
+    initialRouteName="ManagerHomeTab"
+    screenOptions={{
+      tabBarActiveTintColor: "tomato",
+      tabBarInactiveTintColor: "gray",
+      tabBarStyle: { display: "flex" },
+    }}
+  >
+    <Tab.Screen
+      name="ManagerHomeTab"
+      component={ManagerHomeScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <Image
+            source={{uri:('https://img.upanh.tv/2024/07/22/logo864d13eedac01b24.png')}}
+            style={{ width: 30, height: 30 }}
+          />
+        ),
+        tabBarLabel: () => null,
+      }}
+    />
+    <Tab.Screen
+      name="News"
+      component={NewsScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <FontAwesome5 name="newspaper" color={color} size={size} />
+        ),
+        tabBarLabel: () => null,
+      }}
+    />
+    <Tab.Screen
+      name="Mail"
+      component={MailScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="email" color={color} size={size} />
+        ),
+        tabBarLabel: () => null,
+      }}
+    />
+    <Tab.Screen
+      name="ManagerNotifications"
+      component={ManagerNotification}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="bell" color={color} size={size} />
+        ),
+        tabBarLabel: () => null,
+      }}
+    />
+    <Tab.Screen
+      name="User"
+      component={UserScreen}
+      options={{
+        headerShown: false,
+        tabBarIcon: ({ color, size }) => (
+          <MaterialCommunityIcons name="account" color={color} size={size} />
+        ),
+        tabBarLabel: () => null,
+      }}
+    />
+  </Tab.Navigator>
+);
 
 const App: React.FC = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="ManagerHomeScreen">
         <Stack.Screen
           name="Login"
           component={LoginScreen}
@@ -125,6 +197,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="Home"
           component={HomeTabNavigator}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ManagerHomeScreen"
+          component={ManagerHomeTabNavigator}
           options={{ headerShown: false }}
         />
         <Stack.Screen
@@ -220,6 +297,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="ApproveLeaveScreen"
           component={ApproveLeaveScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ManagerNotificationDetail"
+          component={ManagerNotificationDetail}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -73,6 +73,16 @@ export type NotificationItem = {
   date: string;
   icon: string
 };
+export type ManagerNotificationItem = {
+  id: string;
+  title: string;
+  summary: string;
+  image: string;
+  date: string;
+  icon: string;
+  code:string;
+  startDate: string;
+};
 
 export type EmailItem = {
   id: string;
@@ -102,6 +112,7 @@ export type Component = {
 export type RootStackParamList = {
   Login: undefined;
   Home: undefined;
+  ManagerHomeScreen: undefined;
   Product: undefined;
   LeaveRequest: undefined;
   OvertimeRequest: undefined;
@@ -110,6 +121,8 @@ export type RootStackParamList = {
   Schedule: undefined;
   News: undefined;
   Notifications: undefined;
+  ManagerNotificationDetail: { notification: ManagerNotificationItem };
+  ManagerNotification: undefined;
   Mail: undefined;
   SendMail: undefined;
   LeftDeptScreen: undefined;
