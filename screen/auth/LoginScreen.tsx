@@ -1,4 +1,3 @@
-// LoginScreen.tsx
 import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
@@ -6,7 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import COLORS from '../../constants/Color';
-import { login, ApiResponse } from '../../API'; 
+
 type LoginProps = {
   navigation: any;
 };
@@ -39,20 +38,43 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   };
 
   const handleLogin = async (values: FormValues) => {
-    try {
-      const { username, password } = values;
-      const response: ApiResponse<any> = await login({ username, password });
-      if (response.success) {
-        // Xử lý khi đăng nhập thành công
+    const { username, password } = values;
+
+    // Giả lập kiểm tra người dùng với các tài khoản quản lý và nhân viên
+    if (
+      (username === 'dung' && password === '123') ||
+      (username === 'manager2' && password === '456')
+    ) {
+      const isManager = username === 'manager2'; // Kiểm tra nếu là quản lý
+      console.log(`Username: ${username}`);
+      console.log(`Is Manager: ${isManager}`);
+
+      try {
+        if (rememberPassword) {
+          await AsyncStorage.setItem('username', username);
+          await AsyncStorage.setItem('password', password);
+          await AsyncStorage.setItem('role', isManager ? 'manager' : 'employee');
+        } else {
+          await AsyncStorage.removeItem('username');
+          await AsyncStorage.removeItem('password');
+          await AsyncStorage.removeItem('role');
+        }
+
+        // Điều hướng dựa trên vai trò người dùng
+        if (isManager) {
+          navigation.navigate('ManagerHomeScreen');
+        } else {
+          navigation.navigate('Home');
+        }
+
         alert('Đăng nhập thành công!');
-        navigation.navigate('Home');
-      } else {
-        // Xử lý khi đăng nhập thất bại
-        alert('Đăng nhập thất bại! ' + response.error);
+      } catch (error) {
+        console.error('Error saving login details:', error);
+        alert('Đăng nhập thất bại! Vui lòng thử lại.');
       }
-    } catch (error) {
-      console.error('Error logging in:', error);
-      alert('Đăng nhập thất bại! Vui lòng thử lại.');
+    } else {
+      // Xử lý khi đăng nhập thất bại
+      alert('Đăng nhập thất bại! Tên đăng nhập hoặc mật khẩu không chính xác.');
     }
   };
 
@@ -64,15 +86,15 @@ const LoginScreen: React.FC<LoginProps> = ({ navigation }) => {
   return (
     <Formik
       initialValues={{
-        username: 'dung',
-        password: '123',
+        username: '',
+        password: '',
       }}
       validationSchema={validationSchema}
       onSubmit={(values) => handleLogin(values)}
     >
       {({ values, touched, errors, handleChange, handleSubmit, handleBlur }) => (
         <View style={styles.container}>
-          <Image source={require('../../assets/logo.png')} style={styles.logo} />
+          <Image source={{uri: 'https://img.upanh.tv/2024/07/22/logo864d13eedac01b24.png'}} style={styles.logo} />
           <View style={styles.inputContainer}>
             <FontAwesome name="user" size={20} color="black" />
             <TextInput
