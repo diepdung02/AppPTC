@@ -28,7 +28,7 @@ const emailSlice = createSlice({
         id: uuidv4(),
         timestamp: new Date().toLocaleString(), // Generate timestamp
       };
-      state.emails.push(newEmail);
+      state.emails.unshift(newEmail);
     },
   },
 });

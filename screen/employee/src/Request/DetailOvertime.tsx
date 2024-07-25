@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     alignSelf: "flex-start",
     borderRadius: 5,
-    fontSize: 16, // Make sure this matches the size used in OvertimeScreen
+    fontSize: 16, 
   },
 });
 

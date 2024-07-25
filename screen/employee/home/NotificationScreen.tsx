@@ -1,22 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../redux/Slice/store';
-import { NotificationItem } from '../../../redux/Slice/leaveSlice';
-import { StackNavigationProp } from '@react-navigation/stack';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from '@rneui/themed';
-import COLORS from '../../../constants/Color'; 
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import COLORS from '../../../constants/Color';
+import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigator/navigation';
+
+// Fake data for testing
+const fakeNotifications = [
+  {
+    id: '1',
+    icon: 'https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png',
+    title: 'Đơn nghỉ phép',
+    summary: 'Đơn nghỉ phép của bạn đã bị từ chối',
+    date: '2024-07-20',
+  },
+  {
+    id: '2',
+    icon: 'https://img.upanh.tv/2024/07/22/approved.png',
+    title: 'Đơn xin tăng ca',
+    summary: 'Đơn xin tăng ca của bạn được duyệt',
+    date: '2024-07-21',
+  },
+];
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
 };
 
 const NotificationScreen: React.FC<Props> = ({ navigation }) => {
-  const notifications = useSelector((state: RootState) => state.leave.notifications);
+  const [notifications, setNotifications] = useState(fakeNotifications);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState<NotificationItem[]>(notifications);
+  const [filteredData, setFilteredData] = useState(fakeNotifications);
 
   useEffect(() => {
     setFilteredData(notifications);
@@ -32,19 +47,19 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
     setFilteredData(filtered);
   };
 
-  const handleItemPress = (item: NotificationItem) => {
-    navigation.navigate('NotificationDetail', { notification: item });
-  };
+  // const handleItemPress = (item: typeof fakeNotifications[0]) => {
+  //   navigation.navigate('NotificationDetail', { notification: item });
+  // };
 
-  const renderItem = ({ item }: { item: NotificationItem }) => (
-    <TouchableOpacity style={styles.notificationContainer} onPress={() => handleItemPress(item)}>
+  const renderItem = ({ item }: { item: typeof fakeNotifications[0] }) => (
+    <TouchableOpacity style={styles.notificationContainer} >
       <Image source={{ uri: item.icon }} style={styles.icon} />
       <View style={styles.notificationTextContainer}>
         <Text style={styles.notificationTitle}>{item.title}</Text>
         <Text style={styles.notificationSummary}>{item.summary}</Text>
         <View style={styles.notificationInfor}>
-        <Text style={styles.notificationDate}>{item.date}</Text>
-        <Text style={styles.notificationManager}>By: Phòng nhân sự</Text>
+          <Text style={styles.notificationDate}>{item.date}</Text>
+          <Text style={styles.notificationManager}>By: Phòng nhân sự</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -100,7 +115,6 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fff',
     marginBottom: 10,
-    alignItems: 'center',
     borderRadius: 5,
     fontFamily:'CustomFont-Regular'
   },
@@ -111,9 +125,8 @@ const styles = StyleSheet.create({
   },
   notificationTitle: {
     fontSize: 16,
-    fontWeight: 'bold',
     alignSelf:'center',
-    fontFamily:'CustomFont-Regular'
+    fontFamily:'CustomFont-Bold'
   },
   notificationSummary: {
     fontSize: 14,

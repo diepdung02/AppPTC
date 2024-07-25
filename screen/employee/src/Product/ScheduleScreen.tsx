@@ -6,8 +6,8 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import COLORS from '../../../../constants/Color'; 
 
 type RootStackParamList = {
-  Product: undefined; // Define your screen names here
-  // Add more screen names as needed
+  Product: undefined; 
+ 
 };
 
 type ScheduleScreenNavigationProp = StackNavigationProp<RootStackParamList>;

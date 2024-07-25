@@ -1,0 +1,25 @@
+{
+    
+    "employeeId": "Mã nhân viên: ",
+    "workDate": "Ngày làm việc: ",
+    "birthDate": "Ngày sinh: ",
+    "phoneNumber": "Số điện thoại: ",
+    "department": "Bộ phận làm việc: ",
+    "position": "Chức vụ: ",
+    "benefitMode": "Chế độ phúc lợi: ",
+    "language": "Ngôn ngữ:",
+    "english": "EN",
+    "vietnamese": "VN",
+    "check goods": "Kiểm hàng",
+    "product": "Sản phẩm",
+    "output": "Output",
+    "requestLeave":"Nghỉ phép",
+    "error":"Báo lỗi",
+    "requestOvertime":"Tăng ca",
+    "schedule":"Lịch",
+    "evalute":"Đánh giá",
+    "vote":"Bầu chọn",
+    "leftDept":"Giấy ra cổng",
+    "transferDept":"Rời khỏi"
+  }
+  

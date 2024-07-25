@@ -1,0 +1,24 @@
+{
+    "employeeId": "Employee ID: ",
+    "workDate": "Work Date: ",
+    "birthDate": "Birth Date: ",
+    "phoneNumber": "Phone Number: ",
+    "department": "Department: ",
+    "position": "Position: ",
+    "benefitMode": "Benefit Mode: ",
+    "language": "Language:",
+    "english": "EN",
+    "vietnamese": "VN",
+    "check goods": "Check Goods",
+    "product": "Product",
+    "output": "Output",
+    "requestLeave":"Request Leave",
+    "error":"Error",
+    "requestOvertime":"Request Overtime",
+    "schedule":"Schedule",
+    "evalute":"Evalute",
+    "vote":"Vote",
+    "leftDept":"Left Dept",
+    "transferDept":"Transfer Dept"
+  }
+  

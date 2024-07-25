@@ -47,14 +47,14 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ecf0f1', // Light Gray
+    backgroundColor: '#ecf0f1',
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#ffffff', // White
+    backgroundColor: '#ffffff', 
     padding: 10,
-    elevation: 4, // Shadow for depth
+    elevation: 4, 
   },
   goBack: {
     width: 40,

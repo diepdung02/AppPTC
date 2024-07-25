@@ -124,6 +124,7 @@ export type RootStackParamList = {
   ManagerNotificationDetail: { notification: ManagerNotificationItem };
   ManagerNotification: undefined;
   Mail: undefined;
+  ManagerMailScreen: undefined;
   SendMail: undefined;
   LeftDeptScreen: undefined;
   DetailLeftDept: {item: CreateLeftDept};
@@ -146,6 +147,7 @@ export type RootStackParamList = {
   ProductDetail: { item: DataItem };
   NewsDetail: { newsItem: NewsItem };
   MailDetail: { emailItem: EmailItem };
+  ManagerMailDetail: { emailItem: EmailItem };
   NotificationDetail: { notification: NotificationItem };
   ProductScreen: { products: Product[] };
 };

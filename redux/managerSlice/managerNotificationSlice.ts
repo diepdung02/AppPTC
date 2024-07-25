@@ -27,8 +27,11 @@ const managerNotificationSlice = createSlice({
     addManagerNotification(state, action: PayloadAction<ManagerNotificationItem>) {
       state.notifications.unshift(action.payload);
     },
+    addEmailNotification(state, action: PayloadAction<ManagerNotificationItem>) {
+      state.notifications.unshift(action.payload);
+    },
   },
 });
 
-export const { addManagerNotification } = managerNotificationSlice.actions;
+export const { addManagerNotification, addEmailNotification } = managerNotificationSlice.actions;
 export default managerNotificationSlice.reducer;

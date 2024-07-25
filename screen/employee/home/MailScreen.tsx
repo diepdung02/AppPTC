@@ -11,34 +11,57 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import COLORS from '../../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigator/navigation';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { SearchBar } from "@rneui/themed";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/Slice/store";
+
+// Fake data for testing
+const fakeEmails = [
+  {
+    id: '1',
+    subject: 'Lời nhắc họp',
+    message: 'Đừng quên cuộc họp của chúng ta vào lúc 10 giờ sáng ngày mai.',
+    to: 'Nguyễn Văn A',
+    timestamp: '2024-07-24 09:00 AM',
+  },
+  {
+    id: '2',
+    subject: 'Cập nhật dự án',
+    message: 'Dự án đang tiến triển tốt và đúng tiến độ.',
+    to: 'Trần Thị B',
+    timestamp: '2024-07-23 02:00 PM',
+  },
+  {
+    id: '3',
+    subject: 'Báo cáo hàng tuần',
+    message: 'Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.',
+    to: 'Phạm Văn C',
+    timestamp: '2024-07-22 05:00 PM',
+  },
+  // Add more fake emails as needed
+];
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "Mail">;
 };
 
 const MailScreen: React.FC<Props> = ({ navigation }) => {
-  const emails = useSelector((state: RootState) => state.email.emails);
+  const [emails, setEmails] = useState(fakeEmails);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(emails);
+  const [filteredData, setFilteredData] = useState(fakeEmails);
 
   useEffect(() => {
     setFilteredData(emails);
   }, [emails]);
 
-  const handleItemPress = (item: any) => {
+  const handleItemPress = (item: typeof fakeEmails[0]) => {
     navigation.navigate("MailDetail", { emailItem: item });
   };
+
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
       return text.substring(0, maxLength) + "...";
     }
     return text;
   };
-
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -72,11 +95,13 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
             style={styles.itemContainer}
             onPress={() => handleItemPress(item)}
           >
-            <View style={styles.itemTextContainer}>
-              <Text style={styles.itemSubject}>Chủ đề: {item.subject}</Text>
-              <Text style={styles.itemSender}>Nội dung: {truncateText(item.message, 100)}</Text>
-              <Text style={styles.itemDate}>Gửi đến:{item.to}</Text>
-              <Text style={styles.itemDate}>Thời gian gửi email:{item.timestamp}</Text>
+            <View style={styles.emailItem}>
+              <Text style={styles.emailSubject}>Chủ đề: {item.subject}</Text>
+              <Text style={styles.emailMessage}>Nội dung: {truncateText(item.message, 40)}</Text>
+              <View style={styles.infor}>
+                <Text style={styles.sender}>To: {item.to}</Text>
+                <Text style={styles.timestamp}>{item.timestamp}</Text>
+              </View>
             </View>
           </TouchableOpacity>
         )}
@@ -90,6 +115,8 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -117,25 +144,39 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     padding: 10,
     backgroundColor: "#fff",
-    marginBottom: 1,
     alignItems: "center",
+    marginBottom: 10,
   },
-  itemTextContainer: {
-    marginLeft: 10,
-    flex: 1,
+  emailItem: {
+    padding: 10,
+  },
+  emailSubject: {
+    fontSize: 18,
+    color: '#333',
+    marginBottom: 5,
+    fontFamily:'CustomFont-Bold',
+    alignSelf:'center'
+  },
+  department: {
+    fontSize: 14,
+    color: '#555',
+    marginTop: 5,
     fontFamily:'CustomFont-Regular'
   },
-  itemSender: {
+  timestamp: {
+    fontSize: 12,
+    color: COLORS.date,
     fontFamily:'CustomFont-Regular'
   },
-  itemSubject: {
-    color: "#666",
-    fontWeight:'bold',
-    fontFamily:'CustomFont-Regular'
+  sender: {
+    fontSize: 12,
+    color: COLORS.date,
+    fontFamily:'CustomFont-Italic'
   },
-  itemDate: {
-    color: "#888",
-    fontFamily:'CustomFont-Regular'
+  infor: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   addButton: {
     position: "absolute",
@@ -146,6 +187,10 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 8,
   },
+  emailMessage:{
+    fontFamily:'CustomFont-Regular',
+    fontSize:14,
+  }
 });
 
 export default MailScreen;

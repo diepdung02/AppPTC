@@ -12,10 +12,38 @@ import { FontAwesome } from "@expo/vector-icons";
 import COLORS from "../../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../navigator/navigation";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/Slice/store";
 import { SearchBar } from "@rneui/themed";
-import { OvertimeRequest } from "../../../../redux/Slice/overtimeSlice";
+
+// Fake data
+const fakeOvertimeRequests = [
+  {
+    id: 1,
+    code: "2407250001",
+    startDate: "2023-07-10",
+    startTime: "08:00",
+    endTime: "12:00",
+    reason: "Hỗ trợ dự án",
+    status: "Đã được duyệt",
+  },
+  {
+    id: 2,
+    code: "2407250002",
+    startDate: "2023-07-11",
+    startTime: "13:00",
+    endTime: "17:00",
+    reason: "Bảo trì hệ thống",
+    status: "Đang chờ duyệt",
+  },
+  {
+    id: 3,
+    code: "2407250003",
+    startDate: "2023-07-12",
+    startTime: "09:00",
+    endTime: "18:00",
+    reason: "Nghiên cứu và phát triển",
+    status: "Đã bị từ chối",
+  },
+];
 
 type OvertimeItemProps = {
   item: OvertimeRequest;
@@ -101,25 +129,18 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
 const OvertimeScreen: React.FC<{
   navigation: StackNavigationProp<RootStackParamList, "Overtime">;
 }> = ({ navigation }) => {
-  const overtimeRequests = useSelector(
-    (state: RootState) => state.overtime.requests
-  );
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState<OvertimeRequest[]>(
-    overtimeRequests || []
+    fakeOvertimeRequests || []
   );
 
   useEffect(() => {
-    setFilteredData(overtimeRequests);
-  }, [overtimeRequests]);
+    setFilteredData(fakeOvertimeRequests);
+  }, []);
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    if (!overtimeRequests) {
-      setFilteredData([]);
-      return;
-    }
-    const filtered = overtimeRequests.filter((item) => {
+    const filtered = fakeOvertimeRequests.filter((item) => {
       const dateMatch = item.startDate
         .toLowerCase()
         .includes(text.toLowerCase());
@@ -177,7 +198,6 @@ const OvertimeScreen: React.FC<{
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

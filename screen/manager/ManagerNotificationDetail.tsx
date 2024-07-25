@@ -3,8 +3,9 @@ import { View, Text, StyleSheet, SafeAreaView } from "react-native";
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../navigator/navigation";
+import COLORS from "../../constants/Color";
 
-// Định nghĩa kiểu cho route.params
+
 type ManagerNotificationDetailRouteProp = RouteProp<
   RootStackParamList,
   "ManagerNotificationDetail"
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#F0F0F0",
+    backgroundColor: COLORS.colorMain,
   },
   title: {
     fontSize: 24,

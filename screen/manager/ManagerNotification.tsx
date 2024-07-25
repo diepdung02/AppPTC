@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -6,19 +6,22 @@ import {
   FlatList,
   SafeAreaView,
   TouchableOpacity,
+  Alert
 } from 'react-native';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/Slice/store';
 import { ManagerNotificationItem } from '../../redux/managerSlice/managerNotificationSlice';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigator/navigation';
-import { SearchBar } from '@rneui/themed'; // Thêm thư viện tìm kiếm
+import { SearchBar } from '@rneui/themed'; 
+import COLORS from '../../constants/Color';
 
 type ManagerNotificationScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ManagerNotification'>;
 
 const ManagerNotification: React.FC = () => {
   const notifications = useSelector((state: RootState) => state.managerNotification.notifications);
+  const dispatch = useDispatch();
   const navigation = useNavigation<ManagerNotificationScreenNavigationProp>();
 
   const [search, setSearch] = useState<string>("");
@@ -39,15 +42,36 @@ const ManagerNotification: React.FC = () => {
         <Text style={styles.notificationTitle}>{item.title}</Text>
         <Text style={styles.notificationCode}>{item.code}</Text>
         <Text style={styles.notificationSummary}>{item.summary}</Text>
+        <View style={styles.notificationInfor}>
         <Text style={styles.notificationDate}>{item.date}</Text>
+        <Text style={styles.notificationEmployee}>By: Diệp Minh Dũng(ERP)</Text>
+        </View>
       </View>
     </TouchableOpacity>
   );
 
+
+  // useEffect(() => {
+  //   const simulateNewNotification = () => {
+  //     const newNotification: ManagerNotificationItem = {
+  //       id: `${notifications.length + 1}`,
+  //       title: 'Thông báo email mới',
+  //       code: 'EMAIL123',
+  //       summary: 'Bạn đã nhận được một email mới.',
+  //       date: new Date().toLocaleDateString(),
+  //     };
+  //     dispatch(addManagerNotification(newNotification));
+  //   };
+
+  //   const interval = setInterval(simulateNewNotification, 30000);
+
+  //   return () => clearInterval(interval);
+  // }, [notifications, dispatch]);
+
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar
-        placeholder="Tìm kiếm thông báo"
+        placeholder="Tìm kiếm"
         inputContainerStyle={{ backgroundColor: "white" }}
         containerStyle={{
           backgroundColor: "transparent",
@@ -69,17 +93,20 @@ const ManagerNotification: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F0F0F0',
+    backgroundColor: COLORS.colorMain,
   },
   notificationItem: {
-    backgroundColor: '#FFFFFF',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
+    flexDirection: 'row',
+    padding: 10,
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    borderRadius: 5,
+    fontFamily:'CustomFont-Regular'
   },
   notificationTitle: {
     fontSize: 16,
-    fontFamily:'CustomFont-Bold'
+    fontFamily:'CustomFont-Bold',
+    alignSelf:'center'
   },
   notificationCode: {
     fontSize: 14,
@@ -95,6 +122,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#888888',
     fontFamily:'CustomFont-Regular'
+  },
+  notificationInfor:{
+    flexDirection:'row',
+    justifyContent:'space-between'
+  },
+  notificationEmployee:{
+    fontSize: 12,
+    color: COLORS.date,
+    fontFamily:'CustomFont-Italic'
   },
 });
 

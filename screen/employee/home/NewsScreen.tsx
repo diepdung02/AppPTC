@@ -238,10 +238,9 @@ const styles = StyleSheet.create({
     fontFamily:'CustomFont-Regular'
   },
   itemTitle: {
-    fontWeight: "bold",
     fontSize: 16,
     alignSelf:'center',
-    fontFamily:'CustomFont-Regular'
+    fontFamily:'CustomFont-Bold'
   },
   itemSummary: {
     color: "#666",

@@ -65,13 +65,13 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
         if (storedRemainingComponents) {
           setRemainingComponents(JSON.parse(storedRemainingComponents));
         } else {
-          setRemainingComponents(components); // Initialize with components if nothing stored
+          setRemainingComponents(components);
         }
 
         if (storedCompletedComponents) {
           setCompletedComponents(JSON.parse(storedCompletedComponents));
         } else {
-          setCompletedComponents([]); // Initialize with empty array if nothing stored
+          setCompletedComponents([]); 
         }
       } catch (error) {
         console.error("Error loading data:", error);

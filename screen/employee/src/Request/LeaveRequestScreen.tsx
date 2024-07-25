@@ -8,7 +8,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { LeaveRequest, addLeaveRequest } from '../../../../redux/Slice/leaveSlice'; // Adjust path as per your project structure
+import { LeaveRequest, addLeaveRequest } from '../../../../redux/Slice/leaveSlice'; 
 import moment from 'moment'; 
 import { addManagerNotification, ManagerNotificationItem } from '../../../../redux/managerSlice/managerNotificationSlice';
 
@@ -84,8 +84,7 @@ const generateRequestCode = (leaveType: string): string => {
     return days;
   };
 
-  // Function to handle form submission
-  // Function to handle form submission
+
   const handleSubmit = async () => {
     if (startDate && endDate && leaveType && reason) {
       const daysOff = calculateDaysOff(startDate.toLocaleDateString(), endDate.toLocaleDateString());
@@ -135,7 +134,6 @@ const generateRequestCode = (leaveType: string): string => {
         } catch (error) {
           console.error('Error saving data:', error);
         }
-  
         console.log('New Leave Request:', newRequest);
         navigation.goBack();
         Alert.alert('Đã gửi đơn');
@@ -156,8 +154,6 @@ const generateRequestCode = (leaveType: string): string => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-
-
   const handleConfirmDate = (date: Date) => {
     if (selectedDateField === 'start') {
       setStartDate(date);

@@ -27,6 +27,8 @@ import ApproveLeaveScreen from './employee/home/ApproveRequest';
 import ManagerHomeScreen from './manager/ManagerHomeScreen';
 import ManagerNotification from './manager/ManagerNotification';
 import ManagerNotificationDetail from './manager/ManagerNotificationDetail';
+import ManagerMailScreen from './manager/ManagerMailScreen';
+import ManagerMailDetail from './manager/ManagerMailDetail';
 
 export{
     LoginScreen,
@@ -57,5 +59,7 @@ export{
     ApproveLeaveScreen,
     ManagerHomeScreen,
     ManagerNotification,
-    ManagerNotificationDetail
+    ManagerNotificationDetail,
+    ManagerMailScreen,
+    ManagerMailDetail
 }

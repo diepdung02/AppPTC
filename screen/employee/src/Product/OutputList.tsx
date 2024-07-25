@@ -36,7 +36,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
             parsedProducts = [];
           }
           setCompletedProducts(parsedProducts);
-          setFilteredData(parsedProducts); // Set filtered data initially
+          setFilteredData(parsedProducts); 
         } else {
           console.log("Không tìm thấy sản phẩm đã lưu.");
         }
@@ -47,7 +47,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
           "Đã xảy ra lỗi khi tải dữ liệu. Vui lòng thử lại sau."
         );
       } finally {
-        setIsLoading(false); // Set loading state to false when done fetching
+        setIsLoading(false); 
       }
     };
 

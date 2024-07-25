@@ -34,7 +34,9 @@ import {
   ApproveLeaveScreen,
   ManagerHomeScreen,
   ManagerNotification,
-  ManagerNotificationDetail
+  ManagerNotificationDetail,
+  ManagerMailScreen,
+  ManagerMailDetail
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -149,8 +151,8 @@ const ManagerHomeTabNavigator: React.FC = () => (
       }}
     />
     <Tab.Screen
-      name="Mail"
-      component={MailScreen}
+      name="ManagerMail"
+      component={ManagerMailScreen}
       options={{
         headerShown: false,
         tabBarIcon: ({ color, size }) => (
@@ -302,6 +304,16 @@ const App: React.FC = () => (
         <Stack.Screen
           name="ManagerNotificationDetail"
           component={ManagerNotificationDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ManagerMailScreen"
+          component={ManagerMailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ManagerMailDetail"
+          component={ManagerMailDetail}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
