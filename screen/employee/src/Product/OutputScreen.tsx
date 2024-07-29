@@ -3,23 +3,27 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   SafeAreaView,
   FlatList,
   Alert,
   Image,
+  StyleSheet,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { SearchBar } from "@rneui/themed";
-import {
-  RootStackParamList,
-  Component,
-  Product,
-} from "../../../navigator/navigation";
-import COLORS from "../../../../constants/Color";
+import { RootStackParamList, Component, Product } from "../../../navigator/navigation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import tw from "twrnc";
+import COLORS from "../../../../constants/Color";
+
+// Function to scale font sizes
+const getScaledSize = (size: number) => {
+  // Example scaling based on a ratio. Adjust as needed.
+  const scale = 1; // Replace with actual scaling logic if needed
+  return size * scale;
+};
 
 type OutputScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -29,7 +33,7 @@ type OutputScreenRouteProp = RouteProp<RootStackParamList, "OutputScreen">;
 
 type OutputScreenProps = {
   navigation: OutputScreenNavigationProp;
-}
+};
 
 const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
   const route = useRoute<OutputScreenRouteProp>();
@@ -181,15 +185,17 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={tw`flex-1 p-4`} >
+      <View style={[tw`flex-row items-center`, { backgroundColor: COLORS.colorMain }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.goBack}
+          style={tw`mr-2`}
         >
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Sản phẩm</Text>
+        <Text style={[tw`text-xl flex-1 text-center font-bold`, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(20) }]}>
+          Sản phẩm
+        </Text>
       </View>
       <SearchBar
         placeholder="Tìm kiếm bộ phận..."
@@ -197,138 +203,71 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
         value={search}
         lightTheme
         round
-        containerStyle={styles.searchBarContainer}
-        inputContainerStyle={styles.searchBarInput}
+        containerStyle={tw`bg-transparent border-b border-gray-300 border-t-0`}
+        inputContainerStyle={{ backgroundColor: COLORS.white, borderRadius: 8 }}
       />
-      <Image source={{ uri: productImage }} style={styles.image} />
-      <Text style={styles.productName}>Tên sản phẩm: {productName}</Text>
-      <Text style={styles.productName}>PTC Code: {productCode}</Text>
-      <Text style={styles.productName}>Client Code: {productClient}</Text>
-      <Text style={styles.sectionTitle}>Bộ phận chưa hoàn thành</Text>
+      <Image source={{ uri: productImage }} style={tw`w-24 h-24 self-center mb-4`} />
+      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+        Tên sản phẩm: {productName}
+      </Text>
+      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+        PTC Code: {productCode}
+      </Text>
+      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+        Client Code: {productClient}
+      </Text>
+      <Text style={[tw`text-lg `, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18),color:COLORS.black }]}>
+        Bộ phận chưa hoàn thành
+      </Text>
       <FlatList
         data={filteredComponents}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
-              styles.componentButton,
-              selectedComponents.some((c) => c.id === item.id) &&
-                styles.selectedComponentButton,
+              tw`p-4 rounded mb-2 border`,
+              { borderColor: COLORS.border, backgroundColor: COLORS.white },
+              selectedComponents.some((c) => c.id === item.id) && { backgroundColor: COLORS.primaryLight },
             ]}
             onPress={() => handleSelectComponent(item)}
           >
-            <Text style={styles.componentText}>{item.name}</Text>
+            <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: "CustomFont-Regular", fontSize: getScaledSize(18) }]}>
+              {item.name}
+            </Text>
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={tw`pb-4`}
       />
-      <Text style={styles.sectionTitle}>Bộ phận đã hoàn thành</Text>
+      <Text style={[tw`text-lg `, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18) }]}>
+        Bộ phận đã hoàn thành
+      </Text>
       <FlatList
         data={completedComponents}
         renderItem={({ item }) => (
-          <View style={styles.completedComponent}>
-            <Text style={styles.componentText}>{item.name}</Text>
+          <View
+            style={[tw`p-4 rounded mb-2`, { backgroundColor: COLORS.successLight }]}
+          >
+            <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18) }]}>
+              {item.name}
+            </Text>
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={tw`pb-4`}
       />
-      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-        <Text style={styles.submitButtonText}>Gửi</Text>
+      <TouchableOpacity
+        onPress={handleSubmit}
+        style={[
+          tw` p-4 rounded`,
+          { backgroundColor: COLORS.blue },
+        ]}
+      >
+        <Text style={[tw`text-center text-white`, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(16) }]}>
+          Gửi báo cáo hoàn thành
+        </Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    backgroundColor: COLORS.colorMain,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: COLORS.white,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  goBack: {
-    marginRight: 10,
-  },
-  headerTitle: {
-    fontSize: 18,
-    textAlign: "center",
-    flex: 1,
-    fontFamily:'CustomFont-Bold'
-  },
-  searchBarContainer: {
-    backgroundColor: "transparent",
-    borderBottomColor: "transparent",
-    borderTopColor: "transparent",
-    paddingHorizontal: 0,
-    marginBottom: 16,
-  },
-  searchBarInput: {
-    backgroundColor: COLORS.white,
-    borderRadius: 8,
-  },
-  productName: {
-    fontSize: 18,
-    color: COLORS.darkGray,
-    marginBottom: 5,
-    textAlign: "center",
-    fontFamily:'CustomFont-Bold'
-  },
-  sectionTitle: {
-    fontSize: 20,
-    color: COLORS.primary,
-    marginVertical: 8,
-    fontFamily:'CustomFont-Bold'
-  },
-  listContainer: {
-    paddingBottom: 16,
-  },
-  componentButton: {
-    backgroundColor: COLORS.white,
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-    borderColor: COLORS.border,
-    borderWidth: 1,
-  },
-  selectedComponentButton: {
-    backgroundColor: COLORS.primaryLight,
-  },
-  componentText: {
-    fontSize: 18,
-    color: COLORS.text,
-    fontFamily:'CustomFont-Regular'
-  },
-  completedComponent: {
-    backgroundColor: COLORS.successLight,
-    padding: 16,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  submitButton: {
-    backgroundColor: COLORS.primary,
-    padding: 16,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 16,
-  },
-  submitButtonText: {
-    fontSize: 18,
-    color: COLORS.white,
-    fontFamily:'CustomFont-Bold'
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginRight: 10,
-    alignSelf:'center'
-  },
-});
 
 export default OutputScreen;

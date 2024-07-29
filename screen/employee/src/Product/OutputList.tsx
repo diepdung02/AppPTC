@@ -3,17 +3,33 @@ import {
   View,
   Text,
   TouchableOpacity,
-  StyleSheet,
   SafeAreaView,
   FlatList,
   Alert,
-  Image
+  Image,
+  Dimensions
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SearchBar } from "@rneui/themed";
 import { Component, Product } from "../../../navigator/navigation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Get screen dimensions
+const { width, height } = Dimensions.get("window");
+
+// Calculate scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+// Function to get scaled size
+const getScaledSize = (size: number) => size * scale;
 
 interface OutputListProps {
   navigation: any; 
@@ -66,7 +82,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
       const updatedProducts = completedProducts.filter((product) => product.id !== productId);
       await AsyncStorage.setItem("completedOutput", JSON.stringify(updatedProducts));
       setCompletedProducts(updatedProducts);
-      setFilteredData(updatedProducts); // Update filtered data after delete
+      setFilteredData(updatedProducts); 
       setSelectedProductId(null);
       Alert.alert("Thành công", `Đã xóa sản phẩm "${productName}".`);
     } catch (error) {
@@ -107,38 +123,42 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
   };
 
   const renderComponent = ({ item }: { item: Component }) => (
-    <View style={styles.componentContainer}>
-      <Text style={styles.componentName}>{item.name}</Text>
+    <View style={[tw`p-2 rounded-md mb-2`, { backgroundColor: COLORS.lightGray }]}>
+      <Text style={[tw`font-CustomFont-Italic`, { color: COLORS.text, fontSize: getScaledSize(18) }]}>
+        {item.name}
+      </Text>
     </View>
   );
 
   const renderProduct = ({ item }: { item: Product }) => (
-    <View style={styles.itemContainer}>
+    <View style={tw`mb-2`}>
       <TouchableOpacity
-        style={styles.productContainer}
+        style={[tw`flex-row items-center p-2 mb-2 rounded-md border`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}
         onPress={() => toggleProductDetails(item.id)}
       >
-        <Image source={{ uri: item.image }} style={styles.image} />
-        <View style={styles.textContainer}>
-          <Text style={styles.itemName}>Tên sản phẩm: {item.name}</Text>
-          <Text style={styles.itemText}>PTC Code: {item.PTCcode}</Text>
-          <Text style={styles.itemText}>Client Code: {item.ClientCode}</Text>
+        <Image source={{ uri: item.image }} style={tw`w-20 h-20 rounded-md mr-2`} />
+        <View style={tw`flex-1`}>
+          <Text style={[tw`font-bold mb-1`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+            Tên sản phẩm: {item.name}
+          </Text>
+          <Text style={[tw`mb-1`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(14) }]}>
+            PTC Code: {item.PTCcode}
+          </Text>
+          <Text style={[{ color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(14) }]}>
+            Client Code: {item.ClientCode}
+          </Text>
         </View>
       </TouchableOpacity>
       {selectedProductId === item.id && (
-        <View style={styles.detailsContainer}>
-          <Text style={styles.sectionTitle}>Bộ phận đã hoàn thành</Text>
+        <View style={[tw`p-2 rounded-md border`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
+          <Text style={[tw`font-bold mb-2`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(20) }]}>
+            Bộ phận đã hoàn thành
+          </Text>
           <FlatList
             data={item.components}
             renderItem={renderComponent}
             keyExtractor={(component) => component.id.toString()}
           />
-          {/* <TouchableOpacity
-            style={styles.deleteButton}
-            onPress={() => handleDeleteProduct(item.id, item.name)}
-          >
-            <Text style={styles.deleteButtonText}>Xóa sản phẩm</Text>
-          </TouchableOpacity> */}
         </View>
       )}
     </View>
@@ -146,161 +166,48 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={styles.container}>
-        <Text>Loading...</Text>
+      <SafeAreaView style={[tw`flex-1 px-4 pt-4`, { backgroundColor: COLORS.colorMain }]}>
+        <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+          Loading...
+        </Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[tw`flex-1 px-4 pt-4`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-3 px-2 border-b`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.goBack}
+          style={tw`h-10 w-10 items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <FontAwesome name="arrow-left" size={20} color={COLORS.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Output</Text>
+        <Text style={[tw`font-bold ml-2`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+          Output
+        </Text>
       </View>
       <SearchBar
         placeholder="Tìm kiếm"
         onChangeText={handleSearch}
         value={search}
-        inputContainerStyle={{ backgroundColor: "white" }}
-        containerStyle={{
-          backgroundColor: "transparent",
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
+        inputContainerStyle={{ backgroundColor: COLORS.white }}
+        containerStyle={tw`bg-transparent border-b-0 border-t-0`}
       />
-      {filteredData.length === 0 ? (
-        <View style={styles.noDataContainer}>
-          <Text style={styles.noDataText}>Không có dữ liệu sản phẩm hoàn thành.</Text>
-        </View>
-      ) : (
-        <FlatList
-          data={filteredData}
-          renderItem={renderProduct}
-          keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={styles.listContainer}
-        />
-      )}
+      <FlatList
+        data={filteredData}
+        renderItem={renderProduct}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={
+          <View style={tw`flex-1 justify-center items-center`}>
+            <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+              Không có dữ liệu sản phẩm hoàn thành.
+            </Text>
+          </View>
+        }
+      />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-    paddingHorizontal: 16,
-    paddingTop: 16,
-  },
-  listContainer: {
-    paddingBottom: 16,
-  },
-  productContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#fff",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  image: {
-    width: 80,
-    height: 80,
-    borderRadius: 10,
-    marginRight: 10,
-  },
-  textContainer: {
-    flex: 1,
-    fontFamily:'CustomFont-Regular'
-  },
-  itemName: {
-    fontSize: 16,
-    color: "#333",
-    marginBottom: 5,
-    fontFamily:'CustomFont-Bold'
-  },
-  itemText: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 3,
-    fontFamily:'CustomFont-Regular'
-  },
-  detailsContainer: {
-    backgroundColor: COLORS.colorMain,
-    padding: 10,
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#333",
-    marginVertical: 10,
-    fontFamily:'CustomFont-Regular'
-  },
-  deleteButton: {
-    backgroundColor: "#ff6347",
-    padding: 10,
-    borderRadius: 8,
-    alignItems: "center",
-    marginTop: 10,
-  },
-  deleteButtonText: {
-    color: "#fff",
-    fontSize: 16,
-    fontFamily:'CustomFont-Regular'
-  },
-  componentContainer: {
-    backgroundColor: COLORS.lightGray,
-    padding: 8,
-    borderRadius: 8,
-    marginBottom: 8,
-  },
-  componentName: {
-    fontSize: 16,
-    color: "#333",
-  },
-  itemContainer: {
-    marginBottom: 10,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-  },
-  goBack: {
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontFamily:'CustomFont-Bold'
-  },
-  noDataContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  noDataText: {
-    fontSize: 16,
-    color: '#666',
-    fontFamily:'CustomFont-Regular'
-  },
-});
 
 export default OutputList;

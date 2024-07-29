@@ -1,21 +1,41 @@
-
 import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet, SafeAreaView, TouchableOpacity, ScrollView } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import COLORS from '../../../constants/Color';
+import {
+  View,
+  Text,
+  Image,
+  SafeAreaView,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 import { SearchBar } from '@rneui/themed';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList, Product } from '../../navigator/navigation';
+import { RootStackParamList } from '../../navigator/navigation';
+import tw from 'twrnc';
+import COLORS from '../../../constants/Color';
 import useCustomFonts from '../../../hooks/useFont';
 
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Get screen dimensions
+const { width, height } = Dimensions.get('window');
+
+// Calculate scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => size * scale;
+const adjustScale = (size: number) => getScaledSize(size) * 0.5;
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, "Home">;
+  navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
-  const [currentTime, setCurrentTime] = useState<string>("");
-
+  const [currentTime, setCurrentTime] = useState<string>('');
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     const updateCurrentTime = () => {
@@ -30,128 +50,81 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const [search, setSearch] = useState("");
-  const updateSearch = (search: React.SetStateAction<string>) => {
+  const updateSearch = (search: string) => {
     setSearch(search);
   };
+
   const fontsLoaded = useCustomFonts();
 
   if (!fontsLoaded) {
-    return <View style={styles.container}><Text>Loading Fonts...</Text></View>;
+    return (
+      <View style={tw`flex-1 justify-center items-center bg-gray-100`}>
+        <Text>Loading Fonts...</Text>
+      </View>
+    );
   }
 
+  // List of items
+  const items = [
+    { route: '', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: 'Kiểm hàng' },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: 'Sản Phẩm' },
+    { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: 'Output' },
+    { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: 'Nghỉ phép' },
+    { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: 'Tăng ca' },
+    { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: 'Lịch' },
+    { route: '', image: 'https://img.upanh.tv/2024/07/09/error.png', label: 'Báo lỗi' },
+    { route: '', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
+    { route: '', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
+    { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: 'Giấy ra cổng' },
+    { route: '', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: 'Rời khỏi' }
+  ];
+
+  // Split items into rows of 4 items each
+  const rows = items.reduce((acc, item, index) => {
+    const rowIndex = Math.floor(index / 4);
+    if (!acc[rowIndex]) acc[rowIndex] = [];
+    acc[rowIndex].push(item);
+    return acc;
+  }, [] as typeof items[]);
+
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={tw`p-${adjustScale(4)}`}>
         <SearchBar
-          placeholder="Tìm kiếm "
-          inputContainerStyle={{ backgroundColor: "white" }}
-          containerStyle={{
-            backgroundColor: "transparent",
-            borderBottomWidth: 1,
-            borderTopColor: "transparent",
-          }}
+          placeholder="Tìm kiếm"
+          inputContainerStyle={tw`bg-white`}
+          containerStyle={tw`bg-transparent border-b border-gray-300 border-t-0`}
           onChangeText={updateSearch}
           value={search}
+          placeholderTextColor={COLORS.black}
         />
       </View>
-      
-        <View style={styles.iconContainer}>
-          <TouchableOpacity style={styles.iconWrapper}>
-            <Image source={{uri:'https://img.upanh.tv/2024/07/09/checklist.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Kiểm hàng</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Product')}>
-            <Image source={{uri:'https://img.upanh.tv/2024/07/09/product.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Sản Phẩm</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('OutputList')}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/output.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Output</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('RequestMain')}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/leave.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Nghỉ phép</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/error.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Báo lỗi</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Overtime')}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/overtime.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Tăng ca</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('Schedule')}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/calendar.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Lịch</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/evaluate.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Đánh giá</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/vote.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Bầu chọn</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper} onPress={() => navigation.navigate('LeftDeptScreen')}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/left_dept.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Giấy ra cổng</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconWrapper}>
-          <Image source={{uri:'https://img.upanh.tv/2024/07/09/transfer_dept.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Rời khỏi</Text>
-          </TouchableOpacity>
-          {/* <TouchableOpacity style={styles.iconWrapper}  onPress={() => navigation.navigate('ApproveLeaveScreen')} >
-          <Image source={{uri:'https://img.upanh.tv/2024/07/18/approved.png'}} style={styles.icon} />
-            <Text style={styles.txt}>Duyệt đơn</Text>
-          </TouchableOpacity> */}
-        </View>
-      <View style={styles.timeContainer}>
-        <Text style={styles.timeText}>{currentTime}</Text>
+
+      <View style={tw`flex-1 mt-${adjustScale(20)} px-${adjustScale(2)}`}>
+        {rows.map((row, rowIndex) => (
+          <View key={rowIndex} style={tw`flex-row justify-around mb-${adjustScale(2)}`}>
+            {row.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                style={[tw`items-center`, { width: adjustScale(80) }]} // Adjust width based on scaling
+                onPress={() => item.route && navigation.navigate(item.route)}
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  style={[tw`mb-${adjustScale(15)}`, { width: adjustScale(150), height: adjustScale(150) }]} // Maintain aspect ratio
+                />
+                <Text style={[tw`text-center w-32 mb-${adjustScale(15)}`, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Regular' }]}>{item.label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ))}
+      </View>
+
+      <View style={tw`absolute bottom-${adjustScale(2)} w-full items-center`}>
+        <Text style={[tw``, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Bold' }, { color: COLORS.red }]}>{currentTime}</Text>
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-  },
-  iconContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "center",
-    marginTop: hp("5%"),
-  },
-  iconWrapper: {
-    alignItems: "center",
-    width: wp("27%"),
-    marginVertical: hp("1%"),
-    marginHorizontal: hp("1%"),
-  },
-  icon: {
-    width: wp("20%"),
-    height: wp("20%"),
-    marginBottom: hp("1%"),
-  },
-  txt: {
-    textAlign: "center",
-    fontSize: hp("2%"),
-    width: wp("100%"),
-    fontFamily:'CustomFont-Regular'
-  },
-  timeContainer: {
-    position: "absolute",
-    bottom: hp("2%"),
-    alignSelf: "center",
-    fontFamily:'CustomFont-Regular'
-  },
-  timeText: {
-    fontSize: hp("2%"),
-    color: "red",
-    fontFamily:'CustomFont-Regular'
-  },
-});
 
 export default HomeScreen;

@@ -1,37 +1,65 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, SafeAreaView, TouchableOpacity, Image } from 'react-native';
-import { SearchBar } from '@rneui/themed';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import COLORS from '../../../constants/Color';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from '../../navigator/navigation';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  FlatList,
+  SafeAreaView,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
+import { SearchBar } from "@rneui/themed";
+import tw from "twrnc";
+import COLORS from "../../../constants/Color"; // Ensure this contains your color definitions
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigator/navigation";
+import useCustomFonts from "../../../hooks/useFont";
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Get screen dimensions
+const { width, height } = Dimensions.get("window");
+
+// Calculate scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+// Function to get scaled size
+const getScaledSize = (size: number) => size * scale;
 
 // Fake data for testing
 const fakeNotifications = [
   {
-    id: '1',
-    icon: 'https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png',
-    title: 'Đơn nghỉ phép',
-    summary: 'Đơn nghỉ phép của bạn đã bị từ chối',
-    date: '2024-07-20',
+    id: "1",
+    icon: "https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png",
+    title: "Đơn nghỉ phép",
+    summary: "Đơn nghỉ phép của bạn đã bị từ chối",
+    date: "20-07-2024",
   },
   {
-    id: '2',
-    icon: 'https://img.upanh.tv/2024/07/22/approved.png',
-    title: 'Đơn xin tăng ca',
-    summary: 'Đơn xin tăng ca của bạn được duyệt',
-    date: '2024-07-21',
+    id: "2",
+    icon: "https://img.upanh.tv/2024/07/22/approved.png",
+    title: "Đơn xin tăng ca",
+    summary: "Đơn xin tăng ca của bạn được duyệt",
+    date: "21-07-2024",
   },
 ];
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, 'Notifications'>;
+  navigation: StackNavigationProp<RootStackParamList, "Notifications">;
 };
 
 const NotificationScreen: React.FC<Props> = ({ navigation }) => {
   const [notifications, setNotifications] = useState(fakeNotifications);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeNotifications);
+
+  // Load custom fonts
+  const fontsLoaded = useCustomFonts();
 
   useEffect(() => {
     setFilteredData(notifications);
@@ -47,121 +75,131 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
     setFilteredData(filtered);
   };
 
-  // const handleItemPress = (item: typeof fakeNotifications[0]) => {
-  //   navigation.navigate('NotificationDetail', { notification: item });
-  // };
-
-  const renderItem = ({ item }: { item: typeof fakeNotifications[0] }) => (
-    <TouchableOpacity style={styles.notificationContainer} >
-      <Image source={{ uri: item.icon }} style={styles.icon} />
-      <View style={styles.notificationTextContainer}>
-        <Text style={styles.notificationTitle}>{item.title}</Text>
-        <Text style={styles.notificationSummary}>{item.summary}</Text>
-        <View style={styles.notificationInfor}>
-          <Text style={styles.notificationDate}>{item.date}</Text>
-          <Text style={styles.notificationManager}>By: Phòng nhân sự</Text>
+  const renderItem = ({ item }: { item: (typeof fakeNotifications)[0] }) => (
+    <TouchableOpacity
+      style={[
+        tw`flex-row items-center p-3 bg-white mb-2 rounded-lg`,
+        { padding: getScaledSize(12) },
+      ]}
+    >
+      <Image
+        source={{ uri: item.icon }}
+        style={{
+          width: getScaledSize(48),
+          height: getScaledSize(48),
+          borderRadius: getScaledSize(24),
+        }}
+      />
+      <View style={tw`ml-3 flex-1`}>
+        <Text
+          style={[
+            tw`text-lg text-center`,
+            {
+              color: COLORS.black,
+              fontFamily: "CustomFont-Bold",
+              fontSize: getScaledSize(16),
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
+        <Text
+          style={[
+            tw`text-base my-1 `,
+            {
+              color: COLORS.black,
+              fontFamily: "CustomFont-Regular",
+              fontSize: getScaledSize(14),
+            },
+          ]}
+        >
+          {item.summary}
+        </Text>
+        <View style={tw`flex-row justify-between mt-1`}>
+          <Text
+            style={[
+              tw`text-sm`,
+              {
+                color: COLORS.date,
+                fontFamily: "CustomFont-Regular",
+                fontSize: getScaledSize(12),
+              },
+            ]}
+          >
+            {item.date}
+          </Text>
+          <Text
+            style={[
+              tw`text-sm`,
+              {
+                color: COLORS.date,
+                fontFamily: "CustomFont-Italic",
+                fontSize: getScaledSize(12),
+              },
+            ]}
+          >
+            By: Phòng nhân sự
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
   );
 
+  if (!fontsLoaded) {
+    return (
+      <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+        <View style={tw`flex-1 justify-center items-center`}>
+          <Text
+            style={[
+              tw`text-lg`,
+              { color: COLORS.black, fontSize: getScaledSize(16) },
+            ]}
+          >
+            Loading Fonts...
+          </Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
   return (
-    <SafeAreaView style={styles.container}>
-      <SearchBar
-        placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: 'white' }}
-        value={search}
-        onChangeText={handleSearch}
-        containerStyle={{
-          backgroundColor: 'transparent',
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
-      />
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+     <SearchBar
+          placeholder="Tìm kiếm "
+          inputContainerStyle={[
+            tw`bg-white`,
+            { backgroundColor: COLORS.white },
+          ]}
+          containerStyle={[
+            tw`bg-transparent border-b border-gray-300 border-t-0`,
+            { backgroundColor: COLORS.colorMain },
+          ]}
+          onChangeText={setSearch}
+          value={search}
+          placeholderTextColor={COLORS.black}
+        />
       <FlatList
         data={filteredData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.flatListContainer}
-        ListEmptyComponent={<Text style={styles.emptyText}>Không có thông báo nào.</Text>}
+        contentContainerStyle={tw`flex-grow`}
+        ListEmptyComponent={
+          <Text
+            style={[
+              tw`text-center mt-5`,
+              {
+                color: COLORS.darkGray,
+                fontSize: getScaledSize(16),
+                fontFamily: "CustomFont-Regular",
+              },
+            ]}
+          >
+            Không có thông báo nào.
+          </Text>
+        }
       />
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  goBack: {
-    height: 60,
-    width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontFamily:'CustomFont-Regular'
-  },
-  notificationContainer: {
-    flexDirection: 'row',
-    padding: 10,
-    backgroundColor: '#fff',
-    marginBottom: 10,
-    borderRadius: 5,
-    fontFamily:'CustomFont-Regular'
-  },
-  notificationTextContainer: {
-    marginLeft: 10,
-    flex: 1,
-    fontFamily:'CustomFont-Regular'
-  },
-  notificationTitle: {
-    fontSize: 16,
-    alignSelf:'center',
-    fontFamily:'CustomFont-Bold'
-  },
-  notificationSummary: {
-    fontSize: 14,
-    marginVertical: 5,
-    fontFamily:'CustomFont-Regular'
-  },
-  notificationDate: {
-    fontSize: 12,
-    color: COLORS.date,
-    fontFamily:'CustomFont-Regular'
-  },
-  icon: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  flatListContainer: {
-    flexGrow: 1,
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontSize: 16,
-    color: '#757575',
-    fontFamily:'CustomFont-Regular'
-  },
-  notificationManager:{
-    fontSize: 12,
-    color: COLORS.date,
-    fontFamily:'CustomFont-Italic'
-  },
-  notificationInfor:{
-    flexDirection:'row',
-    justifyContent:'space-between'
-  }
-});
 
 export default NotificationScreen;

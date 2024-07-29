@@ -1,11 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   SafeAreaView,
   FlatList,
-  StatusBar,
   TouchableOpacity,
   Image,
   Animated,
@@ -17,7 +15,9 @@ import { RootStackParamList } from "../../../navigator/navigation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import * as MediaLibrary from "expo-media-library";
 import { WebView } from "react-native-webview";
+import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
+import useCustomFonts from "../../../../hooks/useFont";
 
 type Component = {
   id: number;
@@ -85,19 +85,20 @@ const products: Product[] = [
     remainingComponents: [],
   },
 ];
-
 type ProductScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "Product">;
 };
 
 const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
-  const [showPdf, setShowPdf] = React.useState(false);
-  const [pdfUri, setPdfUri] = React.useState<string>("");
-  const [selectedProductId, setSelectedProductId] = React.useState<number | null>(null);
-  const [outputMenuVisible, setOutputMenuVisible] = React.useState<number | null>(null);
+  const [showPdf, setShowPdf] = useState(false);
+  const [pdfUri, setPdfUri] = useState<string>("");
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
+  const [outputMenuVisible, setOutputMenuVisible] = useState<number | null>(null);
 
-  const animatedValue = React.useRef(new Animated.Value(0)).current;
-  const [searchKeyword, setSearchKeyword] = React.useState<string>("");
+  const animatedValue = useRef(new Animated.Value(0)).current;
+  const [searchKeyword, setSearchKeyword] = useState<string>("");
+
+  useCustomFonts();
 
   useEffect(() => {
     (async () => {
@@ -177,28 +178,28 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     });
 
     return (
-      <View key={item.id} style={styles.itemContainer}>
-        <TouchableOpacity style={styles.productContainer} onPress={() => handleProductPress(item)}>
-          <Image source={{ uri: item.image }} style={styles.image} />
-          <View style={styles.textContainer}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemText}>PTC Code: {item.PTCcode}</Text>
-            <Text style={styles.itemText}>Client Code: {item.ClientCode}</Text>
+      <View key={item.id} style={tw`p-2 m-1 border border-gray-300`}>
+        <TouchableOpacity style={tw`flex-row items-center`} onPress={() => handleProductPress(item)}>
+          <Image source={{ uri: item.image }} style={tw`w-12 h-12 mr-2`} />
+          <View style={tw`flex-1`}>
+            <Text style={{ fontFamily: "CustomFont-Bold", fontSize: 18 }}>{item.name}</Text>
+            <Text style={{ fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.black }}>
+              PTC Code: {item.PTCcode}
+            </Text>
+            <Text style={{ fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.black }}>
+              Client Code: {item.ClientCode}
+            </Text>
           </View>
-          <TouchableOpacity style={styles.menuButton} onPress={() => toggleOutputMenu(item.id)}>
+          <TouchableOpacity style={tw`p-2`} onPress={() => toggleOutputMenu(item.id)}>
             <FontAwesome name="bars" size={20} color="black" />
           </TouchableOpacity>
         </TouchableOpacity>
         {selectedProductId === item.id && (
-          <Animated.View style={[styles.outputMenu, { transform: [{ translateY }] }]}>
-            {/* <Text style={styles.outputMenuTitle}>Các bộ phận</Text>
-            {item.components.map((component) => (
-              <View key={component.id} style={styles.componentItem}>
-                <Text style={styles.componentText}>{component.name}</Text>
-              </View>
-            ))} */}
-            <TouchableOpacity style={styles.outputMenuItem} onPress={() => handleOutputPress(item)}>
-              <Text style={styles.outputMenuItemText}>Báo Output</Text>
+          <Animated.View style={[tw`bg-white rounded mt-2`, { transform: [{ translateY }] }]}>
+            <TouchableOpacity style={tw`bg-blue-500 p-2 rounded`} onPress={() => handleOutputPress(item)}>
+              <Text style={{ fontFamily: "CustomFont-Regular", fontSize: 16, color: COLORS.black, textAlign: 'center' }}>
+                Báo Output
+              </Text>
             </TouchableOpacity>
           </Animated.View>
         )}
@@ -215,23 +216,21 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={tw`flex-row items-center bg-white p-2`}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-2`}>
           <FontAwesome name="arrow-left" size={20} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Sản phẩm</Text>
+        <Text style={{ fontFamily: "CustomFont-Bold", fontSize: 20, flex: 1, textAlign: 'center' }}>
+          Sản phẩm
+        </Text>
       </View>
       {!showPdf ? (
         <>
           <SearchBar
             placeholder="Tìm kiếm"
-            inputContainerStyle={{ backgroundColor: "white" }}
-            containerStyle={{
-              backgroundColor: "transparent",
-              borderBottomWidth: 0,
-              borderTopWidth: 0,
-            }}
+            inputContainerStyle={tw`bg-white`}
+            containerStyle={tw`bg-transparent border-t-0`}
             onChangeText={handleSearch}
             value={searchKeyword}
           />
@@ -239,95 +238,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             data={filteredProducts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={styles.list}
+            contentContainerStyle={tw`p-2`}
           />
         </>
       ) : (
-        <WebView source={{ uri: pdfUri }} style={{ flex: 1 }} />
+        <WebView source={{ uri: pdfUri }} style={tw`flex-1`} />
       )}
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: StatusBar.currentHeight || 0,
-    backgroundColor: COLORS.colorMain,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#ffffff",
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-  },
-  goBack: {
-    marginRight: 10,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontFamily:'CustomFont-Bold',
-    textAlign: "center",
-    flex: 1,
-  },
-  list: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
-  },
-  itemContainer: {
-    padding: 10,
-    margin:2,
-    borderWidth:1
-  },
-  productContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  image: {
-    width: 50,
-    height: 50,
-    marginRight: 10,
-  },
-  textContainer: {
-    flex: 1,
-    fontFamily:'CustomFont-Regular'
-  },
-  itemName: {
-    fontSize: 16,
-    fontWeight: "bold",
-  },
-  itemText: {
-    fontSize: 14,
-    color: "#555555",
-    fontFamily:'CustomFont-Regular'
-  },
-  menuButton: {
-    padding: 10,
-  },
-  outputMenu: {
-    backgroundColor: "white",
-    // padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-  },
-  outputMenuTitle: {
-    fontSize: 16,
-    marginBottom: 10,
-    fontFamily:'CustomFont-Bold'
-  },
-
-  outputMenuItem: {
-    // marginTop: 10,
-    backgroundColor: "#007bff",
-    padding: 10,
-    borderRadius: 5,
-  },
-  outputMenuItemText: {
-    color: "white",
-    textAlign: "center",
-    fontFamily:'CustomFont-Regular'
-  },
-});
 
 export default ProductScreen;

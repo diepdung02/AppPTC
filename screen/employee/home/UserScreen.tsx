@@ -2,22 +2,34 @@ import React, { useState } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   Image,
   SafeAreaView,
+  Dimensions,
+  Platform,
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CheckBox from "react-native-check-box";
+import tw from "twrnc";
 import COLORS from "../../../constants/Color";
-import { RootStackParamList } from "../../navigator/navigation";
 
-type Props = {
-  navigation: StackNavigationProp<RootStackParamList, "Notifications">;
-};
+// Lấy kích thước màn hình
+const { width, height } = Dimensions.get('window');
 
-const UserScreen: React.FC<Props> = ({ navigation }) => {
+// Kích thước cơ sở để tính toán tỷ lệ
+const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
+const BASE_HEIGHT = 667; // Kích thước màn hình cơ sở
+
+// Tính tỷ lệ scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => size * scale;
+
+const adjustScale = (size: number) => getScaledSize(size) * 0.5; 
+
+const UserScreen: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
 
   const selectLanguage = (language: "english" | "vietnamese") => {
@@ -25,77 +37,62 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.imgcontainer}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={tw`items-center justify-center my-${adjustScale(20)}`}>
         <Image
           source={{ uri: "https://img.upanh.tv/2024/07/09/avatar.jpg" }}
-          style={styles.image}
+          style={tw`w-${adjustScale(80)} h-${adjustScale(80)} rounded-full`}
         />
       </View>
-      <View style={styles.inforContainer}>
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Mã nhân viên: </Text>
-          <Text style={styles.txtDetail}>MN787899</Text>
-        </View>
-
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Ngày làm việc: </Text>
-          <Text style={styles.txtDetail}>16-06-2024</Text>
-        </View>
-
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Ngày sinh: </Text>
-          <Text style={styles.txtDetail}>20-07-2024</Text>
-        </View>
-
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Số điện thoại: </Text>
-          <Text style={styles.txtDetail}>0932499021</Text>
-        </View>
-
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Bộ phận làm việc: </Text>
-          <Text style={styles.txtDetail}>ERP</Text>
-        </View>
-
-        <View style={styles.infor}>
-          <Text style={styles.txtInfor}>Chức vụ: </Text>
-          <Text style={styles.txtDetail}>INTERN</Text>
-        </View>
+      <View style={tw`m-${adjustScale(2)}`}>
+        {[
+          { label: "Mã nhân viên:", value: "MN787899" },
+          { label: "Ngày làm việc:", value: "16-06-2024" },
+          { label: "Ngày sinh:", value: "20-07-2024" },
+          { label: "Số điện thoại:", value: "0932499021" },
+          { label: "Bộ phận làm việc:", value: "ERP" },
+          { label: "Chức vụ:", value: "INTERN" },
+        ].map((item, index) => (
+          <View key={index} style={tw`border-b-2 border-black flex-row items-center`}>
+            <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
+            <Text style={[tw`mt-${adjustScale(1.5)} mx-${adjustScale(20)} text-red-500`, { fontSize: getScaledSize(16) }]}>{item.value}</Text>
+          </View>
+        ))}
 
         <TouchableOpacity>
-          <View style={styles.infor}>
-            <View style={styles.iconContainer}>
-              <Text style={styles.txtInfor}>Chế độ phúc lợi: </Text>
-              <View style={styles.icon}>
-                <FontAwesome name="arrow-right" size={20} color="black" />
+          <View style={tw`border-b-2 border-black flex-row items-center`}>
+            <View style={tw`flex-row items-center`}>
+              <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Chế độ phúc lợi: </Text>
+              <View style={tw`ml-${adjustScale(80)}`}>
+                <FontAwesome name="arrow-right" size={adjustScale(30)} color="black" />
               </View>
             </View>
           </View>
         </TouchableOpacity>
-        <View style={styles.languageContainer}>
-          <View style={styles.languageOptions}>
-            <Text style={styles.txtInfor}>Ngôn ngữ:</Text>
+
+        <View style={tw`mt-${adjustScale(2)} border-b-2 border-black`}>
+          <View style={tw`flex-row justify-between items-center`}>
+            <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Ngôn ngữ:</Text>
             <TouchableOpacity
               onPress={() => selectLanguage("english")}
-              style={styles.languageOption}
+              style={tw`flex-row items-center ml-${adjustScale(5)}`}
             >
-              <View style={styles.checkBoxContainer}>
+              <View style={{ transform: [{ scale: adjustScale(2) }] }}>
                 <CheckBox
                   isChecked={selectedLanguage === "english"}
                   onClick={() => selectLanguage("english")}
-                  checkBoxColor={COLORS.lightGray}
+                  checkBoxColor="lightgray"
                   checkedCheckBoxColor={COLORS.red}
-                  uncheckedCheckBoxColor={COLORS.black}
+                  uncheckedCheckBoxColor="black"
                 />
               </View>
-              <Text style={styles.languageText}>EN</Text>
+              <Text style={[tw`ml-${adjustScale(1)}`, { fontSize: getScaledSize(16) }]}>EN</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => selectLanguage("vietnamese")}
-              style={styles.languageOption}
+              style={tw`flex-row items-center ml-${adjustScale(5)}`}
             >
-              <View style={styles.checkBoxContainer}>
+              <View style={{ transform: [{ scale: adjustScale(2) }] }}>
                 <CheckBox
                   isChecked={selectedLanguage === "vietnamese"}
                   onClick={() => selectLanguage("vietnamese")}
@@ -104,7 +101,7 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
                   uncheckedCheckBoxColor={COLORS.black}
                 />
               </View>
-              <Text style={styles.languageText}>VN</Text>
+              <Text style={[tw`ml-${adjustScale(1)}`, { fontSize: getScaledSize(16) }]}>VN</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -112,75 +109,5 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-  },
-  imgcontainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 50,
-  },
-  image: {
-    width: 200,
-    height: 200,
-    borderRadius: 100,
-  },
-  inforContainer: {
-    margin: 10,
-  },
-  infor: {
-    borderBottomWidth: 2,
-    borderBottomColor: "black",
-    flexDirection: "row",
-  },
-  txtInfor: {
-    fontSize: 20,
-    padding: 5,
-    width: 200,
-    fontFamily:'CustomFont-Regular'
-  },
-  iconContainer: {
-    flexDirection: "row",
-  },
-  icon: {
-    justifyContent: "center",
-    marginLeft: 170,
-  },
-  txtDetail: {
-    fontSize: 18,
-    marginTop: 7,
-    marginHorizontal: 75,
-    color: COLORS.red,
-    fontFamily:'CustomFont-Regular'
-  },
-  languageContainer: {
-    marginTop: 10,
-    borderBottomWidth: 2,
-    borderBottomColor: "black",
-  },
-  
-  languageOptions: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: 100,
-  },
-  languageOption: {
-    flexDirection: "row",
-    alignSelf: "center",
-    marginLeft:40,
-  },
-  checkBoxContainer: {
-    transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
-  },
-  languageText: {
-    fontSize: 18,
-    marginLeft: 5,
-    textDecorationLine: "none",
-    fontFamily:'CustomFont-Regular'
-  },
-});
 
 export default UserScreen;

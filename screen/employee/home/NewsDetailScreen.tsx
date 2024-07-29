@@ -1,17 +1,29 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, SafeAreaView, FlatList } from 'react-native';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../../navigator/navigation';
+import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
+
+// Get screen dimensions for scaling
+const { width, height } = Dimensions.get('window');
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => size * scale;
 
 type NewsDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
-  "NewsDetail"
+  'NewsDetail'
 >;
 
-type NewsDetailScreenRouteProp = RouteProp<RootStackParamList, "NewsDetail">;
+type NewsDetailScreenRouteProp = RouteProp<RootStackParamList, 'NewsDetail'>;
 
 type Props = {
   navigation: NewsDetailScreenNavigationProp;
@@ -21,115 +33,71 @@ type Props = {
 const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { newsItem } = route.params;
 
-  const renderDetailItem = ({ item }: { item: { time: string, activities: string[] } }) => (
-    <View style={styles.detailItem}>
-      <Text style={styles.detailTime}>{item.time}</Text>
+  const renderDetailItem = ({ item }: { item: { time: string; activities: string[] } }) => (
+    <View style={tw`mb-4 p-4 bg-white rounded-lg shadow-md`}>
+      <Text style={[tw`text-lg font-bold`, { color: '#2c3e50', fontFamily: 'CustomFont-Regular' }]}>
+        {item.time}
+      </Text>
       {item.activities.map((activity, idx) => (
-        <Text key={idx} style={styles.detailActivity}>- {activity}</Text>
+        <Text key={idx} style={[tw`text-base mt-2`, { color: '#7f8c8d', fontFamily: 'CustomFont-Regular' }]}>
+          - {activity}
+        </Text>
       ))}
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={tw`flex-1 bg-${COLORS.colorMain}`}>
+      <View style={tw`flex-row items-center bg-white p-4 shadow-md`}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.goBack}
+          style={tw`w-10 h-10 items-center justify-center`}
         >
           <FontAwesome name="arrow-left" size={24} color="black" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chi tiết tin tức</Text>
+        <Text
+          style={[
+            tw`text-xl ml-4`,
+            {
+              color: '#2c3e50',
+              fontFamily: 'CustomFont-Regular',
+              fontSize: getScaledSize(18),
+            },
+          ]}
+        >
+          Chi tiết tin tức
+        </Text>
       </View>
-      <View style={styles.content}>
-        <Image source={{ uri: newsItem.image }} style={styles.image} />
-        <Text style={styles.title}>{newsItem.title}</Text>
-        <Text style={styles.date}>{newsItem.date}</Text>
+      <View style={tw`flex-1 p-4`}>
+        <Image
+          source={{ uri: newsItem.image }}
+          style={tw`w-full h-48 rounded-lg mb-4`}
+        />
+        <Text
+          style={[
+            tw`text-2xl font-bold mb-2 text-center`,
+            { color: '#3498db', fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) },
+          ]}
+        >
+          {newsItem.title}
+        </Text>
+        <Text
+          style={[
+            tw`text-base mb-4`,
+            { color: '#7f8c8d', fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) },
+          ]}
+        >
+          {newsItem.date}
+        </Text>
         <FlatList
           data={newsItem.details}
           renderItem={renderDetailItem}
           keyExtractor={(item, index) => index.toString()}
-          style={styles.detailsContainer}
+          contentContainerStyle={tw`pb-4`}
         />
       </View>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain, 
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#ffffff', 
-    padding: 10,
-    elevation: 4, 
-  },
-  goBack: {
-    width: 40,
-    height: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 15,
-    fontWeight: 'bold',
-    color: '#2c3e50', 
-    fontFamily:'CustomFont-Regular'
-  },
-  content: {
-    flex: 1,
-    paddingHorizontal: 20,
-    paddingTop: 10,
-    fontFamily:'CustomFont-Regular'
-  },
-  image: {
-    width: '100%',
-    height: 200,
-    borderRadius: 12,
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#3498db', 
-    marginBottom: 10,
-    fontFamily:'CustomFont-Regular'
-  },
-  date: {
-    fontSize: 16,
-    color: '#7f8c8d', 
-    marginBottom: 15,
-    fontFamily:'CustomFont-Regular'
-  },
-  detailsContainer: {
-    flex: 1,
-    fontFamily:'CustomFont-Regular'
-  },
-  detailItem: {
-    marginBottom: 10,
-    padding: 10,
-    backgroundColor: '#ffffff', 
-    borderRadius: 8,
-    elevation: 2, 
-    fontFamily:'CustomFont-Regular'
-  },
-  detailTime: {
-    fontWeight: 'bold',
-    color: '#2c3e50', 
-    marginBottom: 5,
-    fontFamily:'CustomFont-Regular'
-  },
-  detailActivity: {
-    fontSize: 16,
-    color: '#7f8c8d', 
-    marginLeft: 5,
-    fontFamily:'CustomFont-Regular'
-  },
-});
 
 export default NewsDetailScreen;

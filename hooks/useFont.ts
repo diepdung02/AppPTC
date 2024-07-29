@@ -1,4 +1,4 @@
-
+// useCustomFonts.js
 import { useFonts } from 'expo-font';
 
 const useCustomFonts = () => {
