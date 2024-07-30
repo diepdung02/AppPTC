@@ -2,34 +2,47 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
   FlatList,
+  Dimensions
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchBar } from "@rneui/themed";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import tw from "twrnc"; // Import twrnc
 import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
 import moment from "moment";
 
+const { width, height } = Dimensions.get('window');
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Calculate scale based on the smaller ratio
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 const leaveRequests = [
   {
-    id: 1,
+    id: 3,
     code: '2407250003 AL',
-    startDate: '2024-07-01',
-    endDate: '2024-07-10',
-    leaveType: 'Nghỉ phép năm',
-    reason: 'Đi du lịch',
-    dayOffs: 10,
-    remainingDaysOff: 15,
-    usedDaysOff: 5,
-    status: 'Đã được duyệt',
+    startDate: '2024-09-15',
+    endDate: '2024-09-20',
+    leaveType: 'Nghỉ không lương',
+    reason: 'Việc cá nhân',
+    
+    dayOffs: 6,
+    remainingDaysOff: 10,
+    usedDaysOff: 4,
+    status: 'Đang chờ duyệt',
   },
   {
     id: 2,
@@ -44,18 +57,17 @@ const leaveRequests = [
     status: 'Đã bị từ chối',
   },
   {
-    id: 3,
+    id: 1,
     code: '2407250001 AL',
-    startDate: '2024-09-15',
-    endDate: '2024-09-20',
-    leaveType: 'Nghỉ không lương',
-    reason: 'Việc cá nhân',
-    dayOffs: 6,
-    remainingDaysOff: 10,
-    usedDaysOff: 4,
-    status: 'Đang chờ duyệt',
+    startDate: '2024-07-01',
+    endDate: '2024-07-10',
+    leaveType: 'Nghỉ phép năm',
+    reason: 'Đi du lịch',
+    dayOffs: 10,
+    remainingDaysOff: 15,
+    usedDaysOff: 5,
+    status: 'Đã được duyệt',
   },
-  // Thêm nhiều dữ liệu giả lập khác nếu cần
 ];
 
 type RequestMainProps = {
@@ -96,15 +108,15 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
     switch (item.status) {
       case "Đã được duyệt":
         statusColor = COLORS.green;
-        textColor = COLORS.black; 
+        textColor = COLORS.black;
         break;
       case "Đã bị từ chối":
         statusColor = COLORS.red;
-        textColor = COLORS.white; 
+        textColor = COLORS.white;
         break;
       case "Đang chờ duyệt":
         statusColor = COLORS.yellow;
-        textColor = COLORS.black; 
+        textColor = COLORS.black;
         break;
       default:
         statusColor = COLORS.darkGray;
@@ -114,59 +126,49 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={styles.itemContainer}
+        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailRequest", { item })}
       >
-        <View style={styles.detailsContainer}>
-          <Text style={styles.title}>Thông tin nghỉ phép:</Text>
-          <View style={styles.createdAtContainer}>
-            <View style={styles.codeContainer}>
-              {item.code.split("").map((char, index) => (
-                <Text key={index} style={[styles.itemCode, styles.createdAt]}>
-                  {char}
-                </Text>
+        <View style={tw`flex-1`}>
+          <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
+          <View style={tw`absolute`}>
+            <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 30 * scale }]}>
+              {item.code.split("").map((char: string, index: number) => (
+                <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
               ))}
             </View>
           </View>
-
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Ngày bắt đầu:</Text>
-            <Text style={styles.itemText}>{item.startDate}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày bắt đầu:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Ngày kết thúc:</Text>
-            <Text style={styles.itemText}>{item.endDate}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày kết thúc:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endDate}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Loại nghỉ phép:</Text>
-            <Text style={styles.itemText}>{item.leaveType}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Loại nghỉ phép:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.leaveType}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Lí do:</Text>
-            <Text style={styles.itemText}>{item.reason}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Lí do:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Số ngày nghỉ:</Text>
-            <Text style={styles.itemText}>{item.dayOffs}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.dayOffs}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Số ngày nghỉ còn lại:</Text>
-            <Text style={styles.itemText}>{item.remainingDaysOff}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ còn lại:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.remainingDaysOff}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Số ngày nghỉ đã sử dụng:</Text>
-            <Text style={styles.itemText}>{item.usedDaysOff}</Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ đã sử dụng:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.usedDaysOff}</Text>
           </View>
-          <View style={styles.detail}>
-            <Text style={styles.detailText}>Trạng thái:</Text>
-            <Text
-              style={[
-                styles.itemStatus,
-                { backgroundColor: statusColor, color: textColor },
-              ]}
-            >
-              {item.status}
-            </Text>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Trạng thái:</Text>
+            <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -174,146 +176,61 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBack}
-        >
-          <FontAwesome name="arrow-left" size={20} color="black" />
-        </TouchableOpacity>
-        <Text style={styles.headerTitle}>Tất cả yêu cầu</Text>
-      </View>
-      <SearchBar
-        placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: "white" }}
-        value={search}
-        onChangeText={handleSearch}
-        containerStyle={{
-          backgroundColor: "transparent",
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
-      />
-      <FlatList
-        data={filteredData}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-      />
+    <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()} 
+        style={[tw`p-2`, { borderRadius: 50 }]} 
+        activeOpacity={0.7} 
+      >
+        <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+      </TouchableOpacity>
+
+      <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+        Danh sách đơn nghỉ phép
+      </Text>
+
       <TouchableOpacity
         onPress={() => navigation.navigate("LeaveRequest")}
-        style={styles.addButton}
+        style={[tw`p-2`, { borderRadius: 50 }]} 
+        activeOpacity={0.7} 
       >
-        <MaterialCommunityIcons name="plus-circle" size={50} color="white" />
+        <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
       </TouchableOpacity>
+    </View>
+      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+        <SearchBar
+          placeholder="Tìm kiếm"
+          onChangeText={handleSearch}
+          value={search}
+          lightTheme
+          round
+          containerStyle={tw`flex-1`}
+          inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
+          inputStyle={{ fontSize: getScaledSize(16) }}
+        />
+      </View>
+      <FlatList
+        data={filteredData}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={tw`pb-5`}
+      />
+      {/* <TouchableOpacity
+        style={[
+          tw`absolute bottom-2 right-2 rounded-full p-2 shadow-md`,
+          { backgroundColor: COLORS.primary },
+        ]}
+        onPress={() => navigation.navigate("SendMail")}
+      >
+        <FontAwesome
+          name="plus-circle"
+          size={getScaledSize(50)}
+          color={COLORS.white}
+        />
+      </TouchableOpacity> */}
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  itemContainer: {
-    backgroundColor: "white",
-    padding: 10,
-    marginVertical: 5,
-    marginHorizontal: 20,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-    height:270,
-  },
-  itemText: {
-    fontSize: 16,
-    color: "black",
-  },
-  detail: {
-    flexDirection: "row",
-  },
-  detailText: {
-    width: 150,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  detailsContainer: {
-    flex: 1,
-    
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-    marginLeft: 10,
-  },
-  addButton: {
-    position: "absolute",
-    right: 20,
-    bottom: 20,
-    backgroundColor: COLORS.addButton,
-    borderRadius: 30,
-    padding: 10,
-    elevation: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    
-  },
-  goBack: {
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  status: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  statusText: {
-    textAlign: "center",
-    fontSize: 12,
-  },
-  createdAtContainer: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    position:'absolute',
-  },
-  createdAt: {
-    fontWeight: "600",
-  },
-  codeContainer: {
-    flexDirection: "column",
-    flexWrap: "wrap",
-    alignItems: "flex-end",
-    left:330,
-  },
-  itemCode:{
-    fontSize:13,
-  },
-  itemStatus: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    color: "white",
-    fontWeight: "600",
-    alignSelf: "flex-start",
-    borderRadius: 5, 
-  },
-});
 
 export default RequestMain;

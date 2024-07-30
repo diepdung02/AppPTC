@@ -2,23 +2,39 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
   FlatList,
+  Dimensions,
 } from "react-native";
-import { FontAwesome } from "@expo/vector-icons";
-import COLORS from "../../../../constants/Color";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../navigator/navigation";
 import { SearchBar } from "@rneui/themed";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import tw from "twrnc"; // Import twrnc
+import COLORS from "../../../../constants/Color";
+import { RootStackParamList } from "../../../navigator/navigation";
+import moment from "moment";
 
-// Fake data
+const { width, height } = Dimensions.get('window');
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Calculate scale based on the smaller ratio
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
+
+// Fake overtime requests data
 const fakeOvertimeRequests = [
   {
     id: 1,
-    code: "2407250001",
+    code: "2407250003",
     startDate: "2023-07-10",
     startTime: "08:00",
     endTime: "12:00",
@@ -36,7 +52,7 @@ const fakeOvertimeRequests = [
   },
   {
     id: 3,
-    code: "2407250003",
+    code: "2407250001",
     startDate: "2023-07-12",
     startTime: "09:00",
     endTime: "18:00",
@@ -45,31 +61,17 @@ const fakeOvertimeRequests = [
   },
 ];
 
-type OvertimeItemProps = {
-  item: OvertimeRequest;
+type OvertimeScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "Overtime">;
 };
 
-const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
-  let statusColor, textColor;
-  switch (item.status) {
-    case "Đã được duyệt":
-      statusColor = COLORS.green;
-      textColor = COLORS.black;
-      break;
-    case "Đã bị từ chối":
-      statusColor = COLORS.red;
-      textColor = COLORS.white;
-      break;
-    case "Đang chờ duyệt":
-      statusColor = COLORS.yellow;
-      textColor = COLORS.black;
-      break;
-    default:
-      statusColor = COLORS.darkGray;
-      textColor = COLORS.black;
-      break;
-  }
+const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState(fakeOvertimeRequests);
+
+  useEffect(() => {
+    setFilteredData(fakeOvertimeRequests);
+  }, []);
 
   const truncateText = (text: string, maxLength: number) => {
     if (text.length > maxLength) {
@@ -78,73 +80,17 @@ const OvertimeItem: React.FC<OvertimeItemProps> = ({ item, navigation }) => {
     return text;
   };
 
-  return (
-    <TouchableOpacity
-      style={styles.itemContainer}
-      onPress={() => navigation.navigate("DetailOvertime", { item })}
-    >
-      <View style={styles.detailsContainer}>
-        <Text style={styles.title}>Thông tin tăng ca:</Text>
-        <View style={styles.createdAtContainer}>
-          <View style={styles.codeContainer}>
-            {item.code.split("").map((char, index) => (
-              <Text key={index} style={[styles.itemCode, styles.createdAt]}>
-                {char}
-              </Text>
-            ))}
-          </View>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Ngày tăng ca:</Text>
-          <Text style={styles.itemText}>{item.startDate}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Giờ bắt đầu:</Text>
-          <Text style={styles.itemText}>{item.startTime}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Giờ kết thúc:</Text>
-          <Text style={styles.itemText}>{item.endTime}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Lí do:</Text>
-          <Text style={styles.itemText}>{truncateText(item.reason, 20)}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Trạng thái:</Text>
-          <Text
-            style={[
-              styles.itemStatus,
-              { backgroundColor: statusColor, color: textColor },
-            ]}
-          >
-            {item.status}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const OvertimeScreen: React.FC<{
-  navigation: StackNavigationProp<RootStackParamList, "Overtime">;
-}> = ({ navigation }) => {
-  const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState<OvertimeRequest[]>(
-    fakeOvertimeRequests || []
-  );
-
-  useEffect(() => {
-    setFilteredData(fakeOvertimeRequests);
-  }, []);
-
   const handleSearch = (text: string) => {
     setSearch(text);
+    if (!fakeOvertimeRequests) {
+      setFilteredData([]);
+      return;
+    }
     const filtered = fakeOvertimeRequests.filter((item) => {
       const dateMatch = item.startDate
         .toLowerCase()
         .includes(text.toLowerCase());
-      const timeMatch = item.startTime
+      const codeMatch = item.code
         .toLowerCase()
         .includes(text.toLowerCase());
       const reasonMatch = item.reason
@@ -153,168 +99,116 @@ const OvertimeScreen: React.FC<{
       const statusMatch = item.status
         .toLowerCase()
         .includes(text.toLowerCase());
-      return dateMatch || timeMatch || reasonMatch || statusMatch;
+      return dateMatch || codeMatch || reasonMatch || statusMatch;
     });
     setFilteredData(filtered);
   };
 
-  const renderItem = ({ item }: { item: OvertimeRequest }) => (
-    <OvertimeItem item={item} navigation={navigation} />
-  );
+  const renderItem = ({ item }: { item: any }) => {
+    let statusColor, textColor;
+    switch (item.status) {
+      case "Đã được duyệt":
+        statusColor = COLORS.green;
+        textColor = COLORS.black;
+        break;
+      case "Đã bị từ chối":
+        statusColor = COLORS.red;
+        textColor = COLORS.white;
+        break;
+      case "Đang chờ duyệt":
+        statusColor = COLORS.yellow;
+        textColor = COLORS.black;
+        break;
+      default:
+        statusColor = COLORS.darkGray;
+        textColor = COLORS.black;
+        break;
+    }
+
+    return (
+      <TouchableOpacity
+        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
+        onPress={() => navigation.navigate("DetailOvertime", { item })}
+      >
+        <View style={tw`flex-1`}>
+          <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin tăng ca:</Text>
+          <View style={tw`absolute`}>
+            <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 10 * scale }]}>
+              {item.code.split("").map((char: string, index: number) => (
+                <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
+              ))}
+            </View>
+          </View>
+
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày bắt đầu:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ bắt đầu:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ kết thúc:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Lí do:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{truncateText(item.reason, 15)}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Trạng thái:</Text>
+            <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.goBack}
+          onPress={() => navigation.goBack()} 
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Tăng ca</Text>
+
+        <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+          Danh sách đơn tăng ca
+        </Text>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("OvertimeRequest")}
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
+        >
+          <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
+        </TouchableOpacity>
       </View>
-      <SearchBar
-        placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: "white" }}
-        value={search}
-        onChangeText={handleSearch}
-        containerStyle={{
-          backgroundColor: "transparent",
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
-      />
+      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+        <SearchBar
+          placeholder="Tìm kiếm"
+          onChangeText={handleSearch}
+          value={search}
+          lightTheme
+          round
+          containerStyle={tw`flex-1`}
+          inputContainerStyle={{ backgroundColor: COLORS.lightGray }}
+          inputStyle={{ fontSize: getScaledSize(14) }}
+        />
+      </View>
       <FlatList
         data={filteredData}
-        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={tw`pb-5`} // Đặt padding-bottom để đảm bảo không bị cắt
+  style={tw`flex-1`}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("OvertimeRequest")}
-        style={styles.addButton}
-      >
-        <FontAwesome name="plus-circle" size={50} color="white" />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  itemContainer: {
-    backgroundColor: "white",
-    padding: 10,
-    marginVertical: 5,
-    marginHorizontal: 20,
-    borderRadius: 5,
-    shadowColor: "black",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-    height: 220,
-  },
-  itemText: {
-    fontSize: 16,
-    color: "black",
-    flexShrink: 1, // Ensure the text can shrink if needed
-  },
-  detail: {
-    flexDirection: "row",
-  },
-  detailText: {
-    width: 150,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-    paddingBottom: 10,
-  },
-  detailsContainer: {
-    flex: 1,
-  },
-  title: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 5,
-    marginLeft: 10,
-  },
-  addButton: {
-    position: "absolute",
-    right: 20,
-    bottom: 20,
-    backgroundColor: COLORS.addButton,
-    borderRadius: 30,
-    padding: 10,
-    elevation: 8,
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  goBack: {
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  status: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    alignItems: "center",
-  },
-  button: {
-    width: 80,
-    height: 30,
-    marginLeft: 10,
-    borderWidth: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 5,
-  },
-  statusText: {
-    textAlign: "center",
-    fontSize: 12,
-  },
-  deleteButton: {
-    marginLeft: 10,
-  },
-  createdAtContainer: {
-    flexDirection: "column",
-    alignItems: "flex-start",
-    position: "absolute",
-    top: 10,
-    right: 10,
-  },
-  createdAt: {
-    fontWeight: "600",
-  },
-  itemStatus: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    color: "white",
-    fontWeight: "600",
-    alignSelf: "flex-start",
-    borderRadius: 5,
-  },
-  codeContainer: {
-    flexDirection: "column",
-    flexWrap: "wrap",
-    alignItems: "flex-end",
-  },
-  itemCode: {
-    fontSize: 13,
-  },
-});
 
 export default OvertimeScreen;

@@ -34,12 +34,12 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { newsItem } = route.params;
 
   const renderDetailItem = ({ item }: { item: { time: string; activities: string[] } }) => (
-    <View style={tw`mb-4 p-4 bg-white rounded-lg shadow-md`}>
-      <Text style={[tw`text-lg font-bold`, { color: '#2c3e50', fontFamily: 'CustomFont-Regular' }]}>
+    <View style={[tw`mb-4 p-4 rounded-lg shadow-md`, { backgroundColor: COLORS.white }]}>
+      <Text style={[tw`text-lg `, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
         {item.time}
       </Text>
       {item.activities.map((activity, idx) => (
-        <Text key={idx} style={[tw`text-base mt-2`, { color: '#7f8c8d', fontFamily: 'CustomFont-Regular' }]}>
+        <Text key={idx} style={[tw`text-base mt-2`, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
           - {activity}
         </Text>
       ))}
@@ -47,19 +47,19 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   );
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-${COLORS.colorMain}`}>
-      <View style={tw`flex-row items-center bg-white p-4 shadow-md`}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center p-4 shadow-md`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={tw`w-10 h-10 items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={24} color="black" />
+          <FontAwesome name="arrow-left" size={24} color={COLORS.black} />
         </TouchableOpacity>
         <Text
           style={[
             tw`text-xl ml-4`,
             {
-              color: '#2c3e50',
+              color: COLORS.black,
               fontFamily: 'CustomFont-Regular',
               fontSize: getScaledSize(18),
             },
@@ -76,7 +76,7 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         <Text
           style={[
             tw`text-2xl font-bold mb-2 text-center`,
-            { color: '#3498db', fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) },
+            { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) },
           ]}
         >
           {newsItem.title}
@@ -84,7 +84,7 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         <Text
           style={[
             tw`text-base mb-4`,
-            { color: '#7f8c8d', fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) },
+            { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) },
           ]}
         >
           {newsItem.date}

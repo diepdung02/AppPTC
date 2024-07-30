@@ -59,6 +59,30 @@ const fakeEmails = [
     timestamp: "2024-07-22 05:00 PM",
     image: "https://via.placeholder.com/150",
   },
+  {
+    id: "6",
+    subject: "Báo cáo hàng tuần",
+    message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
+    to: "Phạm Văn C",
+    timestamp: "2024-07-22 05:00 PM",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: "4",
+    subject: "Báo cáo hàng tuần",
+    message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
+    to: "Phạm Văn C",
+    timestamp: "2024-07-22 05:00 PM",
+    image: "https://via.placeholder.com/150",
+  },
+  {
+    id: "5",
+    subject: "Báo cáo hàng tuần",
+    message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
+    to: "Phạm Văn C",
+    timestamp: "2024-07-22 05:00 PM",
+    image: "https://via.placeholder.com/150",
+  },
 ];
 
 const MailScreen: React.FC<Props> = ({ navigation }) => {
@@ -200,7 +224,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
       <TouchableOpacity
         style={[
           tw`absolute bottom-2 right-2 rounded-full p-2 shadow-md`,
-          { backgroundColor: COLORS.border },
+          { backgroundColor: COLORS.primary },
         ]}
         onPress={() => navigation.navigate("SendMail")}
       >

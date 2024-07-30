@@ -27,8 +27,6 @@ const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => size * scale;
 
-const adjustScale = (size: number) => getScaledSize(size) * 0.5; 
-
 const UserScreen: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
 
@@ -38,13 +36,13 @@ const UserScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`items-center justify-center my-${adjustScale(20)}`}>
+      <View style={tw`items-center justify-center my-${getScaledSize(10)}`}>
         <Image
           source={{ uri: "https://img.upanh.tv/2024/07/09/avatar.jpg" }}
-          style={tw`w-${adjustScale(80)} h-${adjustScale(80)} rounded-full`}
+          style={tw`w-${getScaledSize(50)} h-${getScaledSize(50)} rounded-full`}
         />
       </View>
-      <View style={tw`m-${adjustScale(2)}`}>
+      <View style={tw`m-${getScaledSize(2)}`}>
         {[
           { label: "Mã nhân viên:", value: "MN787899" },
           { label: "Ngày làm việc:", value: "16-06-2024" },
@@ -54,30 +52,30 @@ const UserScreen: React.FC = () => {
           { label: "Chức vụ:", value: "INTERN" },
         ].map((item, index) => (
           <View key={index} style={tw`border-b-2 border-black flex-row items-center`}>
-            <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
-            <Text style={[tw`mt-${adjustScale(1.5)} mx-${adjustScale(20)} text-red-500`, { fontSize: getScaledSize(16) }]}>{item.value}</Text>
+            <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
+            <Text style={[tw`mt-${getScaledSize(1.5)} mx-${getScaledSize(10)} text-red-500`, { fontSize: getScaledSize(16) }]}>{item.value}</Text>
           </View>
         ))}
 
         <TouchableOpacity>
           <View style={tw`border-b-2 border-black flex-row items-center`}>
             <View style={tw`flex-row items-center`}>
-              <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Chế độ phúc lợi: </Text>
-              <View style={tw`ml-${adjustScale(80)}`}>
-                <FontAwesome name="arrow-right" size={adjustScale(30)} color="black" />
+              <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Chế độ phúc lợi: </Text>
+              <View style={tw`ml-${getScaledSize(40)}`}>
+                <FontAwesome name="arrow-right" size={getScaledSize(20)} color="black" />
               </View>
             </View>
           </View>
         </TouchableOpacity>
 
-        <View style={tw`mt-${adjustScale(2)} border-b-2 border-black`}>
+        <View style={tw`mt-${getScaledSize(2)} border-b-2 border-black`}>
           <View style={tw`flex-row justify-between items-center`}>
-            <Text style={[tw`p-${adjustScale(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Ngôn ngữ:</Text>
+            <Text style={[tw`p-${getScaledSize(1)} w-1/4`, { fontSize: getScaledSize(16) }]}>Ngôn ngữ:</Text>
             <TouchableOpacity
               onPress={() => selectLanguage("english")}
-              style={tw`flex-row items-center ml-${adjustScale(5)}`}
+              style={tw`flex-row items-center ml-${getScaledSize(40)}`}
             >
-              <View style={{ transform: [{ scale: adjustScale(2) }] }}>
+              <View style={{ transform: [{ scale: getScaledSize(1) }] }}>
                 <CheckBox
                   isChecked={selectedLanguage === "english"}
                   onClick={() => selectLanguage("english")}
@@ -86,13 +84,13 @@ const UserScreen: React.FC = () => {
                   uncheckedCheckBoxColor="black"
                 />
               </View>
-              <Text style={[tw`ml-${adjustScale(1)}`, { fontSize: getScaledSize(16) }]}>EN</Text>
+              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>EN</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => selectLanguage("vietnamese")}
-              style={tw`flex-row items-center ml-${adjustScale(5)}`}
+              style={tw`flex-row items-center ml-${getScaledSize(0)}`}
             >
-              <View style={{ transform: [{ scale: adjustScale(2) }] }}>
+              <View style={{ transform: [{ scale: getScaledSize(1) }] }}>
                 <CheckBox
                   isChecked={selectedLanguage === "vietnamese"}
                   onClick={() => selectLanguage("vietnamese")}
@@ -101,7 +99,7 @@ const UserScreen: React.FC = () => {
                   uncheckedCheckBoxColor={COLORS.black}
                 />
               </View>
-              <Text style={[tw`ml-${adjustScale(1)}`, { fontSize: getScaledSize(16) }]}>VN</Text>
+              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>VN</Text>
             </TouchableOpacity>
           </View>
         </View>

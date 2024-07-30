@@ -130,6 +130,7 @@ export type RootStackParamList = {
   DetailLeftDept: {item: CreateLeftDept};
   CreateLeftDept: undefined;
   ApproveLeaveScreen: undefined;
+  OutputList: undefined;
   OutputScreen: {
     product: Product;
     productId: number;
@@ -141,7 +142,7 @@ export type RootStackParamList = {
     productPDF: string;
     remainingComponents: Component[];
   };
-  OutputList: undefined;
+ 
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };

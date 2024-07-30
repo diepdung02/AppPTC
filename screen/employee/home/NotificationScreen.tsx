@@ -164,7 +164,8 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-     <SearchBar
+      <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
+        <SearchBar
           placeholder="Tìm kiếm "
           inputContainerStyle={[
             tw`bg-white`,
@@ -178,6 +179,8 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
           value={search}
           placeholderTextColor={COLORS.black}
         />
+      </View>
+        
       <FlatList
         data={filteredData}
         renderItem={renderItem}

@@ -27,7 +27,6 @@ const scaleHeight = height / BASE_HEIGHT;
 const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => size * scale;
-const adjustScale = (size: number) => getScaledSize(size) * 0.5;
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
@@ -59,37 +58,41 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   if (!fontsLoaded) {
     return (
       <View style={tw`flex-1 justify-center items-center bg-gray-100`}>
-        <Text>Loading Fonts...</Text>
+        <Text>Loading...</Text>
       </View>
     );
   }
 
-  // List of items
-  const items = [
-    { route: '', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: 'Kiểm hàng' },
+  // Define valid routes
+  const routes: {
+    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen';
+    image: string;
+    label: string;
+  }[] = [
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: 'Kiểm hàng' },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: 'Sản Phẩm' },
     { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: 'Output' },
     { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: 'Nghỉ phép' },
     { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: 'Tăng ca' },
     { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: 'Lịch' },
-    { route: '', image: 'https://img.upanh.tv/2024/07/09/error.png', label: 'Báo lỗi' },
-    { route: '', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
-    { route: '', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: 'Báo lỗi' },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
     { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: 'Giấy ra cổng' },
-    { route: '', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: 'Rời khỏi' }
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: 'Rời khỏi' }
   ];
 
   // Split items into rows of 4 items each
-  const rows = items.reduce((acc, item, index) => {
+  const rows = routes.reduce((acc, item, index) => {
     const rowIndex = Math.floor(index / 4);
     if (!acc[rowIndex]) acc[rowIndex] = [];
     acc[rowIndex].push(item);
     return acc;
-  }, [] as typeof items[]);
+  }, [] as typeof routes[]);
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`p-${adjustScale(4)}`}>
+      <View style={tw`p-${getScaledSize(4)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           inputContainerStyle={tw`bg-white`}
@@ -100,27 +103,27 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         />
       </View>
 
-      <View style={tw`flex-1 mt-${adjustScale(20)} px-${adjustScale(2)}`}>
+      <View style={tw`flex-1 mt-${getScaledSize(10)} px-${getScaledSize(2)}`}>
         {rows.map((row, rowIndex) => (
-          <View key={rowIndex} style={tw`flex-row justify-around mb-${adjustScale(2)}`}>
+          <View key={rowIndex} style={tw`flex-row justify-around mb-${getScaledSize(2)}`}>
             {row.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                style={[tw`items-center`, { width: adjustScale(80) }]} // Adjust width based on scaling
-                onPress={() => item.route && navigation.navigate(item.route)}
+                style={[tw`items-center`, { width: getScaledSize(50) }]} // Adjust width based on scaling
+                onPress={() => navigation.navigate(item.route)}
               >
                 <Image
                   source={{ uri: item.image }}
-                  style={[tw`mb-${adjustScale(15)}`, { width: adjustScale(150), height: adjustScale(150) }]} // Maintain aspect ratio
+                  style={[tw`mb-${getScaledSize(7)}`, { width: getScaledSize(70), height: getScaledSize(70) }]} // Maintain aspect ratio
                 />
-                <Text style={[tw`text-center w-32 mb-${adjustScale(15)}`, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Regular' }]}>{item.label}</Text>
+                <Text style={[tw`text-center w-32 mb-${getScaledSize(3)}`, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Regular' }]}>{item.label}</Text>
               </TouchableOpacity>
             ))}
           </View>
         ))}
       </View>
 
-      <View style={tw`absolute bottom-${adjustScale(2)} w-full items-center`}>
+      <View style={tw`absolute bottom-${getScaledSize(2)} w-full items-center`}>
         <Text style={[tw``, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Bold' }, { color: COLORS.red }]}>{currentTime}</Text>
       </View>
     </SafeAreaView>

@@ -1,70 +1,92 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
-  StyleSheet,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
   FlatList,
-} from 'react-native';
-import { FontAwesome } from '@expo/vector-icons';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../redux/Slice/store';
-import { SearchBar } from '@rneui/themed';
-import COLORS from '../../../../constants/Color';
-import { CreateLeftDept } from '../../../../redux/Slice/leftDeptSlice';
-import { RootStackParamList } from '../../../navigator/navigation';
+  Dimensions,
+} from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { SearchBar } from "@rneui/themed";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
+import tw from "twrnc"; // Import twrnc
+import COLORS from "../../../../constants/Color";
+import { RootStackParamList } from "../../../navigator/navigation";
 
-type LeftDeptItemProps = {
-  item: CreateLeftDept;
-  navigation: StackNavigationProp<RootStackParamList, 'LeftDeptScreen'>;
+
+const { width, height } = Dimensions.get('window');
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Calculate scale based on the smaller ratio
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
+
+type LeftDeptScreenProps = {
+  navigation: StackNavigationProp<RootStackParamList, "LeftDeptScreen">;
 };
 
-const LeftDeptItem: React.FC<LeftDeptItemProps> = ({ item, navigation }) => {
-  return (
-    <View style={styles.itemContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('DetailLeftDept', { item })}>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Ngày:</Text>
-          <Text style={styles.itemText}>{item.startDate}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Giờ bắt đầu:</Text>
-          <Text style={styles.itemText}>{item.startTime}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Giờ kết thúc:</Text>
-          <Text style={styles.itemText}>{item.endTime}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Lí do:</Text>
-          <Text style={styles.itemText}>{item.reason}</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailText}>Trạng thái:</Text>
-          <Text style={styles.itemText}>{item.status}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+// Sample fake data
+const fakeData = [
+  {
+    id: 1,
+    code: "2407250003",
+    startDate: "2024-07-15",
+    startTime: "15:00",
+    endTime: "16:00",
+    reason: "Về nhà có việc",
+    status: "Đã được duyệt"
+  },
+  {
+    id: 2,
+    code: "2407250002",
+    startDate: "2024-07-16",
+    startTime: "09:00",
+    endTime: "11:00",
+    reason: "Đi khám bệnh",
+    status: "Đang chờ duyệt"
+  },
+  {
+    id: 3,
+    code: "2407250001",
+    startDate: "2024-07-17",
+    startTime: "15:00",
+    endTime: "16:00",
+    reason: "Về đón con",
+    status: "Đã bị từ chối"
+  },
+];
 
-const LeftDeptScreen: React.FC<{
-  navigation: StackNavigationProp<RootStackParamList, 'LeftDeptScreen'>;
-}> = ({ navigation }) => {
-  const overtimeRequests = useSelector((state: RootState) => state.leftDept.requests);
-  const [search, setSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<CreateLeftDept[]>(overtimeRequests || []);
+const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
+  const [search, setSearch] = useState("");
+  const [filteredData, setFilteredData] = useState(fakeData);
+
+  useEffect(() => {
+    setFilteredData(fakeData || []);
+  }, [fakeData]);
+
+  const truncateText = (text: string, maxLength: number) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength) + "...";
+    }
+    return text;
+  };
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    if (!overtimeRequests) {
+    if (!fakeData) {
       setFilteredData([]);
       return;
     }
-    const filtered = overtimeRequests.filter((item) => {
+    const filtered = fakeData.filter((item) => {
       const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
       const timeMatch = item.startTime.toLowerCase().includes(text.toLowerCase());
       const reasonMatch = item.reason.toLowerCase().includes(text.toLowerCase());
@@ -74,101 +96,111 @@ const LeftDeptScreen: React.FC<{
     setFilteredData(filtered);
   };
 
-  const renderItem = ({ item }: { item: CreateLeftDept }) => (
-    <LeftDeptItem item={item} navigation={navigation} />
-  );
+  const renderItem = ({ item }: { item: any }) => {
+    let statusColor, textColor;
+    switch (item.status) {
+      case "Đã được duyệt":
+        statusColor = COLORS.green;
+        textColor = COLORS.black;
+        break;
+      case "Đã bị từ chối":
+        statusColor = COLORS.red;
+        textColor = COLORS.white;
+        break;
+      case "Đang chờ duyệt":
+        statusColor = COLORS.yellow;
+        textColor = COLORS.black;
+        break;
+      default:
+        statusColor = COLORS.darkGray;
+        textColor = COLORS.black;
+        break;
+    }
+
+    return (
+      <TouchableOpacity
+        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
+        onPress={() => navigation.navigate("DetailLeftDept", { item })}
+      >
+        <View style={tw`flex-1`}>
+          <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin ra vào cổng:</Text>
+          <View style={tw`absolute`}>
+            <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 10 * scale }]}>
+              {item.code.split("").map((char: string, index: number) => (
+                <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
+              ))}
+            </View>
+            </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ bắt đầu:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ kết thúc:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Lí do:</Text>
+            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{truncateText(item.reason, 15)}</Text>
+          </View>
+          <View style={tw`flex-row`}>
+            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Trạng thái:</Text>
+            <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
+          </View>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
-          <FontAwesome name="arrow-left" size={20} color="black" />
+    <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()} 
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
+        >
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Xin phép ra vào cổng</Text>
+
+        <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+          Danh sách đơn ra vào cổng
+        </Text>
+        
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CreateLeftDept")}
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
+        >
+          <FontAwesome name="plus-circle" size={getScaledSize(24)} color={COLORS.black} />
+        </TouchableOpacity>
       </View>
-      <SearchBar
-        placeholder="Tìm kiếm"
-        inputContainerStyle={{ backgroundColor: 'white' }}
-        value={search}
-        onChangeText={handleSearch}
-        containerStyle={{
-          backgroundColor: 'transparent',
-          borderBottomWidth: 0,
-          borderTopWidth: 0,
-        }}
-      />
+      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+        <SearchBar
+          placeholder="Tìm kiếm"
+          onChangeText={handleSearch}
+          value={search}
+          lightTheme
+          round
+          containerStyle={tw`flex-1`}
+          inputContainerStyle={{ backgroundColor: COLORS.lightGray }}
+          inputStyle={{ fontSize: getScaledSize(14) }}
+        />
+      </View>
       <FlatList
         data={filteredData}
-        renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        contentContainerStyle={tw`pb-5`} // Add padding-bottom to ensure no cut-off
+        style={tw`flex-1`}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate('CreateLeftDept')}
-        style={styles.addButton}
-      >
-        <FontAwesome name="plus-circle" size={50} color="white" />
-      </TouchableOpacity>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: 'bold',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  goBack: {
-    height: 40,
-    width: 40,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  addButton: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    backgroundColor: COLORS.addButton,
-    borderRadius: 50,
-    padding: 10,
-  },
-  itemContainer: {
-    backgroundColor: 'white',
-    padding: 10,
-    marginVertical: 5,
-    marginHorizontal: 20,
-    borderRadius: 5,
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
-  },
-  itemText: {
-    fontSize: 16,
-    color: 'black',
-  },
-  detail: {
-    flexDirection: 'row',
-  },
-  detailText: {
-    width: 150,
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'black',
-  },
-});
 
 export default LeftDeptScreen;
