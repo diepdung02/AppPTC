@@ -12,14 +12,14 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchBar } from "@rneui/themed";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import tw from "twrnc"; // Import twrnc
+import tw from "twrnc"; 
 import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
 
 
 const { width, height } = Dimensions.get('window');
 
-// Base dimensions for scaling
+// Kích thước cơ sở để chia tỷ lệ
 const BASE_WIDTH = 375;
 const BASE_HEIGHT = 667;
 
@@ -39,7 +39,7 @@ const fakeData = [
   {
     id: 1,
     code: "2407250003",
-    startDate: "2024-07-15",
+    startDate: "17-07-2024",
     startTime: "15:00",
     endTime: "16:00",
     reason: "Về nhà có việc",
@@ -48,7 +48,7 @@ const fakeData = [
   {
     id: 2,
     code: "2407250002",
-    startDate: "2024-07-16",
+    startDate: "16-07-2024",
     startTime: "09:00",
     endTime: "11:00",
     reason: "Đi khám bệnh",
@@ -57,7 +57,7 @@ const fakeData = [
   {
     id: 3,
     code: "2407250001",
-    startDate: "2024-07-17",
+    startDate: "15-07-2024",
     startTime: "15:00",
     endTime: "16:00",
     reason: "Về đón con",
@@ -177,7 +177,7 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
           style={[tw`p-2`, { borderRadius: 50 }]} 
           activeOpacity={0.7} 
         >
-          <FontAwesome name="plus-circle" size={getScaledSize(24)} color={COLORS.black} />
+          <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
       </View>
       <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
@@ -187,16 +187,17 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
           value={search}
           lightTheme
           round
-          containerStyle={tw`flex-1`}
-          inputContainerStyle={{ backgroundColor: COLORS.lightGray }}
+          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
+          inputContainerStyle={{ backgroundColor: COLORS.white }}
           inputStyle={{ fontSize: getScaledSize(14) }}
+          placeholderTextColor={COLORS.black}
         />
       </View>
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={tw`pb-5`} // Add padding-bottom to ensure no cut-off
+        contentContainerStyle={tw`pb-5`} 
         style={tw`flex-1`}
       />
     </SafeAreaView>

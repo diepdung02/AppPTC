@@ -8,6 +8,7 @@ import {
   Image,
   Animated,
   Easing,
+  Dimensions
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -18,6 +19,21 @@ import { WebView } from "react-native-webview";
 import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
 import useCustomFonts from "../../../../hooks/useFont";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+// Lấy kích thước màn hình
+const { width, height } = Dimensions.get('window');
+
+// Kích thước cơ sở để tính toán tỷ lệ
+const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
+const BASE_HEIGHT = 667; // Kích thước màn hình cơ sở
+
+// Tính tỷ lệ scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 type Component = {
   id: number;
@@ -40,7 +56,7 @@ const products: Product[] = [
     id: 16,
     name: "Bàn",
     pdfUri: "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
-    image: "https://via.placeholder.com/150",
+    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/RH/202404111320521288_RH887315.WNK.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "ABC090",
     ClientCode: "AN-868",
     components: [
@@ -56,7 +72,7 @@ const products: Product[] = [
     id: 14,
     name: "Ghế",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://via.placeholder.com/150",
+    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202007071018082515_JC801202.ANC.01.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "HIJ890",
     ClientCode: "NH-789",
     components: [
@@ -72,7 +88,7 @@ const products: Product[] = [
     id: 15,
     name: "Ghế",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://via.placeholder.com/150",
+    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202007071018082515_JC801202.ANC.01.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "HIJ890",
     ClientCode: "NH-789",
     components: [
@@ -217,10 +233,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`flex-row items-center bg-white p-2`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`mr-2`}>
-          <FontAwesome name="arrow-left" size={20} color="black" />
-        </TouchableOpacity>
+      <View style={tw`flex-row items-center  p-2`}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()} 
+        style={[tw`p-2`, { borderRadius: 50 }]} 
+        activeOpacity={0.7} 
+      >
+        <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+      </TouchableOpacity>
         <Text style={{ fontFamily: "CustomFont-Bold", fontSize: 20, flex: 1, textAlign: 'center' }}>
           Sản phẩm
         </Text>

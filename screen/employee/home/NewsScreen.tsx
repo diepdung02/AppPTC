@@ -41,7 +41,7 @@ const fakeNews = [
       "Theo thông báo số 11 ban hành ngày 3 tháng 5 năm 2024, công ty sẽ tổ chức chuyến du lịch đến Long Hải. Nay phòng Nhân sự xin cập nhật lại chương trình như sau: Địa điểm: khu du lịch bãi tắm An Bình – Long Hải, Thời gian: Chủ nhật ngày 02/06/2024, Tập trung lúc 5h00 tại PTC1, khởi hành đi Long Hải lúc 5h30; dự tính chiều 18h30 về đến PTC1",
     image:
       "https://lh5.googleusercontent.com/p/AF1QipPyCRaq4Oi0amzVgAhEI7nLYLzcgN48zW2pMQ0x=w426-h240-k-no",
-    date: "30-06-2024",
+    date: "30-09-2024",
     details: [
       {
         time: "Sáng",
@@ -77,8 +77,8 @@ const fakeNews = [
     title: "Hội nghị Người Lao Động 2024",
     summary:
       "Hội nghị Người Lao Động được tổ chức hàng năm nhằm tạo cơ hội để toàn thể nhân viên và Ban giám đốc chia sẻ về tình hình kinh doanh, chính sách lương, thưởng, phúc lợi, việc thực hiện Thỏa ước lao động tập thể.",
-    image: "https://via.placeholder.com/150",
-    date: "27-03-2024",
+    image: "https://tse4.mm.bing.net/th?id=OIP.I_wuHheENk_f7rFd6t3J1QHaEK&pid=Api&P=0&h=180",
+    date: "27-08-2024",
     details: [
       {
         time: "15h00",
@@ -95,8 +95,8 @@ const fakeNews = [
     title: "Nghỉ lễ Quốc khánh 2/9",
     summary:
       "Theo thông báo từ Phòng Hành chính, công ty sẽ nghỉ lễ Quốc khánh 2/9 từ ngày 01/09 đến ngày 03/09. Ngày 04/09 tất cả nhân viên quay lại làm việc bình thường.",
-    image: "https://via.placeholder.com/150",
-    date: "15-08-2024",
+    image: "https://tse4.mm.bing.net/th?id=OIP.69VoqlLsWvssqlrqelMPyAHaD3&pid=Api&P=0&h=180",
+    date: "15-07-2024",
     details: [
       {
         time: "Ngày 01/09 - 03/09",
@@ -149,7 +149,7 @@ const fakeNews = [
     summary:
       "Hội thảo về nâng cao sức khỏe và an toàn lao động sẽ diễn ra vào ngày 20/09. Mời toàn thể nhân viên tham dự để nâng cao nhận thức và kỹ năng về an toàn lao động.",
     image: "https://img.upanh.tv/2024/07/18/download.jpg",
-    date: "10-09-2024",
+    date: "10-06-2024",
     details: [
       {
         time: "Ngày 20/09",
@@ -254,7 +254,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
                 style={[
                   tw`text-lg text-center`,
                   {
-                    color: COLORS.darkGray,
+                    color: COLORS.black,
                     fontFamily: "CustomFont-Bold",
                     fontSize: getScaledSize(16),
                   },
@@ -302,7 +302,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
                     },
                   ]}
                 >
-                  To: {item.sender}
+                  By: {item.sender}
                 </Text>
               </View>
             </View>

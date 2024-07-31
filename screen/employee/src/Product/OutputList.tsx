@@ -15,6 +15,7 @@ import { Component, Product } from "../../../navigator/navigation";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Base dimensions for scaling
 const BASE_WIDTH = 375;
@@ -177,13 +178,14 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={[tw`flex-1 px-4 pt-4`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`flex-row items-center py-3 px-2 border-b`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={tw`h-10 w-10 items-center justify-center`}
-        >
-          <FontAwesome name="arrow-left" size={20} color={COLORS.text} />
-        </TouchableOpacity>
-        <Text style={[tw`font-bold ml-2`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()} 
+        style={[tw`p-2`, { borderRadius: 50 }]} 
+        activeOpacity={0.7} 
+      >
+        <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+      </TouchableOpacity>
+      <Text style={[tw`text-xl flex-1 text-center `, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(20) }]}>
           Output
         </Text>
       </View>

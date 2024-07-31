@@ -11,11 +11,9 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchBar } from "@rneui/themed";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import tw from "twrnc"; // Import twrnc
+import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
-import moment from "moment";
 
 const { width, height } = Dimensions.get('window');
 
@@ -35,7 +33,7 @@ const fakeOvertimeRequests = [
   {
     id: 1,
     code: "2407250003",
-    startDate: "2023-07-10",
+    startDate: "13-07-2023",
     startTime: "08:00",
     endTime: "12:00",
     reason: "Hỗ trợ dự án",
@@ -44,7 +42,7 @@ const fakeOvertimeRequests = [
   {
     id: 2,
     code: "2407250002",
-    startDate: "2023-07-11",
+    startDate: "12-07-2023",
     startTime: "13:00",
     endTime: "17:00",
     reason: "Bảo trì hệ thống",
@@ -53,7 +51,7 @@ const fakeOvertimeRequests = [
   {
     id: 3,
     code: "2407250001",
-    startDate: "2023-07-12",
+    startDate: "11-07-2023",
     startTime: "09:00",
     endTime: "18:00",
     reason: "Nghiên cứu và phát triển",
@@ -66,7 +64,7 @@ type OvertimeScreenProps = {
 };
 
 const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState<string>("");
   const [filteredData, setFilteredData] = useState(fakeOvertimeRequests);
 
   useEffect(() => {
@@ -74,32 +72,19 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
   }, []);
 
   const truncateText = (text: string, maxLength: number) => {
-    if (text.length > maxLength) {
-      return text.substring(0, maxLength) + "...";
-    }
-    return text;
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
   };
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    if (!fakeOvertimeRequests) {
-      setFilteredData([]);
-      return;
-    }
     const filtered = fakeOvertimeRequests.filter((item) => {
-      const dateMatch = item.startDate
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      const codeMatch = item.code
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      const reasonMatch = item.reason
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      const statusMatch = item.status
-        .toLowerCase()
-        .includes(text.toLowerCase());
-      return dateMatch || codeMatch || reasonMatch || statusMatch;
+      const lowercasedText = text.toLowerCase();
+      return (
+        item.startDate.toLowerCase().includes(lowercasedText) ||
+        item.code.toLowerCase().includes(lowercasedText) ||
+        item.reason.toLowerCase().includes(lowercasedText) ||
+        item.status.toLowerCase().includes(lowercasedText)
+      );
     });
     setFilteredData(filtered);
   };
@@ -127,7 +112,7 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
+        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailOvertime", { item })}
       >
         <View style={tw`flex-1`}>
@@ -195,8 +180,8 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
           value={search}
           lightTheme
           round
-          containerStyle={tw`flex-1`}
-          inputContainerStyle={{ backgroundColor: COLORS.lightGray }}
+          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
+          inputContainerStyle={{ backgroundColor: COLORS.white }}
           inputStyle={{ fontSize: getScaledSize(14) }}
         />
       </View>
@@ -205,7 +190,7 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={tw`pb-5`} // Đặt padding-bottom để đảm bảo không bị cắt
-  style={tw`flex-1`}
+        style={tw`flex-1`}
       />
     </SafeAreaView>
   );

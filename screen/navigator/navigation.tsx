@@ -12,7 +12,7 @@ export type OvertimeRequest = {
   reason: string;
   status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
   code:string;
-  createdAt:string;
+  // createdAt:string;
 };
 
 export type LeaveRequest = {
@@ -71,7 +71,8 @@ export type NotificationItem = {
   summary: string;
   image: string;
   date: string;
-  icon: string
+  icon: string;
+  sender:string;
 };
 export type ManagerNotificationItem = {
   id: string;
@@ -90,6 +91,7 @@ export type EmailItem = {
   subject: string;
   message: string;
   timestamp: string;
+  image:string;
 };
 
 export type Product = {

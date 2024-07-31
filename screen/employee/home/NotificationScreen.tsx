@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Image,
-  StyleSheet,
   Dimensions,
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
@@ -36,17 +35,48 @@ const fakeNotifications = [
   {
     id: "1",
     icon: "https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png",
+    image: "", // No image
     title: "Đơn nghỉ phép",
     summary: "Đơn nghỉ phép của bạn đã bị từ chối",
-    date: "20-07-2024",
+    date: "27-07-2024",
+    sender:"Phòng nhân sự"
   },
   {
     id: "2",
     icon: "https://img.upanh.tv/2024/07/22/approved.png",
+    image: "", // No image
     title: "Đơn xin tăng ca",
     summary: "Đơn xin tăng ca của bạn được duyệt",
-    date: "21-07-2024",
+    date: "22-07-2024",
+    sender:"Phòng nhân sự"
   },
+  {
+    id: "3",
+    icon: "", // No icon
+    image: "https://tse3.mm.bing.net/th?id=OIP.rT1CaU2Yj6DMaEFx0H1vagHaD4&pid=Api&P=0&h=180",
+    title: "Thông báo họp nhóm",
+    summary: "Lịch họp nhóm tháng này đã được cập nhật. Vui lòng kiểm tra lịch và tham gia đúng giờ.",
+    date: "12-07-2024",
+    sender:"Phòng nhân sự"
+  },
+  {
+    id: "4",
+    icon: "", // No icon
+    image: "https://tse3.mm.bing.net/th?id=OIP._y2oyjAWBbYzjjqjyTtwEgHaE8&pid=Api&P=0&h=180",
+    title: "Khen thưởng",
+    summary: "Chúc mừng bạn đã đạt thành tích xuất sắc trong dự án vừa qua và nhận được khen thưởng từ công ty.",
+    date: "03-07-2024",
+    sender:"Phòng nhân sự"
+  },
+  {
+    id: "5",
+    icon: "", // No icon
+    image: "https://tse4.mm.bing.net/th?id=OIP.QR8DDcbYdEth7t3ODHPaDwHaE8&pid=Api&P=0&h=180",
+    title: "Cập nhật chính sách",
+    summary: "Chính sách nghỉ phép mới đã được áp dụng. Vui lòng đọc tài liệu mới để hiểu rõ hơn về quy định.",
+    date: "24-06-2024",
+    sender:"Phòng nhân sự"
+  }
 ];
 
 type Props = {
@@ -75,21 +105,42 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
     setFilteredData(filtered);
   };
 
-  const renderItem = ({ item }: { item: (typeof fakeNotifications)[0] }) => (
+  const truncateText = (text: string, maxLength: number) => {
+    return text.length > maxLength
+      ? `${text.substring(0, maxLength)}...`
+      : text;
+  };
+
+  const renderItem = ({ item }: { item: typeof fakeNotifications[0] }) => (
     <TouchableOpacity
-      style={[
-        tw`flex-row items-center p-3 bg-white mb-2 rounded-lg`,
-        { padding: getScaledSize(12) },
-      ]}
+    style={[
+      tw`flex-row items-center p-3 bg-white mb-2 rounded-lg`,
+      { padding: getScaledSize(12) },
+    ]}
+    onPress={() => navigation.navigate('NotificationDetail', { notification: item })}
     >
+      {item.image ? (
       <Image
-        source={{ uri: item.icon }}
-        style={{
-          width: getScaledSize(48),
-          height: getScaledSize(48),
-          borderRadius: getScaledSize(24),
-        }}
-      />
+      source={{ uri: item.image }}
+      style={[
+        {
+          width: getScaledSize(128),
+          height: getScaledSize(80),
+          borderRadius: getScaledSize(8),
+        },
+        { resizeMode: "cover" },
+      ]}
+    />
+      ) : (
+        <Image
+          source={{ uri: item.icon }}
+          style={{
+            width: getScaledSize(48),
+            height: getScaledSize(48),
+            borderRadius: getScaledSize(24),
+          }}
+        />
+      )}
       <View style={tw`ml-3 flex-1`}>
         <Text
           style={[
@@ -105,7 +156,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
         <Text
           style={[
-            tw`text-base my-1 `,
+            tw`text-base my-1`,
             {
               color: COLORS.black,
               fontFamily: "CustomFont-Regular",
@@ -113,7 +164,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
             },
           ]}
         >
-          {item.summary}
+          {truncateText(item.summary, 60)}
         </Text>
         <View style={tw`flex-row justify-between mt-1`}>
           <Text
@@ -138,7 +189,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
               },
             ]}
           >
-            By: Phòng nhân sự
+            By: {item.sender}
           </Text>
         </View>
       </View>
@@ -175,7 +226,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
             tw`bg-transparent border-b border-gray-300 border-t-0`,
             { backgroundColor: COLORS.colorMain },
           ]}
-          onChangeText={setSearch}
+          onChangeText={handleSearch}
           value={search}
           placeholderTextColor={COLORS.black}
         />

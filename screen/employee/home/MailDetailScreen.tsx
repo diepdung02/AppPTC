@@ -1,16 +1,17 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../../navigator/navigation';
 import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
-import useCustomFonts from '../../../hooks/useFont';
 
+// Get screen dimensions for scaling
+const { width, height } = Dimensions.get('window');
 const BASE_WIDTH = 375;
 const BASE_HEIGHT = 667;
-const { width, height } = Dimensions.get('window');
+
 const scaleWidth = width / BASE_WIDTH;
 const scaleHeight = height / BASE_HEIGHT;
 const scale = Math.min(scaleWidth, scaleHeight);
@@ -21,6 +22,7 @@ type MailDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'MailDetail'
 >;
+
 type MailDetailScreenRouteProp = RouteProp<RootStackParamList, 'MailDetail'>;
 
 type Props = {
@@ -31,67 +33,32 @@ type Props = {
 const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { emailItem } = route.params;
 
-  const fontsLoaded = useCustomFonts();
-
-  if (!fontsLoaded) {
-    return (
-      <View style={tw`flex-1 justify-center items-center bg-gray-100`}>
-        <Text>Loading Fonts...</Text>
-      </View>
-    );
-  }
-
-  const emailDetails = [
-    { label: 'To:', value: emailItem.to },
-    { label: 'Chủ đề:', value: emailItem.subject },
-    { label: 'Nội dung:', value: emailItem.message },
-    { label: 'Thời gian gửi mail:', value: emailItem.timestamp },
-  ];
-
-  const renderItem = ({ item }: { item: { label: string; value: string } }) => (
-    <View style={tw`mb-5`}>
-      <Text
-        style={[
-          tw`text-base`,
-          {
-            fontWeight: 'bold',
-            fontFamily: 'CustomFont-Italic',
-            fontSize: getScaledSize(16),
-          },
-        ]}
-      >
+  const renderDetailItem = ({ item }: { item: { label: string; value: string } }) => (
+    <View style={[tw`mb-4 p-4 rounded-lg shadow-md`, { backgroundColor: COLORS.white }]}>
+      <Text style={[tw`text-lg`, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
         {item.label}
       </Text>
-      <Text
-        style={[
-          tw`text-base`,
-          {
-            color: '#333',
-            fontFamily: 'CustomFont-Italic',
-            fontSize: getScaledSize(16),
-          },
-        ]}
-      >
+      <Text style={[tw`text-base mt-2`, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
         {item.value}
       </Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-[${COLORS.colorMain}]`}>
-      <View style={tw`flex-row items-center bg-white p-4`}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center p-4 shadow-md`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`h-10 w-10 items-center justify-center`}
+          style={tw`w-10 h-10 items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <FontAwesome name="arrow-left" size={24} color={COLORS.black} />
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-lg ml-2`,
+            tw`text-xl ml-4`,
             {
-              fontWeight: 'bold',
-              fontFamily: 'CustomFont-Italic',
+              color: COLORS.black,
+              fontFamily: 'CustomFont-Regular',
               fontSize: getScaledSize(18),
             },
           ]}
@@ -99,12 +66,52 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           Chi tiết Email
         </Text>
       </View>
-      <FlatList
-        data={emailDetails}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.label}
-        contentContainerStyle={tw`px-5 py-2`}
-      />
+      <View style={tw`flex-1 p-4`}>
+        {/* Display the image */}
+        {emailItem.image ? (
+          <Image
+            source={{ uri: emailItem.image }}
+            style={tw`w-full h-48 rounded-lg mb-4`}
+          />
+        ) : null}
+        {/* Display the email title */}
+        <Text
+          style={[
+            tw`text-2xl font-bold mb-2 text-center`,
+            { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) },
+          ]}
+        >
+          {emailItem.subject}
+        </Text>
+        {/* Display the email sender and date */}
+        <View style={tw`flex-row justify-between mb-4`}>
+          <Text
+            style={[
+              tw`text-base`,
+              { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) },
+            ]}
+          >
+            {emailItem.timestamp}
+          </Text>
+          <Text
+            style={[
+              tw`text-base`,
+              { color: COLORS.black, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(16) },
+            ]}
+          >
+            By: {emailItem.to}
+          </Text>
+        </View>
+        {/* Display email details */}
+        <FlatList
+          data={[
+            { label: 'Nội dung:', value: emailItem.message },
+          ]}
+          renderItem={renderDetailItem}
+          keyExtractor={(item) => item.label}
+          contentContainerStyle={tw`pb-4`}
+        />
+      </View>
     </SafeAreaView>
   );
 };

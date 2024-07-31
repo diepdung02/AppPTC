@@ -25,7 +25,7 @@ const scaleWidth = width / BASE_WIDTH;
 const scaleHeight = height / BASE_HEIGHT;
 const scale = Math.min(scaleWidth, scaleHeight);
 
-const getScaledSize = (size: number) => size * scale;
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 const UserScreen: React.FC = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");

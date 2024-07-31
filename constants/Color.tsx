@@ -14,6 +14,7 @@ const COLORS = {
   red: "#f44336",
   yellow: "#FFEB3B",
   black: "#000",
-  date:'#757575'
+  date:'#757575',
+  icon:"#fe646f",
 };
 export default COLORS;

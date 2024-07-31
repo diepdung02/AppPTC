@@ -40,48 +40,48 @@ const fakeEmails = [
     subject: "Lời nhắc họp",
     message: "Đừng quên cuộc họp của chúng ta vào lúc 10 giờ sáng ngày mai.",
     to: "Nguyễn Văn A",
-    timestamp: "2024-07-24 09:00 AM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "02-08-2024",
+    image: "https://tse2.mm.bing.net/th?id=OIP.sUzgVQs4qnN29hw99ppIHgHaFj&pid=Api&P=0&h=180",
   },
   {
     id: "2",
     subject: "Cập nhật dự án",
     message: "Dự án đang tiến triển tốt và đúng tiến độ.",
     to: "Trần Thị B",
-    timestamp: "2024-07-23 02:00 PM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "27-07-2024",
+    image: "https://tse2.mm.bing.net/th?id=OIP.Iy3dI8Vf8hAf_a9GqLwdHwHaEc&pid=Api&P=0&h=180",
   },
   {
     id: "3",
     subject: "Báo cáo hàng tuần",
     message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
     to: "Phạm Văn C",
-    timestamp: "2024-07-22 05:00 PM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "22-07-2024",
+    image: "https://tse1.mm.bing.net/th?id=OIP.6WE_rdPZ9eVOwTo7-Foy9wHaFC&pid=Api&P=0&h=180",
   },
   {
     id: "6",
     subject: "Báo cáo hàng tuần",
     message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
     to: "Phạm Văn C",
-    timestamp: "2024-07-22 05:00 PM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "12-07-2024",
+    image: "https://tse1.mm.bing.net/th?id=OIP.6WE_rdPZ9eVOwTo7-Foy9wHaFC&pid=Api&P=0&h=180",
   },
   {
     id: "4",
     subject: "Báo cáo hàng tuần",
     message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
     to: "Phạm Văn C",
-    timestamp: "2024-07-22 05:00 PM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "20-06-2024",
+    image: "https://tse2.mm.bing.net/th?id=OIP.cDYOW0VqswuzfEhICIzW9wHaEr&pid=Api&P=0&h=180",
   },
   {
     id: "5",
     subject: "Báo cáo hàng tuần",
     message: "Vui lòng gửi báo cáo hàng tuần vào cuối ngày hôm nay.",
     to: "Phạm Văn C",
-    timestamp: "2024-07-22 05:00 PM",
-    image: "https://via.placeholder.com/150",
+    timestamp: "01-06-2024",
+    image: "https://tse2.mm.bing.net/th?id=OIP.cDYOW0VqswuzfEhICIzW9wHaEr&pid=Api&P=0&h=180",
   },
 ];
 
@@ -170,7 +170,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
                 style={[
                   tw`text-lg text-center`,
                   {
-                    color: COLORS.darkGray,
+                    color: COLORS.black,
                     fontFamily: "CustomFont-Bold",
                     fontSize: getScaledSize(16),
                   },
@@ -188,7 +188,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
                   },
                 ]}
               >
-                Nội dung: {truncateText(item.message, 60)}
+                Nội dung: {truncateText(item.message, 50)}
               </Text>
               <View style={tw`flex-row justify-between mt-2`}>
                 <Text
@@ -221,19 +221,26 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
         )}
       />
 
-      <TouchableOpacity
-        style={[
-          tw`absolute bottom-2 right-2 rounded-full p-2 shadow-md`,
-          { backgroundColor: COLORS.primary },
-        ]}
-        onPress={() => navigation.navigate("SendMail")}
-      >
-        <FontAwesome
-          name="plus-circle"
-          size={getScaledSize(50)}
-          color={COLORS.white}
-        />
-      </TouchableOpacity>
+<TouchableOpacity
+  style={[
+    tw`absolute bottom-2 right-2 rounded-full p-2 shadow-md`,
+    {
+      backgroundColor: COLORS.primary,
+      width: 70,
+      height: 70,
+      justifyContent: 'center', // Căn giữa theo trục chính
+      alignItems: 'center',     // Căn giữa theo trục phụ
+    },
+  ]}
+  onPress={() => navigation.navigate("SendMail")}
+>
+  <FontAwesome
+    name="plus-circle"
+    size={getScaledSize(50)}
+    color={COLORS.white}
+  />
+</TouchableOpacity>
+
     </SafeAreaView>
   );
 };

@@ -34,37 +34,37 @@ const leaveRequests = [
   {
     id: 3,
     code: '2407250003 AL',
-    startDate: '2024-09-15',
-    endDate: '2024-09-20',
+    startDate: '15-09-2024',
+    endDate: '17-09-2024',
     leaveType: 'Nghỉ không lương',
     reason: 'Việc cá nhân',
     
-    dayOffs: 6,
-    remainingDaysOff: 10,
-    usedDaysOff: 4,
+    dayOffs: 2,
+    remainingDaysOff: 2,
+    usedDaysOff: 10,
     status: 'Đang chờ duyệt',
   },
   {
     id: 2,
     code: '2407250002 S',
-    startDate: '2024-08-01',
-    endDate: '2024-08-05',
+    startDate: '02-08-2024',
+    endDate: '05-08-2024',
     leaveType: 'Nghỉ bệnh',
     reason: 'Ốm đau',
-    dayOffs: 5,
-    remainingDaysOff: 10,
-    usedDaysOff: 3,
+    dayOffs: 3,
+    remainingDaysOff: 4,
+    usedDaysOff: 8,
     status: 'Đã bị từ chối',
   },
   {
     id: 1,
     code: '2407250001 AL',
-    startDate: '2024-07-01',
-    endDate: '2024-07-10',
+    startDate: '15-07-2024',
+    endDate: '10-07-2024',
     leaveType: 'Nghỉ phép năm',
     reason: 'Đi du lịch',
-    dayOffs: 10,
-    remainingDaysOff: 15,
+    dayOffs: 5,
+    remainingDaysOff: 7,
     usedDaysOff: 5,
     status: 'Đã được duyệt',
   },
@@ -205,9 +205,10 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
           value={search}
           lightTheme
           round
-          containerStyle={tw`flex-1`}
+          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
           inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
           inputStyle={{ fontSize: getScaledSize(16) }}
+          
         />
       </View>
       <FlatList

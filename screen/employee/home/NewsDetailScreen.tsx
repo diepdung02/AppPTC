@@ -81,6 +81,11 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         >
           {newsItem.title}
         </Text>
+        <View
+         style={[
+          tw`flex-row justify-between`,
+          { marginTop: getScaledSize(4) },
+        ]}>
         <Text
           style={[
             tw`text-base mb-4`,
@@ -89,6 +94,15 @@ const NewsDetailScreen: React.FC<Props> = ({ navigation, route }) => {
         >
           {newsItem.date}
         </Text>
+        <Text
+          style={[
+            tw`text-base mb-4`,
+            { color: COLORS.black, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(16) },
+          ]}
+        >
+          By: {newsItem.sender}
+        </Text>
+        </View>
         <FlatList
           data={newsItem.details}
           renderItem={renderDetailItem}

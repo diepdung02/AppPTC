@@ -7,7 +7,7 @@ import {
   FlatList,
   Alert,
   Image,
-  StyleSheet,
+  Dimensions,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -17,13 +17,19 @@ import { RootStackParamList, Component, Product } from "../../../navigator/navig
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Function to scale font sizes
-const getScaledSize = (size: number) => {
-  // Example scaling based on a ratio. Adjust as needed.
-  const scale = 1; // Replace with actual scaling logic if needed
-  return size * scale;
-};
+const { width, height } = Dimensions.get("window");
+
+const BASE_WIDTH = 375; // Base screen width
+const BASE_HEIGHT = 667; // Base screen height
+
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 type OutputScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -49,12 +55,8 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredComponents, setFilteredComponents] = useState<Component[]>([]);
   const [selectedComponents, setSelectedComponents] = useState<Component[]>([]);
-  const [remainingComponents, setRemainingComponents] = useState<Component[]>(
-    []
-  );
-  const [completedComponents, setCompletedComponents] = useState<Component[]>(
-    []
-  );
+  const [remainingComponents, setRemainingComponents] = useState<Component[]>([]);
+  const [completedComponents, setCompletedComponents] = useState<Component[]>([]);
 
   useEffect(() => {
     const loadComponents = async () => {
@@ -75,7 +77,7 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
         if (storedCompletedComponents) {
           setCompletedComponents(JSON.parse(storedCompletedComponents));
         } else {
-          setCompletedComponents([]); 
+          setCompletedComponents([]);
         }
       } catch (error) {
         console.error("Error loading data:", error);
@@ -185,15 +187,30 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 p-4`} >
-      <View style={[tw`flex-row items-center`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 p-2`,  { backgroundColor: COLORS.colorMain }]}>
+      <View
+        style={[
+          tw`flex-row items-center`,
+          { backgroundColor: COLORS.colorMain, padding: getScaledSize(10) },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`mr-2`}
+          style={[tw`p-2`, { borderRadius: 50 }]}
+          activeOpacity={0.7}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={getScaledSize(24)}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
-        <Text style={[tw`text-xl flex-1 text-center font-bold`, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(20) }]}>
+        <Text
+          style={[
+            tw`text-xl flex-1 text-center`,
+            { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(20) },
+          ]}
+        >
           Sản phẩm
         </Text>
       </View>
@@ -204,19 +221,65 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
         lightTheme
         round
         containerStyle={tw`bg-transparent border-b border-gray-300 border-t-0`}
-        inputContainerStyle={{ backgroundColor: COLORS.white, borderRadius: 8 }}
+        inputContainerStyle={{
+          backgroundColor: COLORS.white,
+          borderRadius: getScaledSize(8),
+        }}
+        inputStyle={{ fontSize: getScaledSize(16) }}
       />
-      <Image source={{ uri: productImage }} style={tw`w-24 h-24 self-center mb-4`} />
-      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+      <Image
+        source={{ uri: productImage }}
+        style={[
+          tw`self-center mb-4`,
+          { width: getScaledSize(100), height: getScaledSize(100) },
+        ]}
+      />
+      <Text
+        style={[
+          tw`text-center`,
+          {
+            fontFamily: "CustomFont-Bold",
+            fontSize: getScaledSize(16),
+            color: COLORS.black,
+          },
+        ]}
+      >
         Tên sản phẩm: {productName}
       </Text>
-      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+      <Text
+        style={[
+          tw`text-center`,
+          {
+            fontFamily: "CustomFont-Bold",
+            fontSize: getScaledSize(16),
+            color: COLORS.black,
+          },
+        ]}
+      >
         PTC Code: {productCode}
       </Text>
-      <Text style={[tw`text-xl  text-center`, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16), color:COLORS.black }]}>
+      <Text
+        style={[
+          tw`text-center`,
+          {
+            fontFamily: "CustomFont-Bold",
+            fontSize: getScaledSize(16),
+            color: COLORS.black,
+          },
+        ]}
+      >
         Client Code: {productClient}
       </Text>
-      <Text style={[tw`text-lg `, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18),color:COLORS.black }]}>
+      <Text
+        style={[
+          tw`text-lg`,
+          {
+            fontFamily: "CustomFont-Italic",
+            fontSize: getScaledSize(18),
+            color: COLORS.black,
+          },
+        ]}
+      >
         Bộ phận chưa hoàn thành
       </Text>
       <FlatList
@@ -224,48 +287,90 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
-              tw`p-4 rounded mb-2 border`,
+              tw`p-2 rounded mb-2 border`,
               { borderColor: COLORS.border, backgroundColor: COLORS.white },
-              selectedComponents.some((c) => c.id === item.id) && { backgroundColor: COLORS.primaryLight },
+              selectedComponents.some((c) => c.id === item.id) && {
+                backgroundColor: COLORS.primaryLight,
+              },
             ]}
             onPress={() => handleSelectComponent(item)}
           >
-            <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: "CustomFont-Regular", fontSize: getScaledSize(18) }]}>
+            <Text
+              style={[
+                tw`text-lg`,
+                {
+                  color: COLORS.text,
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: getScaledSize(16),
+                },
+              ]}
+            >
               {item.name}
             </Text>
           </TouchableOpacity>
         )}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={tw`pb-4`}
       />
-      <Text style={[tw`text-lg `, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18) }]}>
+      <Text
+        style={[
+          tw`text-lg`,
+          {
+            fontFamily: "CustomFont-Italic",
+            fontSize: getScaledSize(18),
+            color: COLORS.black,
+          },
+        ]}
+      >
         Bộ phận đã hoàn thành
       </Text>
       <FlatList
         data={completedComponents}
         renderItem={({ item }) => (
           <View
-            style={[tw`p-4 rounded mb-2`, { backgroundColor: COLORS.successLight }]}
+            style={[
+              tw`p-2 rounded mb-2 border`,
+              { borderColor: COLORS.border, backgroundColor: COLORS.successLight },
+            ]}
           >
-            <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: "CustomFont-Italic", fontSize: getScaledSize(18) }]}>
+            <Text
+              style={[
+                tw`text-lg`,
+                {
+                  color: COLORS.text,
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: getScaledSize(16),
+                },
+              ]}
+            >
               {item.name}
             </Text>
           </View>
         )}
         keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={tw`pb-4`}
       />
-      <TouchableOpacity
-        onPress={handleSubmit}
-        style={[
-          tw` p-4 rounded`,
-          { backgroundColor: COLORS.blue },
-        ]}
-      >
-        <Text style={[tw`text-center text-white`, { fontFamily: "CustomFont-Italic", fontSize: getScaledSize(16) }]}>
-          Gửi báo cáo hoàn thành
-        </Text>
-      </TouchableOpacity>
+      <View style={tw`p-2`}>
+        <TouchableOpacity
+          onPress={handleSubmit}
+          style={[
+            tw`p-4 rounded mb-10`,
+            { backgroundColor: COLORS.primary },
+          ]}
+          activeOpacity={0.7}
+        >
+          <Text
+            style={[
+              tw`text-lg text-center`,
+              {
+                color: COLORS.white,
+                fontFamily: "CustomFont-Bold",
+                fontSize: getScaledSize(18),
+              },
+            ]}
+          >
+            Gửi
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
