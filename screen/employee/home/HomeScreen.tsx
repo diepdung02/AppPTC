@@ -65,7 +65,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   // Define valid routes
   const routes: {
-    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen';
+    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen' | 'EvaluateScreen' | 'VoteScreen';
     image: string;
     label: string;
   }[] = [
@@ -76,8 +76,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: 'Tăng ca' },
     { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: 'Lịch' },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: 'Báo lỗi' },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
+    { route: 'EvaluateScreen', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
+    { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
     { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: 'Giấy ra cổng' },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: 'Rời khỏi' }
   ];

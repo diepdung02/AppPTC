@@ -1,98 +1,100 @@
-import React from "react";
-import {
-  Text,
-  View,
-  StyleSheet,
-  SafeAreaView,
-  TouchableOpacity,
-  StatusBar,
-} from "react-native";
-import { RouteProp, useNavigation } from "@react-navigation/native";
-import { RootStackParamList } from "../../../navigator/navigation";
-import COLORS from "../../../../constants/Color";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+import React from 'react';
+import { Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '../../../navigator/navigation';
+import tw from 'twrnc';
+import COLORS from '../../../../constants/Color';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type DetailRequestScreenRouteProp = RouteProp<
   RootStackParamList,
-  "DetailRequest"
+  'DetailRequest'
 >;
 
 type Props = {
   route: DetailRequestScreenRouteProp;
 };
 
+const { width, height } = Dimensions.get('window');
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Calculate scale based on the smaller ratio
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
+
 const DetailRequest: React.FC<Props> = ({ route }) => {
   const navigation = useNavigation();
   const { item } = route.params;
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: `Chi tiết tăng ca`,
-    });
-  }, [navigation]);
-
-  const getStatusStyle = (status: string) => {
-    switch (status) {
-      case "Đã được duyệt":
-        return { backgroundColor: COLORS.green, color: COLORS.black };
-      case "Đã bị từ chối":
-        return { backgroundColor: COLORS.red, color: COLORS.white };
-      case "Đang chờ duyệt":
-        return { backgroundColor: COLORS.yellow, color: COLORS.black };
-      default:
-        return { backgroundColor: COLORS.darkGray, color: COLORS.black };
-    }
-  };
-
-  const { backgroundColor, color } = getStatusStyle(item.status);
+  let statusColor, textColor;
+  switch (item.status) {
+    case 'Đã được duyệt':
+      statusColor = COLORS.green;
+      textColor = COLORS.black;
+      break;
+    case 'Đã bị từ chối':
+      statusColor = COLORS.red;
+      textColor = COLORS.white;
+      break;
+    case 'Đang chờ duyệt':
+      statusColor = COLORS.yellow;
+      textColor = COLORS.black;
+      break;
+    default:
+      statusColor = COLORS.darkGray;
+      textColor = COLORS.black;
+      break;
+  }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
+    <SafeAreaView style={[tw`flex-1`, {backgroundColor: COLORS.colorMain}]}>
+      <View style={[tw`flex-row items-center p-[${getScaledSize(12)}px]`, {backgroundColor: COLORS.white}]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={styles.goBack}
+          style={tw`h-[${getScaledSize(40)}px] w-[${getScaledSize(40)}px] items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={20} color="black" />
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Chi tiết tăng ca</Text>
+        <Text style={[tw`ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18)}]}>Chi tiết yêu cầu nghỉ</Text>
       </View>
-
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Mã code: </Text>
-        <Text style={styles.detailText}>{item.code}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Mã code:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.code}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Ngày bắt đầu nghỉ:</Text>
-        <Text style={styles.detailText}>{item.startDate}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Ngày bắt đầu nghỉ:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.startDate}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Ngày kết thúc nghỉ:</Text>
-        <Text style={styles.detailText}>{item.endDate}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Ngày kết thúc nghỉ:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.endDate}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Số ngày nghỉ:</Text>
-        <Text style={styles.detailText}>{item.dayOffs}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày nghỉ:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.dayOffs}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Số ngày phép còn lại:</Text>
-        <Text style={styles.detailText}>{item.remainingDaysOff}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày phép còn lại:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.remainingDaysOff}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Số ngày phép đã sử dụng:</Text>
-        <Text style={styles.detailText}>{item.usedDaysOff}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày phép đã sử dụng:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.usedDaysOff}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Lí do:</Text>
-        <Text style={styles.detailText}>{item.reason}</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Lí do:</Text>
+        <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.reason}</Text>
       </View>
-      <View style={styles.detailContainer}>
-        <Text style={styles.detailLabel}>Trạng thái:</Text>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+        <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Trạng thái:</Text>
         <Text
-          style={[
-            styles.statusText,
-            { backgroundColor, color }
-          ]}
+          style={[tw`px-[${getScaledSize(8)}px] py-[${getScaledSize(4)}px] rounded`, { backgroundColor: statusColor, color: textColor, fontFamily: 'CustomFont-Bold' }]}
         >
           {item.status}
         </Text>
@@ -100,61 +102,5 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-    marginTop: StatusBar.currentHeight || 0,
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "white",
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-  },
-  goBack: {
-    height: 40,
-    width: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  detailContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginVertical: 5,
-    marginHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: "black",
-    paddingBottom: 10,
-  },
-  detailLabel: {
-    width: 150,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "black",
-  },
-  detailText: {
-    flex: 1,
-    fontSize: 16,
-    color: "black",
-    marginLeft:50,
-  },
-  statusText: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    fontWeight: "600",
-    borderRadius: 5,
-    fontSize: 16, 
-    marginLeft:50,
-
-  },
-});
 
 export default DetailRequest;

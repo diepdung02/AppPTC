@@ -39,7 +39,8 @@ const fakeNotifications = [
     title: "Đơn nghỉ phép",
     summary: "Đơn nghỉ phép của bạn đã bị từ chối",
     date: "27-07-2024",
-    sender:"Phòng nhân sự"
+    sender:"Phòng nhân sự",
+    link:""
   },
   {
     id: "2",
@@ -48,7 +49,8 @@ const fakeNotifications = [
     title: "Đơn xin tăng ca",
     summary: "Đơn xin tăng ca của bạn được duyệt",
     date: "22-07-2024",
-    sender:"Phòng nhân sự"
+    sender:"Phòng nhân sự",
+    link:""
   },
   {
     id: "3",
@@ -57,16 +59,18 @@ const fakeNotifications = [
     title: "Thông báo họp nhóm",
     summary: "Lịch họp nhóm tháng này đã được cập nhật. Vui lòng kiểm tra lịch và tham gia đúng giờ.",
     date: "12-07-2024",
-    sender:"Phòng nhân sự"
+    sender:"Phòng nhân sự",
+    link:""
   },
   {
     id: "4",
     icon: "", // No icon
     image: "https://tse3.mm.bing.net/th?id=OIP._y2oyjAWBbYzjjqjyTtwEgHaE8&pid=Api&P=0&h=180",
     title: "Khen thưởng",
-    summary: "Chúc mừng bạn đã đạt thành tích xuất sắc trong dự án vừa qua và nhận được khen thưởng từ công ty.",
+    summary: "Chúc mừng bạn đã đạt được khen thưởng từ công ty vì đã có những sáng kiển hay đóng góp cho công ty.",
     date: "03-07-2024",
-    sender:"Phòng nhân sự"
+    sender:"Phòng nhân sự",
+    link:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTpozmUpqn_MlpVcs-C_Qafd0bvVMcscHxSApiHekRyemPaYiE4K7KR4FeED0A1mg/pubhtml"
   },
   {
     id: "5",
@@ -75,7 +79,8 @@ const fakeNotifications = [
     title: "Cập nhật chính sách",
     summary: "Chính sách nghỉ phép mới đã được áp dụng. Vui lòng đọc tài liệu mới để hiểu rõ hơn về quy định.",
     date: "24-06-2024",
-    sender:"Phòng nhân sự"
+    sender:"Phòng nhân sự",
+    link:""
   }
 ];
 

@@ -176,7 +176,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
                   },
                 ]}
               >
-                Chủ đề: {item.subject}
+                 {item.subject}
               </Text>
               <Text
                 style={[

@@ -35,6 +35,7 @@ export type CreateLeftDept = {
   endTime: string;
   reason: string;
   status: "Đang chờ duyệt" | "Đã được duyệt" | "Đã bị từ chối";
+  code: string;
 };
 
 export type DataRequest = {
@@ -59,6 +60,7 @@ export type NewsItem = {
   date: string;
   details:ActivityDetail[];
   sender: string;
+  link:string;
 };
 export type ActivityDetail = {
   time: string;
@@ -73,6 +75,7 @@ export type NotificationItem = {
   date: string;
   icon: string;
   sender:string;
+  link:string;
 };
 export type ManagerNotificationItem = {
   id: string;
@@ -133,6 +136,8 @@ export type RootStackParamList = {
   CreateLeftDept: undefined;
   ApproveLeaveScreen: undefined;
   OutputList: undefined;
+  EvaluateScreen: undefined;
+  VoteScreen: undefined;
   OutputScreen: {
     product: Product;
     productId: number;

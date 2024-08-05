@@ -202,7 +202,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               Xin nghỉ phép
             </Text>
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(5)}`}>
             <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày bắt đầu:</Text>
             <TouchableOpacity style={tw`flex-row justify-between items-center h-14 rounded px-3 bg-white`} onPress={() => showDatePicker('start')}>
               <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
@@ -211,7 +211,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               <FontAwesome name="calendar" size={getScaledSize(20)} color={COLORS.black} />
             </TouchableOpacity>
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
             <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày kết thúc:</Text>
             <TouchableOpacity style={tw`flex-row justify-between items-center h-14 rounded px-3 bg-white`} onPress={() => showDatePicker('end')}>
               <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
@@ -220,7 +220,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               <FontAwesome name="calendar" size={getScaledSize(20)} color={COLORS.black} />
             </TouchableOpacity>
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
   <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Loại nghỉ phép:</Text>
   <RNPickerSelect
     onValueChange={value => setLeaveType(value)}

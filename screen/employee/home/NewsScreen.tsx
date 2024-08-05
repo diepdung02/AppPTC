@@ -35,6 +35,27 @@ type Props = {
 
 const fakeNews = [
   {
+    id: "6",
+    title: "Danh sách khen thưởng của tháng 7",
+    summary: "Thông báo về tiền thưởng dành cho sáng kiến hay của tháng 7",
+    image: "https://tse3.mm.bing.net/th?id=OIP._y2oyjAWBbYzjjqjyTtwEgHaE8&pid=Api&P=0&h=180",
+    date: "29-07-2024",
+    details: [
+      {
+        time: "Ngày 29-07",
+        activities: [
+          `Kính thưa mọi người,
+
+Tôi sẽ thông báo về Kaizen/tiền thưởng sáng kiến ​​của tháng 7. Mong rằng liên tục nhận được sự đóng góp chủ động của các bạn.
+
+Dưới đây là danh sách người được khen thưởng:`
+        ],
+      },
+    ],
+    sender: "Phòng Nhân sự",
+    link:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTpozmUpqn_MlpVcs-C_Qafd0bvVMcscHxSApiHekRyemPaYiE4K7KR4FeED0A1mg/pubhtml"
+  },
+  {
     id: "1",
     title: "Chương trình du lịch Long Hải",
     summary:
@@ -68,16 +89,19 @@ const fakeNews = [
           "17h30: Đoàn dùng cơm chiều tại nhà hàng Song Trang hoặc Mekong Long Thành.",
           "18h30: Về đến Bình Dương, kết thúc chuyến tham quan.",
         ],
+
       },
     ],
     sender: "Phòng Nhân sự",
+    link:""
   },
   {
     id: "2",
     title: "Hội nghị Người Lao Động 2024",
     summary:
       "Hội nghị Người Lao Động được tổ chức hàng năm nhằm tạo cơ hội để toàn thể nhân viên và Ban giám đốc chia sẻ về tình hình kinh doanh, chính sách lương, thưởng, phúc lợi, việc thực hiện Thỏa ước lao động tập thể.",
-    image: "https://tse4.mm.bing.net/th?id=OIP.I_wuHheENk_f7rFd6t3J1QHaEK&pid=Api&P=0&h=180",
+    image:
+      "https://tse4.mm.bing.net/th?id=OIP.I_wuHheENk_f7rFd6t3J1QHaEK&pid=Api&P=0&h=180",
     date: "27-08-2024",
     details: [
       {
@@ -89,14 +113,16 @@ const fakeNews = [
       },
     ],
     sender: "Phòng Công đoàn",
+    link:""
   },
   {
     id: "3",
     title: "Nghỉ lễ Quốc khánh 2/9",
     summary:
       "Theo thông báo từ Phòng Hành chính, công ty sẽ nghỉ lễ Quốc khánh 2/9 từ ngày 01/09 đến ngày 03/09. Ngày 04/09 tất cả nhân viên quay lại làm việc bình thường.",
-    image: "https://tse4.mm.bing.net/th?id=OIP.69VoqlLsWvssqlrqelMPyAHaD3&pid=Api&P=0&h=180",
-    date: "15-07-2024",
+    image:
+      "https://tse4.mm.bing.net/th?id=OIP.69VoqlLsWvssqlrqelMPyAHaD3&pid=Api&P=0&h=180",
+    date: "15-08-2024",
     details: [
       {
         time: "Ngày 01/09 - 03/09",
@@ -107,6 +133,7 @@ const fakeNews = [
       },
     ],
     sender: "Phòng Hành chính",
+    link:""
   },
   {
     id: "4",
@@ -142,6 +169,7 @@ const fakeNews = [
       },
     ],
     sender: "Phòng Đào tạo",
+    link:""
   },
   {
     id: "5",
@@ -162,7 +190,9 @@ const fakeNews = [
       },
     ],
     sender: "Phòng An toàn lao động",
+    link:""
   },
+
 ];
 
 const NewsScreen: React.FC<Props> = ({ navigation }) => {

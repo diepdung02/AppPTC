@@ -64,8 +64,9 @@ type OvertimeScreenProps = {
 };
 
 const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
-  const [search, setSearch] = useState<string>("");
+  const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeOvertimeRequests);
+  
 
   useEffect(() => {
     setFilteredData(fakeOvertimeRequests);
@@ -80,10 +81,10 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
     const filtered = fakeOvertimeRequests.filter((item) => {
       const lowercasedText = text.toLowerCase();
       return (
+        item.status.toLowerCase().includes(lowercasedText) ||
         item.startDate.toLowerCase().includes(lowercasedText) ||
         item.code.toLowerCase().includes(lowercasedText) ||
-        item.reason.toLowerCase().includes(lowercasedText) ||
-        item.status.toLowerCase().includes(lowercasedText)
+        item.reason.toLowerCase().includes(lowercasedText) 
       );
     });
     setFilteredData(filtered);
@@ -115,7 +116,7 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
         style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailOvertime", { item })}
       >
-        <View style={tw`flex-1`}>
+        <View >
           <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin tăng ca:</Text>
           <View style={tw`absolute`}>
             <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 10 * scale }]}>
@@ -189,8 +190,7 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={tw`pb-5`} // Đặt padding-bottom để đảm bảo không bị cắt
-        style={tw`flex-1`}
+        contentContainerStyle={tw`pb-5`} 
       />
     </SafeAreaView>
   );

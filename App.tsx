@@ -36,7 +36,9 @@ import {
   ManagerNotification,
   ManagerNotificationDetail,
   ManagerMailScreen,
-  ManagerMailDetail
+  ManagerMailDetail,
+  EvaluateScreen,
+  VoteScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -314,6 +316,16 @@ const App: React.FC = () => (
         <Stack.Screen
           name="ManagerMailDetail"
           component={ManagerMailDetail}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="EvaluateScreen"
+          component={EvaluateScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="VoteScreen"
+          component={VoteScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

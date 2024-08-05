@@ -22,13 +22,14 @@ import OutputList from '../screen/employee/src/Product/OutputList';
 import LeftDeptScreen from '../screen/employee/src/Request/LeftDeptScreen';
 import CreateLeftDept from '../screen/employee/src/Request/CreateLeftDept';
 import DetailLeftDept from '../screen/employee/src/Request/DetailLeftDept';
-import evalute from '../screen/employee/src/evalute/evalute';
+import EvaluateScreen from './employee/src/feedback/EvaluteScreen';
 import ApproveLeaveScreen from './employee/home/ApproveRequest';
 import ManagerHomeScreen from './manager/ManagerHomeScreen';
 import ManagerNotification from './manager/ManagerNotification';
 import ManagerNotificationDetail from './manager/ManagerNotificationDetail';
 import ManagerMailScreen from './manager/ManagerMailScreen';
 import ManagerMailDetail from './manager/ManagerMailDetail';
+import VoteScreen from './employee/src/feedback/VoteScreen';
 
 export{
     LoginScreen,
@@ -55,11 +56,12 @@ export{
     LeftDeptScreen,
     CreateLeftDept,
     DetailLeftDept,
-    evalute,
+    EvaluateScreen,
     ApproveLeaveScreen,
     ManagerHomeScreen,
     ManagerNotification,
     ManagerNotificationDetail,
     ManagerMailScreen,
-    ManagerMailDetail
+    ManagerMailDetail,
+    VoteScreen,
 }

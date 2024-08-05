@@ -225,7 +225,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
           Xin tăng ca
         </Text>
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(5)}`}>
             <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày tăng ca:</Text>
             <TouchableOpacity
               style={[tw`flex-row items-center h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `,{backgroundColor:COLORS.white} ]}
@@ -236,7 +236,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
             <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} />
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
             <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Giờ bắt đầu:</Text>
             <TouchableOpacity
               style={[tw`flex-row items-center  h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `, {backgroundColor:COLORS.white}]}
@@ -247,7 +247,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
             <DateTimePickerModal isVisible={isStartTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} />
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
             <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Giờ kết thúc:</Text>
             <TouchableOpacity
               style={[tw`flex-row items-center h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `, {backgroundColor:COLORS.white}]}
@@ -258,7 +258,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
             <DateTimePickerModal isVisible={isEndTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} />
           </View>
-          <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
             <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Lý do:</Text>
             <TextInput
               style={[tw`border border-white rounded p-${getScaledSize(2)} h-50`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16), backgroundColor:COLORS.white }]}
@@ -267,7 +267,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
               placeholder="Nhập lý do..."
               multiline
               onKeyPress={handleKeyPress}
-              placeholderTextColor={COLORS.red}
+              placeholderTextColor={COLORS.black}
             />
           </View>
           <View style={tw`flex-row justify-center mt-${getScaledSize(5)}`}>

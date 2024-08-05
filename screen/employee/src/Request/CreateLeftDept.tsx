@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView, TextInput, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { View, Text, TouchableOpacity, SafeAreaView, TextInput, Alert, TouchableWithoutFeedback, Keyboard, Dimensions } from 'react-native';
 import COLORS from '../../../../constants/Color';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from 'react-redux';
@@ -8,6 +7,22 @@ import { addCreateLeftDept, CreateLeftDept as LeftDeptType } from '../../../../r
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import tw from 'twrnc';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
+
+const { width, height } = Dimensions.get('window');
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Calculate scale based on the smaller ratio
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 type Props = {
   navigation: StackNavigationProp<{}>;
@@ -114,151 +129,80 @@ const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[tw`flex-1 `, {backgroundColor:COLORS.colorMain}]}>
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
-        <View style={styles.container}>
-          <View style={styles.header}>
-            <TouchableOpacity onPress={() => navigation.goBack()} style={styles.goBack}>
-              <FontAwesome name="arrow-left" size={20} color="black" />
-            </TouchableOpacity>
-            <Text style={styles.headerTitle}>Xin ra vào cổng</Text>
+        <View style={tw`flex-1`}>
+          <View style={tw`flex-row items-center p-${getScaledSize(2)}`}>
+          <TouchableOpacity
+          onPress={() => navigation.goBack()} 
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
+        >
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+        </TouchableOpacity>
+           <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+          Xin tăng ca
+        </Text>
           </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Ngày bắt đầu:</Text>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(5)}`}>
+            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày tăng ca:</Text>
             <TouchableOpacity
-              style={styles.input}
+              style={[tw`flex-row items-center h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `,{backgroundColor:COLORS.white} ]}
               onPress={showDatePicker}
             >
-              <Text style={styles.dateText}>{date ? date.toDateString() : 'Chọn ngày bắt đầu'}</Text>
-              <FontAwesome name="calendar" size={wp('5%')} color="black" style={styles.calendarIcon} />
+              <Text style={[tw`flex-1 `,{ color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]} >{date ? date.toDateString() : 'Chọn ngày tăng ca'}</Text>
+              <FontAwesome name="calendar" size={getScaledSize(20)} color="black" style={tw`mr-${getScaledSize(5)}`} />
             </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isDatePickerVisible}
-              mode="date"
-              onConfirm={handleConfirmDate}
-              onCancel={hideDatePicker}
-            />
+            <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} />
           </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Giờ bắt đầu:</Text>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
+            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Giờ bắt đầu:</Text>
             <TouchableOpacity
-              style={styles.input}
+              style={[tw`flex-row items-center  h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `, {backgroundColor:COLORS.white}]}
               onPress={() => showTimePicker('start')}
             >
-              <Text style={styles.dateText}>{startTime ? startTime.toLocaleTimeString() : 'Chọn giờ bắt đầu'}</Text>
-              <FontAwesome name="clock-o" size={wp('5%')} color="black" style={styles.calendarIcon} />
+              <Text style={[tw`flex-1 `, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>{startTime ? startTime.toLocaleTimeString() : 'Chọn giờ bắt đầu'}</Text>
+              <FontAwesome name="clock-o" size={getScaledSize(20)} color="black" style={tw`mr-${getScaledSize(5)}`} />
             </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isStartTimePickerVisible}
-              mode="time"
-              onConfirm={handleConfirmTime}
-              onCancel={hideTimePicker}
-            />
+            <DateTimePickerModal isVisible={isStartTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} />
           </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Giờ kết thúc:</Text>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
+            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Giờ kết thúc:</Text>
             <TouchableOpacity
-              style={styles.input}
+              style={[tw`flex-row items-center h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `, {backgroundColor:COLORS.white}]}
               onPress={() => showTimePicker('end')}
             >
-              <Text style={styles.dateText}>{endTime ? endTime.toLocaleTimeString() : 'Chọn giờ kết thúc'}</Text>
-              <FontAwesome name="clock-o" size={wp('5%')} color="black" style={styles.calendarIcon} />
+              <Text style={[tw`flex-1 `, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>{endTime ? endTime.toLocaleTimeString() : 'Chọn giờ kết thúc'}</Text>
+              <FontAwesome name="clock-o" size={getScaledSize(20)} color="black" style={tw`mr-${getScaledSize(5)}`} />
             </TouchableOpacity>
-            <DateTimePickerModal
-              isVisible={isEndTimePickerVisible}
-              mode="time"
-              onConfirm={handleConfirmTime}
-              onCancel={hideTimePicker}
-            />
+            <DateTimePickerModal isVisible={isEndTimePickerVisible} mode="time" onConfirm={handleConfirmTime} onCancel={hideTimePicker} />
           </View>
-          <View style={styles.formGroup}>
-            <Text style={styles.label}>Lý do:</Text>
+          <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
+            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Lý do:</Text>
             <TextInput
-              style={styles.inputNote}
-              multiline
-              placeholder="Nhập lý do xin nghỉ phép"
+              style={[tw`border border-white rounded p-${getScaledSize(2)} h-50`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16), backgroundColor:COLORS.white }]}
               value={reason}
               onChangeText={handleReasonChange}
+              placeholder="Nhập lý do..."
+              multiline
               onKeyPress={handleKeyPress}
+              placeholderTextColor={COLORS.black}
             />
           </View>
-          <TouchableOpacity style={styles.button} onPress={handleSubmit}>
-            <Text style={styles.buttonText}>Gửi</Text>
-          </TouchableOpacity>
+          <View style={tw`flex-row justify-center mt-${getScaledSize(5)}`}>
+            <TouchableOpacity
+              style={[tw` py-${getScaledSize(3)} px-${getScaledSize(20)} rounded-full`, {backgroundColor:COLORS.primary}]}
+              onPress={handleSubmit}
+            >
+              <Text style={[tw``, {fontFamily: 'CustomFont-Regular', color:COLORS.white, fontSize:getScaledSize(20)}]}>Gửi</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-  },
-  formGroup: {
-    margin: wp('5%'),
-  },
-  label: {
-    fontSize: wp('4%'),
-    marginBottom: hp('1%'),
-    color: '#000',
-  },
-  input: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    height: hp('6%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    paddingLeft: wp('2%'),
-    backgroundColor: 'white',
-  },
-  dateText: {
-    flex: 1,
-    color: 'black',
-    fontSize: wp('4%'),
-  },
-  calendarIcon: {
-    marginRight: wp('2%'),
-  },
-  button: {
-    margin: wp('10%'),
-    backgroundColor: COLORS.blue,
-    borderRadius: 5,
-    padding: hp('2%'),
-    alignItems: 'center',
-  },
-  buttonText: {
-    fontSize: wp('4.5%'),
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  inputNote: {
-    height: hp('20%'),
-    borderWidth: 1,
-    borderColor: 'white',
-    borderRadius: 5,
-    paddingLeft: wp('2%'),
-    backgroundColor: 'white',
-    textAlignVertical: 'top'
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'white',
-  },
-  goBack: {
-    height: 60,
-    width: 60,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+
 
 export default CreateLeftDeptScreen;

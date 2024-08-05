@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../../navigator/navigation';
 import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 // Get screen dimensions for scaling
 const { width, height } = Dimensions.get('window');
@@ -51,7 +52,7 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={() => navigation.goBack()}
           style={tw`w-10 h-10 items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={24} color={COLORS.black} />
+           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
         <Text
           style={[

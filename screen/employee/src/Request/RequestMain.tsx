@@ -129,7 +129,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailRequest", { item })}
       >
-        <View style={tw`flex-1`}>
+        <View >
           <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
           <View style={tw`absolute`}>
             <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 30 * scale }]}>
