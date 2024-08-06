@@ -38,7 +38,9 @@ import {
   ManagerMailScreen,
   ManagerMailDetail,
   EvaluateScreen,
-  VoteScreen
+  VoteScreen,
+  BenefitScreen,
+  SalaryScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -326,6 +328,16 @@ const App: React.FC = () => (
         <Stack.Screen
           name="VoteScreen"
           component={VoteScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="BenefitScreen"
+          component={BenefitScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="SalaryScreen"
+          component={SalaryScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

@@ -12,7 +12,13 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CheckBox from "react-native-check-box";
 import tw from "twrnc";
 import COLORS from "../../../constants/Color";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../navigator/navigation";
 
+
+type Props = {
+  navigation: StackNavigationProp<RootStackParamList, "BenefitScreen">;
+};
 // Lấy kích thước màn hình
 const { width, height } = Dimensions.get('window');
 
@@ -27,7 +33,7 @@ const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => Math.round(size * scale);
 
-const UserScreen: React.FC = () => {
+const UserScreen: React.FC<Props> = ({navigation}) => {
   const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
 
   const selectLanguage = (language: "english" | "vietnamese") => {
@@ -57,7 +63,7 @@ const UserScreen: React.FC = () => {
           </View>
         ))}
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("BenefitScreen")}>
           <View style={tw`border-b-2 border-black flex-row items-center`}>
             <View style={tw`flex-row items-center`}>
               <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Chế độ phúc lợi: </Text>

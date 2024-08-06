@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Calendar } from 'react-native-calendars';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import tw from 'twrnc';
 import COLORS from '../../../../constants/Color';
 
@@ -52,11 +52,11 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const tasksByDate: Record<string, Task[]> = {
-    '2024-07-16': [
+    '2024-08-05': [
       { id: '1', code: 'RH9829', route: '392', name: 'Bàn', quantity: 20 },
       { id: '2', code: 'RB833', route: 'H832', name: 'Ghế', quantity: 15 },
     ],
-    '2024-07-17': [
+    '2024-08-06': [
       { id: '3', code: 'RB833', route: 'H832', name: 'Ghế', quantity: 15 },
       { id: '4', code: 'RB833', route: 'H832', name: 'Bàn làm việc', quantity: 10 },
     ],
@@ -86,9 +86,9 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View style={tw`flex-row items-center bg-white`}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={tw`h-10 w-10 items-center justify-center`} accessibilityLabel="Quay lại">
-          <FontAwesome name="arrow-left" size={20} color={COLORS.black} />
+        <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={[tw`text-lg ml-4`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>Lịch sản xuất</Text>
+        <Text style={[tw`text-lg ml-4 `, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>Lịch sản xuất</Text>
       </View>
       <Calendar
         onDayPress={(day: Day) => setSelectedDate(day.dateString)}

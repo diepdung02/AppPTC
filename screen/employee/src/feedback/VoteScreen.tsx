@@ -10,7 +10,7 @@ const vote = [
   {
     id: '1',
     title: 'Du lịch cùng công ty',
-    date: '05/08/2024',
+    date: '20/08/2024',
     description: 'Mời bạn bình chọn địa điểm du lịch để chúng ta có thể lên kế hoạch cho chuyến đi sắp tới.',
     formLink: 'https://forms.gle/SWVbMT95Sbwo3ni67',
   },
@@ -24,13 +24,13 @@ const vote = [
   {
     id: '3',
     title: 'Cuộc thi ẩm thực công ty',
-    date: '20/08/2024',
+    date: '07/08/2024',
     description: 'Tham gia bình chọn cho món ăn yêu thích nhất trong cuộc thi ẩm thực sắp tới của công ty.',
     formLink: 'https://forms.gle/KHyCKsGfUMrRt77w6',
   },
 ];
 
-const VoteScreen = () => {
+const VoteScreen:React.FC = () => {
   const navigation = useNavigation();
 
   const handlePress = (formLink: string) => {
