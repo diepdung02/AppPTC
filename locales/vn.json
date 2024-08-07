@@ -6,7 +6,7 @@
     "phoneNumber": "Số điện thoại: ",
     "department": "Bộ phận làm việc: ",
     "position": "Chức vụ: ",
-    "benefitMode": "Chế độ phúc lợi: ",
+    "benefit": "Chế độ phúc lợi: ",
     "language": "Ngôn ngữ:",
     "english": "EN",
     "vietnamese": "VN",
@@ -20,6 +20,7 @@
     "evalute":"Đánh giá",
     "vote":"Bầu chọn",
     "leftDept":"Giấy ra cổng",
-    "transferDept":"Rời khỏi"
+    "transferDept":"Rời khỏi",
+    "search":"Tìm kiếm"
   }
   

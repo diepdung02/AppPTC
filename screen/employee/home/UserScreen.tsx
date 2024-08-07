@@ -6,7 +6,6 @@ import {
   Image,
   SafeAreaView,
   Dimensions,
-  Platform,
 } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import CheckBox from "react-native-check-box";
@@ -14,30 +13,29 @@ import tw from "twrnc";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/navigation";
-
+import { useTranslation } from "react-i18next";
+import i18n from "../../../language/i18n";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "BenefitScreen">;
 };
-// Lấy kích thước màn hình
+
 const { width, height } = Dimensions.get('window');
-
-// Kích thước cơ sở để tính toán tỷ lệ
-const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
-const BASE_HEIGHT = 667; // Kích thước màn hình cơ sở
-
-// Tính tỷ lệ scale
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
 const scaleWidth = width / BASE_WIDTH;
 const scaleHeight = height / BASE_HEIGHT;
 const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => Math.round(size * scale);
 
-const UserScreen: React.FC<Props> = ({navigation}) => {
+const UserScreen: React.FC<Props> = ({ navigation }) => {
+  const { t } = useTranslation();
   const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
 
   const selectLanguage = (language: "english" | "vietnamese") => {
     setSelectedLanguage(language);
+    i18n.changeLanguage(language === "english" ? "en" : "vi");
   };
 
   return (
@@ -50,12 +48,12 @@ const UserScreen: React.FC<Props> = ({navigation}) => {
       </View>
       <View style={tw`m-${getScaledSize(2)}`}>
         {[
-          { label: "Mã nhân viên:", value: "MN787899" },
-          { label: "Ngày làm việc:", value: "16-06-2024" },
-          { label: "Ngày sinh:", value: "20-07-2024" },
-          { label: "Số điện thoại:", value: "0932499021" },
-          { label: "Bộ phận làm việc:", value: "ERP" },
-          { label: "Chức vụ:", value: "INTERN" },
+          { label: t("employeeId"), value: "MN787899" },
+          { label: t("workDate"), value: "16-06-2024" },
+          { label: t("birthDate"), value: "20-07-2024" },
+          { label: t("phoneNumber"), value: "0932499021" },
+          { label: t("department"), value: "ERP" },
+          { label: t("position"), value: "INTERN" },
         ].map((item, index) => (
           <View key={index} style={tw`border-b-2 border-black flex-row items-center`}>
             <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
@@ -66,7 +64,7 @@ const UserScreen: React.FC<Props> = ({navigation}) => {
         <TouchableOpacity onPress={() => navigation.navigate("BenefitScreen")}>
           <View style={tw`border-b-2 border-black flex-row items-center`}>
             <View style={tw`flex-row items-center`}>
-              <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>Chế độ phúc lợi: </Text>
+              <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{t("benefit")}</Text>
               <View style={tw`ml-${getScaledSize(40)}`}>
                 <FontAwesome name="arrow-right" size={getScaledSize(20)} color="black" />
               </View>
@@ -76,7 +74,7 @@ const UserScreen: React.FC<Props> = ({navigation}) => {
 
         <View style={tw`mt-${getScaledSize(2)} border-b-2 border-black`}>
           <View style={tw`flex-row justify-between items-center`}>
-            <Text style={[tw`p-${getScaledSize(1)} w-1/4`, { fontSize: getScaledSize(16) }]}>Ngôn ngữ:</Text>
+            <Text style={[tw`p-${getScaledSize(1)} w-1/4`, { fontSize: getScaledSize(16) }]}>{t("language")}</Text>
             <TouchableOpacity
               onPress={() => selectLanguage("english")}
               style={tw`flex-row items-center ml-${getScaledSize(40)}`}
@@ -90,7 +88,7 @@ const UserScreen: React.FC<Props> = ({navigation}) => {
                   uncheckedCheckBoxColor="black"
                 />
               </View>
-              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>EN</Text>
+              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>{t("english")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => selectLanguage("vietnamese")}
@@ -105,7 +103,7 @@ const UserScreen: React.FC<Props> = ({navigation}) => {
                   uncheckedCheckBoxColor={COLORS.black}
                 />
               </View>
-              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>VN</Text>
+              <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>{t("vietnamese")}</Text>
             </TouchableOpacity>
           </View>
         </View>

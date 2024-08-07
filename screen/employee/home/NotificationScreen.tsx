@@ -14,6 +14,7 @@ import COLORS from "../../../constants/Color"; // Ensure this contains your colo
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/navigation";
 import useCustomFonts from "../../../hooks/useFont";
+import { useTranslation } from 'react-i18next';
 
 // Base dimensions for scaling
 const BASE_WIDTH = 375;
@@ -92,6 +93,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
   const [notifications, setNotifications] = useState(fakeNotifications);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeNotifications);
+  const { t } = useTranslation();
 
   // Load custom fonts
   const fontsLoaded = useCustomFonts();
@@ -222,7 +224,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
         <SearchBar
-          placeholder="Tìm kiếm "
+          placeholder={t("search")}
           inputContainerStyle={[
             tw`bg-white`,
             { backgroundColor: COLORS.white },

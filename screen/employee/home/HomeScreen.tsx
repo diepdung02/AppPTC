@@ -13,6 +13,9 @@ import { RootStackParamList } from '../../navigator/navigation';
 import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
 import useCustomFonts from '../../../hooks/useFont';
+import { useTranslation } from 'react-i18next';
+import i18n from "../../../language/i18n";
+
 
 // Base dimensions for scaling
 const BASE_WIDTH = 375;
@@ -35,6 +38,7 @@ type Props = {
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState<string>('');
   const [search, setSearch] = useState('');
+  const { t } = useTranslation();
 
   useEffect(() => {
     const updateCurrentTime = () => {
@@ -69,17 +73,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     image: string;
     label: string;
   }[] = [
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: 'Kiểm hàng' },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: 'Sản Phẩm' },
-    { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: 'Output' },
-    { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: 'Nghỉ phép' },
-    { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: 'Tăng ca' },
-    { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: 'Lịch' },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: 'Báo lỗi' },
-    { route: 'EvaluateScreen', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: 'Đánh giá' },
-    { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: 'Bầu chọn' },
-    { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: 'Giấy ra cổng' },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: 'Rời khỏi' }
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: t("check goods") },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: t("product") },
+    { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: t("output") },
+    { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: t("requestLeave") },
+    { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: t("requestOvertime") },
+    { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: t("schedule") },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
+    { route: 'EvaluateScreen', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: t("evalute") },
+    { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: t("vote") },
+    { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: t("leftDept") },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: t("transferDept") }
   ];
 
   // Split items into rows of 4 items each

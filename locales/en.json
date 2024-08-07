@@ -5,7 +5,7 @@
     "phoneNumber": "Phone Number: ",
     "department": "Department: ",
     "position": "Position: ",
-    "benefitMode": "Benefit Mode: ",
+    "benefit": "Benefit : ",
     "language": "Language:",
     "english": "EN",
     "vietnamese": "VN",
@@ -19,6 +19,7 @@
     "evalute":"Evalute",
     "vote":"Vote",
     "leftDept":"Left Dept",
-    "transferDept":"Transfer Dept"
+    "transferDept":"Transfer Dept",
+    "search":"Search"
   }
   

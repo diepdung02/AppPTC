@@ -14,6 +14,7 @@ import { RootStackParamList } from "../../navigator/navigation";
 import tw from "twrnc";
 import COLORS from "../../../constants/Color";
 import useCustomFonts from "../../../hooks/useFont";
+import { useTranslation } from 'react-i18next';
 
 // Base dimensions for scaling
 const BASE_WIDTH = 375;
@@ -199,6 +200,8 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
   const [news, setNews] = useState(fakeNews);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeNews);
+  const { t } = useTranslation();
+
 
   useEffect(() => {
     const filtered = news.filter(
@@ -238,7 +241,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
         <SearchBar
-          placeholder="Tìm kiếm "
+          placeholder= {t("search")}
           inputContainerStyle={[
             tw`bg-white`,
             { backgroundColor: COLORS.white },

@@ -15,6 +15,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import COLORS from "../../../constants/Color"; // Ensure this contains color definitions
 import useCustomFonts from "../../../hooks/useFont";
+import { useTranslation } from 'react-i18next';
 
 // Base dimensions for scaling
 const BASE_WIDTH = 375;
@@ -89,6 +90,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
   const [emails, setEmails] = useState(fakeEmails);
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeEmails);
+  const { t } = useTranslation();
 
   useEffect(() => {
     // Filter emails based on search query
@@ -130,7 +132,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
         <SearchBar
-          placeholder="Tìm kiếm"
+          placeholder={t("search")}
           inputContainerStyle={[
             tw`bg-white`,
             { backgroundColor: COLORS.white },
