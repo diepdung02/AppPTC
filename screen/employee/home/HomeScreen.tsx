@@ -96,11 +96,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`p-${getScaledSize(4)}`}>
+      <View style={tw`p-${getScaledSize(4)} `}>
         <SearchBar
           placeholder="Tìm kiếm"
           inputContainerStyle={tw`bg-white`}
-          containerStyle={tw`bg-transparent border-b border-gray-300 border-t-0`}
+          containerStyle={[
+            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`, // Không có viền trên
+            {
+              borderBottomWidth: 1, // Viền dưới
+              borderBottomColor: COLORS.border, // Màu viền dưới với opacity
+            },
+          ]}
           onChangeText={updateSearch}
           value={search}
           placeholderTextColor={COLORS.black}

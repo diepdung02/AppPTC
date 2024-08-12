@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, SafeAreaView, TouchableOpacity, StatusBar, Dimensions } from 'react-native';
+import { Text, View, SafeAreaView, TouchableOpacity, Dimensions } from 'react-native';
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../../navigator/navigation';
 import tw from 'twrnc';
@@ -61,7 +61,7 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
         >
         <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={[tw`]  ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18)}]}>Chi tiết tăng ca</Text>
+        <Text style={[tw`  ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18)}]}>Chi tiết tăng ca</Text>
       </View>
       <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Mã code:</Text>

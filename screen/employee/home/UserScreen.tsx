@@ -92,7 +92,7 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => selectLanguage("vietnamese")}
-              style={tw`flex-row items-center ml-${getScaledSize(0)}`}
+              style={tw`flex-row items-center `}
             >
               <View style={{ transform: [{ scale: getScaledSize(1) }] }}>
                 <CheckBox

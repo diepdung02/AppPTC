@@ -5,7 +5,7 @@ const COLORS = {
   white: "#FFFFFF",
   darkGray: "#4F4F4F",
   primary: "#0A74DA",
-  border: "#E0E0E0",
+  border: "rgba(169, 169, 169, 0.5)",
   text: "#333333",
   primaryLight: "#D0E7FF",
   successLight: "#D4EDDA",

@@ -34,6 +34,26 @@ const getScaledSize = (size: number) => size * scale;
 // Fake data for testing
 const fakeNotifications = [
   {
+    id: "7",
+    icon: "",
+    image: "https://cdn.sforum.vn/sforum/wp-content/uploads/2023/08/tet-trung-thu-2023-5.jpg", // Không có hình ảnh
+    title: "Bầu chọn quà Trung Thu",
+    summary: "Bạn có một cuộc bầu chọn về món quà Trung Thu. Hãy tham gia ngay!",
+    date: "12-08-2024",
+    sender: "Phòng nhân sự",
+    link: ""
+  },
+  {
+    id: "6",
+    icon: "",
+    image: "https://khaosat.me/blog/wp-content/uploads/2021/04/danh-gia-nhan-vien-1024x576.jpg", // Không có hình ảnh
+    title: "Đánh giá nhân viên",
+    summary: "Bạn đã được nhận đánh giá vào tháng 7.",
+    date: "31-07-2024",
+    sender: "Phòng nhân sự",
+    link: ""
+  },
+  {
     id: "1",
     icon: "https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png",
     image: "", // No image
@@ -82,7 +102,8 @@ const fakeNotifications = [
     date: "24-06-2024",
     sender:"Phòng nhân sự",
     link:""
-  }
+  },
+
 ];
 
 type Props = {
@@ -222,7 +243,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
+         <View style={[tw`p-${getScaledSize(4)} `]}>
         <SearchBar
           placeholder={t("search")}
           inputContainerStyle={[
@@ -230,8 +251,11 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
             { backgroundColor: COLORS.white },
           ]}
           containerStyle={[
-            tw`bg-transparent border-b border-gray-300 border-t-0`,
-            { backgroundColor: COLORS.colorMain },
+            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`, // Không có viền trên
+            {
+              borderBottomWidth: 1, // Viền dưới
+              borderBottomColor: COLORS.border, // Màu viền dưới với opacity
+            },
           ]}
           onChangeText={handleSearch}
           value={search}

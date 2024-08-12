@@ -239,7 +239,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`p-2`, { backgroundColor: COLORS.colorMain }]}>
+         <View style={[tw`p-${getScaledSize(4)} `]}>
         <SearchBar
           placeholder= {t("search")}
           inputContainerStyle={[
@@ -247,8 +247,11 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
             { backgroundColor: COLORS.white },
           ]}
           containerStyle={[
-            tw`bg-transparent border-b border-gray-300 border-t-0`,
-            { backgroundColor: COLORS.colorMain },
+            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`, // Không có viền trên
+            {
+              borderBottomWidth: 1, // Viền dưới
+              borderBottomColor: COLORS.border, // Màu viền dưới với opacity
+            },
           ]}
           onChangeText={setSearch}
           value={search}

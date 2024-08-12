@@ -233,7 +233,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`flex-row items-center  p-2`}>
+      <View style={tw`flex-row items-center  p-${getScaledSize(4)}`}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 
         style={[tw`p-2`, { borderRadius: 50 }]} 
@@ -250,7 +250,13 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           <SearchBar
             placeholder="Tìm kiếm"
             inputContainerStyle={tw`bg-white`}
-            containerStyle={tw`bg-transparent border-t-0`}
+            containerStyle={[
+              tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`, // Không có viền trên
+              {
+                borderBottomWidth: 1, // Viền dưới
+                borderBottomColor: 'rgba(169, 169, 169, 0.5)', // Màu viền dưới với opacity
+              },
+            ]}
             onChangeText={handleSearch}
             value={searchKeyword}
           />

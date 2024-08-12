@@ -86,7 +86,7 @@ const SalaryScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[tw`flex-1 p-${getScaledSize(6)}`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 p-${getScaledSize(6)} mt-${getScaledSize(15)}`, { backgroundColor: COLORS.colorMain }]}>
       <View style={tw`flex-row items-center mb-${getScaledSize(6)}`}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
