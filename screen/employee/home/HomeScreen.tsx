@@ -76,19 +76,18 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: t("check goods") },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: t("product") },
     { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: t("output") },
+    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
     { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: t("requestLeave") },
     { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: t("requestOvertime") },
-    { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: t("schedule") },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
-    { route: 'EvaluateScreen', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: t("evalute") },
-    { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: t("vote") },
     { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: t("leftDept") },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: t("transferDept") }
+    { route: 'EvaluateScreen', image: 'https://img.upanh.tv/2024/07/09/evaluate.png', label: t("evalute") },
+    { route: 'Schedule', image: 'https://img.upanh.tv/2024/07/09/calendar.png', label: t("schedule") },
+    // { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: t("vote") },
+    // { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: t("transferDept") }
   ];
 
-  // Split items into rows of 4 items each
   const rows = routes.reduce((acc, item, index) => {
-    const rowIndex = Math.floor(index / 4);
+    const rowIndex = Math.floor(index / 3);
     if (!acc[rowIndex]) acc[rowIndex] = [];
     acc[rowIndex].push(item);
     return acc;

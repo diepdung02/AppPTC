@@ -153,7 +153,7 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()} 
           style={[tw`p-2`, { borderRadius: 50 }]} 

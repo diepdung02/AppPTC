@@ -83,13 +83,19 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   const tasksToShow = selectedDate ? tasksByDate[selectedDate] || [] : [];
 
   return (
-    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`flex-row items-center bg-white`}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`h-10 w-10 items-center justify-center`} accessibilityLabel="Quay lại">
-        <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
-        </TouchableOpacity>
-        <Text style={[tw`text-lg ml-4 `, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>Lịch sản xuất</Text>
-      </View>
+    <SafeAreaView style={[tw`flex-1 `, { backgroundColor: COLORS.colorMain }]}>
+      <View style={tw`flex-row bg-white items-center mt-${getScaledSize(5)}`}>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()} 
+        style={[tw`pl-5`, { borderRadius: 50 }]} 
+        activeOpacity={0.7} 
+      >
+    <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+  </TouchableOpacity>
+  <Text style={[tw`text-lg mr-10 p-5`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18), flex: 1, textAlign: 'center' }]}>
+    Lịch sản xuất
+  </Text>
+</View>
       <Calendar
         onDayPress={(day: Day) => setSelectedDate(day.dateString)}
         markedDates={getMarkedDates()}

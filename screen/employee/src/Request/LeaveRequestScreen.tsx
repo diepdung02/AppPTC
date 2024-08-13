@@ -190,7 +190,10 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
         <View style={tw`flex-1`}>
-          <View style={tw`flex-row items-center p-${getScaledSize(2)}`}>
+        <View  style={[
+          tw`flex-row items-center mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white, padding: getScaledSize(10) },
+        ]}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
               style={[tw`p-2`, { borderRadius: 50 }]}

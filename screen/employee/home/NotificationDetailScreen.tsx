@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { WebView } from 'react-native-webview';
 import { RootStackParamList } from '../../navigator/navigation';
 import tw from 'twrnc';
@@ -99,12 +98,12 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center p-4 shadow-md`, { backgroundColor: COLORS.white }]}>
+      <View style={[tw`flex-row items-center p-4 shadow-md mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={tw`w-10 h-10 items-center justify-center`}
         >
-          <FontAwesome name="arrow-left" size={24} color={COLORS.black} />
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
         <Text
           style={[
@@ -113,6 +112,7 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
               color: COLORS.black,
               fontFamily: 'CustomFont-Regular',
               fontSize: getScaledSize(18),
+              textAlign: 'center', flex:1
             },
           ]}
         >

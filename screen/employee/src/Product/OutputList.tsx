@@ -95,7 +95,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
   const handleSearch = (text: string) => {
     setSearch(text);
     const filtered = completedProducts.filter(item =>
-      item.name.toLowerCase().includes(text.toLowerCase()) ||
+      item.collectionName.toLowerCase().includes(text.toLowerCase()) ||
       item.ClientCode.toLowerCase().includes(text.toLowerCase()) ||
       item.PTCcode.toLowerCase().includes(text.toLowerCase())
     );
@@ -125,7 +125,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
 
   const renderComponent = ({ item }: { item: Component }) => (
     <View style={[tw`p-2 rounded-md mb-2`, { backgroundColor: COLORS.lightGray }]}>
-      <Text style={[tw`font-CustomFont-Italic`, { color: COLORS.text, fontSize: getScaledSize(18) }]}>
+      <Text style={[tw``, { color: COLORS.text, fontSize: getScaledSize(18), fontFamily: 'CustomFont-Italic' }]}>
         {item.name}
       </Text>
     </View>
@@ -139,8 +139,8 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
       >
         <Image source={{ uri: item.image }} style={tw`w-20 h-20 rounded-md mr-2`} />
         <View style={tw`flex-1`}>
-          <Text style={[tw`font-bold mb-1`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
-            Tên sản phẩm: {item.name}
+          <Text style={[tw` mb-1`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
+            Tên sản phẩm: {item.collectionName}
           </Text>
           <Text style={[tw`mb-1`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(14) }]}>
             PTC Code: {item.PTCcode}
@@ -152,7 +152,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
       </TouchableOpacity>
       {selectedProductId === item.id && (
         <View style={[tw`p-2 rounded-md border`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
-          <Text style={[tw`font-bold mb-2`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(20) }]}>
+          <Text style={[tw` mb-2`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(20) }]}>
             Bộ phận đã hoàn thành
           </Text>
           <FlatList
@@ -167,7 +167,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
 
   if (isLoading) {
     return (
-      <SafeAreaView style={[tw`flex-1 px-4 pt-4`, { backgroundColor: COLORS.colorMain }]}>
+      <SafeAreaView style={[tw`flex-1 px-4 pt-${getScaledSize(4)}`, { backgroundColor: COLORS.colorMain }]}>
         <Text style={[tw`text-lg`, { color: COLORS.text, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(18) }]}>
           Loading...
         </Text>
@@ -176,8 +176,8 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
   }
 
   return (
-    <SafeAreaView style={[tw`flex-1 px-4 pt-4`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-3 px-2 border-b`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
+    <SafeAreaView style={[tw`flex-1 px-4 `, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5 border-b mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white, borderColor: COLORS.border }]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 
         style={[tw`p-2`, { borderRadius: 50 }]} 
@@ -186,7 +186,7 @@ const OutputList: React.FC<OutputListProps> = ({ navigation }) => {
         <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
       </TouchableOpacity>
       <Text style={[tw`text-xl flex-1 text-center `, { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(20) }]}>
-          Output
+          Output List
         </Text>
       </View>
       <SearchBar

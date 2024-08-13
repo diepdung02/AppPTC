@@ -132,7 +132,10 @@ const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1 `, {backgroundColor:COLORS.colorMain}]}>
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
         <View style={tw`flex-1`}>
-          <View style={tw`flex-row items-center p-${getScaledSize(2)}`}>
+        <View  style={[
+          tw`flex-row items-center mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white, padding: getScaledSize(10) },
+        ]}>
           <TouchableOpacity
           onPress={() => navigation.goBack()} 
           style={[tw`p-2`, { borderRadius: 50 }]} 
@@ -141,16 +144,16 @@ const CreateLeftDeptScreen: React.FC<Props> = ({ navigation }) => {
           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
            <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
-          Xin tăng ca
+          Xin ra vào cổng
         </Text>
           </View>
           <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(5)}`}>
-            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày tăng ca:</Text>
+            <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày :</Text>
             <TouchableOpacity
               style={[tw`flex-row items-center h-${getScaledSize(14)} border border-white rounded pl-${getScaledSize(2)} `,{backgroundColor:COLORS.white} ]}
               onPress={showDatePicker}
             >
-              <Text style={[tw`flex-1 `,{ color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]} >{date ? date.toDateString() : 'Chọn ngày tăng ca'}</Text>
+              <Text style={[tw`flex-1 `,{ color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]} >{date ? date.toDateString() : 'Chọn ngày '}</Text>
               <FontAwesome name="calendar" size={getScaledSize(20)} color="black" style={tw`mr-${getScaledSize(5)}`} />
             </TouchableOpacity>
             <DateTimePickerModal isVisible={isDatePickerVisible} mode="date" onConfirm={handleConfirmDate} onCancel={hideDatePicker} />

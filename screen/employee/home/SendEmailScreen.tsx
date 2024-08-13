@@ -9,8 +9,8 @@ import {
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions
 } from "react-native";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/navigation";
@@ -18,6 +18,22 @@ import { useDispatch } from "react-redux";
 import { addEmail } from "../../../redux/Slice/mailSlice";
 import { addEmailNotification } from "../../../redux/managerSlice/managerNotificationSlice"; 
 import { v4 as uuidv4 } from "uuid";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+// Base dimensions for scaling
+const BASE_WIDTH = 375;
+const BASE_HEIGHT = 667;
+
+// Get screen dimensions
+const { width, height } = Dimensions.get("window");
+
+// Calculate scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+// Function to get scaled size
+const getScaledSize = (size: number) => Math.round(size * scale);
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "SendMail">;
@@ -74,7 +90,7 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <FontAwesome name="arrow-left" size={20} color="black" />
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Gửi Email</Text>
         </View>

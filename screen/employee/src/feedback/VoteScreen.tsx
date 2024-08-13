@@ -1,88 +1,71 @@
-import React from 'react';
-import { View, Text, Button, FlatList, Linking, Alert, TouchableOpacity, SafeAreaView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useNavigation } from '@react-navigation/native';
-import COLORS from '../../../../constants/Color';
+import COLORS from '../../../../constants/Color'; // Đảm bảo bạn đã định nghĩa các màu ở đây
 
-// Dữ liệu thông báo bình chọn
-const vote = [
-  {
-    id: '1',
-    title: 'Du lịch cùng công ty',
-    date: '20/08/2024',
-    description: 'Mời bạn bình chọn địa điểm du lịch để chúng ta có thể lên kế hoạch cho chuyến đi sắp tới.',
-    formLink: 'https://forms.gle/SWVbMT95Sbwo3ni67',
-  },
-  {
-    id: '2',
-    title: 'Lễ hội Trung Thu 2024',
-    date: '12/08/2024',
-    description: 'Hãy chọn món quà Trung Thu yêu thích của bạn để chúng tôi chuẩn bị quà tặng cho lễ hội.',
-    formLink: 'https://forms.gle/cdcKvUD3kPJu9vsa7',
-  },
-  {
-    id: '3',
-    title: 'Cuộc thi ẩm thực công ty',
-    date: '07/08/2024',
-    description: 'Tham gia bình chọn cho món ăn yêu thích nhất trong cuộc thi ẩm thực sắp tới của công ty.',
-    formLink: 'https://forms.gle/KHyCKsGfUMrRt77w6',
-  },
-];
 
-const VoteScreen:React.FC = () => {
-  const navigation = useNavigation();
+const VoteScreen: React.FC = () => {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
-  const handlePress = (formLink: string) => {
-    Linking.openURL(formLink).catch(() =>
-      Alert.alert('Lỗi', 'Không thể mở liên kết.'),
-    );
+  const handleVote = () => {
+    if (selectedOption) {
+      Alert.alert('Bầu chọn thành công', `Bạn đã bầu chọn: ${selectedOption}`);
+    } else {
+      Alert.alert('Lỗi', 'Vui lòng chọn một tùy chọn trước khi gửi.');
+    }
   };
 
-  const renderItem = ({ item }: { item: typeof vote[0] }) => (
-    <View style={tw`mb-4 p-4 bg-gray-100 rounded-lg shadow-md`}>
-      <Text style={tw`text-lg font-bold`}>{item.title}</Text>
-      <Text style={tw`text-sm text-gray-500 mt-1`}>{item.date}</Text>
-      <Text style={tw`text-base mt-2`}>{item.description}</Text>
-      <Button
-        title="Tham gia bình chọn"
-        onPress={() => handlePress(item.formLink)}
-      />
-    </View>
-  );
-
   return (
-    <SafeAreaView style={[tw`flex-1`, {backgroundColor:COLORS.colorMain}]}>
-      {/* Tiêu đề và các biểu tượng điều hướng */}
-      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
+    <SafeAreaView style={tw`flex-1 bg-${COLORS.colorMain}`}>
+      <View style={tw`p-4`}>
+        <Text style={tw`text-xl font-bold mb-4 text-${COLORS.black}`}>
+          Chọn món quà Trung Thu:
+        </Text>
         <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={[tw`p-2`, { borderRadius: 50 }]}
-          activeOpacity={0.7}
+          style={[
+            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Bánh Trung Thu' ? COLORS.primary : COLORS.white}`,
+            { borderColor: selectedOption === 'Bánh Trung Thu' ? COLORS.primary : COLORS.border }
+          ]}
+          onPress={() => setSelectedOption('Bánh Trung Thu')}
         >
-          <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.black} />
+          <Text style={tw`text-lg text-${selectedOption === 'Bánh Trung Thu' ? COLORS.white : COLORS.black}`}>
+            Bánh Trung Thu
+          </Text>
         </TouchableOpacity>
 
-        <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: 20 }]}>
-          Danh sách bình chọn
-        </Text>
-
-        {/* <TouchableOpacity
-        //   onPress={() => navigation.navigate("")}
-          style={[tw`p-2`, { borderRadius: 50 }]}
-          activeOpacity={0.7}
+        <TouchableOpacity
+          style={[
+            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Đèn lồng' ? COLORS.primary : COLORS.white}`,
+            { borderColor: selectedOption === 'Đèn lồng' ? COLORS.primary : COLORS.border }
+          ]}
+          onPress={() => setSelectedOption('Đèn lồng')}
         >
-          <MaterialCommunityIcons name="plus-circle-outline" size={24} color="#000000" />
-        </TouchableOpacity> */}
-      </View>
+          <Text style={tw`text-lg text-${selectedOption === 'Đèn lồng' ? COLORS.white : COLORS.black}`}>
+            Đèn lồng
+          </Text>
+        </TouchableOpacity>
 
-      {/* Danh sách bình chọn */}
-      <FlatList
-        data={vote}
-        renderItem={renderItem}
-        keyExtractor={item => item.id}
-        contentContainerStyle={tw`p-4`}
-      />
+        <TouchableOpacity
+          style={[
+            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Kẹo' ? COLORS.primary : COLORS.white}`,
+            { borderColor: selectedOption === 'Kẹo' ? COLORS.primary : COLORS.border }
+          ]}
+          onPress={() => setSelectedOption('Kẹo')}
+        >
+          <Text style={tw`text-lg text-${selectedOption === 'Kẹo' ? COLORS.white : COLORS.black}`}>
+            Kẹo
+          </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[tw`p-4 rounded-lg  mt-4`, {backgroundColor:COLORS.primary}]}
+          onPress={handleVote}
+        >
+          <Text style={tw`text-lg text-white text-center`}>
+            Gửi bầu chọn
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

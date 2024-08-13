@@ -156,7 +156,7 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
       } else {
         parsedProducts.push({
           id: productId,
-          name: productName,
+          collectionName: productName,
           components: updatedCompletedComponents,
           ClientCode: productClient,
           image: productImage,
@@ -190,8 +190,8 @@ const OutputScreen: React.FC<OutputScreenProps> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1 p-2`,  { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center`,
-          { backgroundColor: COLORS.colorMain, padding: getScaledSize(10) },
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white, padding: getScaledSize(10) },
         ]}
       >
         <TouchableOpacity

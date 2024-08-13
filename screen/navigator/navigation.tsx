@@ -76,6 +76,7 @@ export type NotificationItem = {
   icon: string;
   sender:string;
   link:string;
+  vote:string;
 };
 export type ManagerNotificationItem = {
   id: string;
@@ -100,7 +101,7 @@ export type EmailItem = {
 export type Product = {
   id: number;
   image: string;
-  name: string;
+  collectionName: string;
   pdfUri: string;
   PTCcode: string;
   ClientCode: string;

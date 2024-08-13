@@ -41,7 +41,8 @@ const fakeNotifications = [
     summary: "Bạn có một cuộc bầu chọn về món quà Trung Thu. Hãy tham gia ngay!",
     date: "12-08-2024",
     sender: "Phòng nhân sự",
-    link: ""
+    link: "",
+    vote:"",
   },
   {
     id: "6",
@@ -51,37 +52,45 @@ const fakeNotifications = [
     summary: "Bạn đã được nhận đánh giá vào tháng 7.",
     date: "31-07-2024",
     sender: "Phòng nhân sự",
-    link: ""
+    link: "",
+    vote:"",
+
   },
   {
     id: "1",
     icon: "https://img.upanh.tv/2024/07/22/reject89259f678d8bbaef.png",
-    image: "", // No image
+    image: "", 
     title: "Đơn nghỉ phép",
     summary: "Đơn nghỉ phép của bạn đã bị từ chối",
     date: "27-07-2024",
     sender:"Phòng nhân sự",
-    link:""
+    link:"",
+    vote:"",
+
   },
   {
     id: "2",
     icon: "https://img.upanh.tv/2024/07/22/approved.png",
-    image: "", // No image
+    image: "", 
     title: "Đơn xin tăng ca",
     summary: "Đơn xin tăng ca của bạn được duyệt",
     date: "22-07-2024",
     sender:"Phòng nhân sự",
-    link:""
+    link:"",
+    vote:"",
+
   },
   {
     id: "3",
-    icon: "", // No icon
+    icon: "", 
     image: "https://tse3.mm.bing.net/th?id=OIP.rT1CaU2Yj6DMaEFx0H1vagHaD4&pid=Api&P=0&h=180",
     title: "Thông báo họp nhóm",
     summary: "Lịch họp nhóm tháng này đã được cập nhật. Vui lòng kiểm tra lịch và tham gia đúng giờ.",
     date: "12-07-2024",
     sender:"Phòng nhân sự",
-    link:""
+    link:"",
+    vote:"",
+
   },
   {
     id: "4",
@@ -91,7 +100,8 @@ const fakeNotifications = [
     summary: "Chúc mừng bạn đã đạt được khen thưởng từ công ty vì đã có những sáng kiển hay đóng góp cho công ty.",
     date: "03-07-2024",
     sender:"Phòng nhân sự",
-    link:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTpozmUpqn_MlpVcs-C_Qafd0bvVMcscHxSApiHekRyemPaYiE4K7KR4FeED0A1mg/pubhtml"
+    link:"https://docs.google.com/spreadsheets/d/e/2PACX-1vTpozmUpqn_MlpVcs-C_Qafd0bvVMcscHxSApiHekRyemPaYiE4K7KR4FeED0A1mg/pubhtml",
+    vote:""
   },
   {
     id: "5",
@@ -101,7 +111,8 @@ const fakeNotifications = [
     summary: "Chính sách nghỉ phép mới đã được áp dụng. Vui lòng đọc tài liệu mới để hiểu rõ hơn về quy định.",
     date: "24-06-2024",
     sender:"Phòng nhân sự",
-    link:""
+    link:"",
+    vote:""
   },
 
 ];

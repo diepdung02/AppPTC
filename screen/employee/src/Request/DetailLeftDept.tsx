@@ -54,14 +54,17 @@ const DetailLeftDept: React.FC<Props> = ({ route }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, {backgroundColor: COLORS.colorMain}]}>
-      <View style={[tw`flex-row items-center p-[${getScaledSize(12)}px]`, {backgroundColor: COLORS.white}]}>
+   <View  style={[
+          tw`flex-row items-center mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white, padding: getScaledSize(10), },
+        ]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={tw`h-[${getScaledSize(40)}px] w-[${getScaledSize(40)}px] items-center justify-center`}
         >
           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={[tw`ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18)}]}>Chi tiết ra vào cổng</Text>
+        <Text style={[tw`ml-2 text-center`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18),  textAlign: 'center', flex:1}]}>Chi tiết ra vào cổng</Text>
       </View>
       <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
         <Text style={[tw`w-[${getScaledSize(150)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Mã code:</Text>

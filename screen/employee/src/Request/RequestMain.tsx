@@ -176,8 +176,8 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5`, { backgroundColor: COLORS.white }]}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 
         style={[tw`p-2`, { borderRadius: 50 }]} 
@@ -208,7 +208,6 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
           containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
           inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
           inputStyle={{ fontSize: getScaledSize(16) }}
-          
         />
       </View>
       <FlatList

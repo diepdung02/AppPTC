@@ -40,7 +40,7 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`items-center justify-center my-${getScaledSize(10)}`}>
+      <View style={tw`items-center justify-center my-${getScaledSize(15)}`}>
         <Image
           source={{ uri: "https://img.upanh.tv/2024/07/09/avatar.jpg" }}
           style={tw`w-${getScaledSize(50)} h-${getScaledSize(50)} rounded-full`}

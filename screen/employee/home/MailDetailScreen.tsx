@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { RootStackParamList } from '../../navigator/navigation';
 import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
@@ -44,10 +43,9 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
       </Text>
     </View>
   );
-
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center p-4 shadow-md`, { backgroundColor: COLORS.white }]}>
+      <View style={[tw`flex-row items-center p-4 shadow-md mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={tw`w-10 h-10 items-center justify-center`}
@@ -61,6 +59,7 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
               color: COLORS.black,
               fontFamily: 'CustomFont-Regular',
               fontSize: getScaledSize(18),
+              textAlign: 'center', flex:1
             },
           ]}
         >
@@ -103,7 +102,6 @@ const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             By: {emailItem.to}
           </Text>
         </View>
-        {/* Display email details */}
         <FlatList
           data={[
             { label: 'Nội dung:', value: emailItem.message },
