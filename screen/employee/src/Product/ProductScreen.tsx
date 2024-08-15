@@ -9,7 +9,7 @@ import {
   Animated,
   Easing,
   Dimensions,
-  Button
+  ScrollView
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -20,10 +20,10 @@ import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
 import useCustomFonts from "../../../../hooks/useFont";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as MediaLibrary from 'expo-media-library';
+import * as MediaLibrary from "expo-media-library";
 
 // Lấy kích thước màn hình
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 // Kích thước cơ sở để tính toán tỷ lệ
 const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
@@ -51,7 +51,6 @@ type Product = {
   Dimensions: string[];
   components: Component[];
   remainingComponents: Component[];
-
 };
 
 const products: Product[] = [
@@ -59,8 +58,10 @@ const products: Product[] = [
   {
     id: 16,
     collectionName: "Durrant",
-    pdfUri: "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618507.SWO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    pdfUri:
+      "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618507.SWO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "MB618507.SWO.00",
     ClientCode: "DURR.CHST.ARML.SWO.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
@@ -77,7 +78,8 @@ const products: Product[] = [
     id: 14,
     collectionName: "Durrant",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618508.DWN.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618508.DWN.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "MB618508.DWN.00",
     ClientCode: "DURR.CHST.ARML.DWN.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
@@ -94,7 +96,8 @@ const products: Product[] = [
     id: 15,
     collectionName: "Dorothy",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202406211241272014_JC630505.RGL.02.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202406211241272014_JC630505.RGL.02.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "JC630505.RGL.02",
     ClientCode: "6344.RGL.000",
     Dimensions: ["120x60x75 cm"],
@@ -111,7 +114,8 @@ const products: Product[] = [
     id: 6,
     collectionName: "Dorothy",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202104191128294439_JC630501.BGL.01.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/JC/202104191128294439_JC630501.BGL.01.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "JC630501.BGL.01",
     ClientCode: "6197.BGL.000",
     Dimensions: ["120x60x75 cm"],
@@ -127,8 +131,10 @@ const products: Product[] = [
   {
     id: 3,
     collectionName: "Durrant",
-    pdfUri: "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618507.SWO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    pdfUri:
+      "https://file-examples.com/wp-content/uploads/2017/10/file-example_PDF_1MB.pdf",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618507.SWO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "MB618507.SWO.00",
     ClientCode: "DURR.CHST.ARML.SWO.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
@@ -145,7 +151,8 @@ const products: Product[] = [
     id: 2,
     collectionName: "Durrant",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618508.DWN.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/MB/MB618508.DWN.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "MB618508.DWN.00",
     ClientCode: "DURR.CHST.ARML.DWN.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
@@ -160,9 +167,10 @@ const products: Product[] = [
   },
   {
     id: 1,
-    collectionName: "	Anthropologie",
+    collectionName: "Anthropologie",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/AN/202104141009273551_AN742117.BLC.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/AN/202104141009273551_AN742117.BLC.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "AN742117.BLC.00",
     ClientCode: "0054062328",
     Dimensions: ["120x60x75 cm"],
@@ -177,11 +185,84 @@ const products: Product[] = [
   },
   {
     id: 5,
-    collectionName: "	Anthropologie",
+    collectionName: "Anthropologie",
     pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
-    image: "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/AN/202105191445441798_AN742117.GRC.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/AN/202105191445441798_AN742117.GRC.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
     PTCcode: "AN742117.GRC.00",
     ClientCode: "0060651197",
+    Dimensions: ["120x60x75 cm"],
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
+  },
+  {
+    id: 7,
+    collectionName: "Vaughan",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/VA/VA854701.TBA.90.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    PTCcode: "VA854701.DBH.00",
+    ClientCode: "CFT0063",
+    Dimensions: ["120x60x75 cm"],
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
+  },
+  {
+    id: 8,
+    collectionName: "Ashley Childers",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/GV/202104141353426599_GV645101.DWW.01.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    PTCcode: "GV645101.DWW.01",
+    ClientCode: "2578",
+    Dimensions: ["120x60x75 cm"],
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
+  },
+  {
+    id: 9,
+    collectionName: "Serena & Lilly",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/SL/202103121438182676_SL865404.NOO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    PTCcode: "SL865404.NOO.00",
+    ClientCode: "TBDT56-01",
+    Dimensions: ["120x60x75 cm"],
+    components: [
+      { id: 1, name: "Chân ghế" },
+      { id: 2, name: "Lưng ghế" },
+      { id: 3, name: "Tay ghế" },
+      { id: 4, name: "Mút ghế" },
+      { id: 5, name: "Ốc vít" },
+    ],
+    remainingComponents: [],
+  },
+  {
+    id: 10,
+    collectionName: "Serena & Lilly",
+    pdfUri: "https://heyzine.com/flip-book/48eaf42380.html",
+    image:
+      "https://phucthang.file.core.windows.net/pictureproductfile/PICTUREDATA/SL/202103121438182676_SL865404.NOO.00.gif?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-31T16:41:13Z&st=2023-12-31T08:41:13Z&spr=https,http&sig=Tps5ZmaA%2FumvNMqx0Z2efhZCtKwlNnqhzuMhlRCQboI%3D",
+    PTCcode: "SL865404.NOO.00",
+    ClientCode: "TBDT56-01",
     Dimensions: ["120x60x75 cm"],
     components: [
       { id: 1, name: "Chân ghế" },
@@ -201,9 +282,14 @@ type ProductScreenProps = {
 const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   const [showPdf, setShowPdf] = useState(false);
   const [pdfUri, setPdfUri] = useState<string>("");
-  const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
-  const [outputMenuVisible, setOutputMenuVisible] = useState<number | null>(null);
-  const [selectedCollectionName, setSelectedCollectionName] = useState<string>("");
+  const [selectedProductId, setSelectedProductId] = useState<number | null>(
+    null
+  );
+  const [outputMenuVisible, setOutputMenuVisible] = useState<number | null>(
+    null
+  );
+  const [selectedCollectionName, setSelectedCollectionName] =
+    useState<string>("");
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [searchKeyword, setSearchKeyword] = useState<string>("");
 
@@ -220,6 +306,12 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   const handleCategoryChange = (collectionName: string | null) => {
     setSelectedCollectionName(collectionName || "");
+  };
+
+  const getButtonStyle = (collectionName: string | null) => {
+    return selectedCollectionName === collectionName
+      ? { backgroundColor: COLORS.primary, color: COLORS.white }
+      : { backgroundColor: COLORS.white, color: COLORS.primary };
   };
 
   const handleProductPress = (product: Product) => {
@@ -280,14 +372,18 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     setSearchKeyword(text);
   };
 
-  const filteredProducts = products.filter((product) =>
-    (product.collectionName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
-     product.PTCcode.toLowerCase().includes(searchKeyword.toLowerCase())) &&
-    (selectedCollectionName === "" || product.collectionName === selectedCollectionName)
+  const filteredProducts = products.filter(
+    (product) =>
+      (product.collectionName
+        .toLowerCase()
+        .includes(searchKeyword.toLowerCase()) ||
+        product.PTCcode.toLowerCase().includes(searchKeyword.toLowerCase())) &&
+      (selectedCollectionName === "" ||
+        product.collectionName === selectedCollectionName)
   );
 
   const renderItem = ({ item }: { item: Product }) => (
-    <View key={item.id} style={tw`p-2 m-1 border border-gray-300 rounded-lg`}>
+    <View key={item.id} style={tw` p-2 m-1 border border-gray-300 rounded-lg`}>
       <TouchableOpacity onPress={() => handleProductPress(item)}>
         <View style={tw`items-center`}>
           <Image
@@ -304,42 +400,145 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
         </View>
         <View style={tw`mt-5`}>
           <View style={tw`flex-row`}>
-            <Text style={[tw`ml-5`, { fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.red }]}>
-              Collection Name: 
+            <Text
+              style={[
+                tw`ml-5`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 14,
+                  color: COLORS.red,
+                },
+              ]}
+            >
+              Collection Name:
             </Text>
-            <Text style={[tw`ml-2`, { fontFamily: "CustomFont-Regular", fontSize: 16 }]}>{item.collectionName}</Text>
+            <Text
+              style={[
+                tw`ml-2`,
+                { fontFamily: "CustomFont-Regular", fontSize: 16 },
+              ]}
+            >
+              {item.collectionName}
+            </Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`ml-5`, { fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.red }]}>
-              PTC Code: 
+            <Text
+              style={[
+                tw`ml-5`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 14,
+                  color: COLORS.red,
+                },
+              ]}
+            >
+              PTC Code:
             </Text>
-            <Text style={[tw`ml-2`, { fontFamily: "CustomFont-Regular", fontSize: 16, color: COLORS.black }]}>{item.PTCcode}</Text>
+            <Text
+              style={[
+                tw`ml-2`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 16,
+                  color: COLORS.black,
+                },
+              ]}
+            >
+              {item.PTCcode}
+            </Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`ml-5`, { fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.red }]}>
-              Client Code: 
+            <Text
+              style={[
+                tw`ml-5`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 14,
+                  color: COLORS.red,
+                },
+              ]}
+            >
+              Client Code:
             </Text>
-            <Text style={[tw`ml-2`, { fontFamily: "CustomFont-Regular", fontSize: 16, color: COLORS.black }]}>{item.ClientCode}</Text>
+            <Text
+              style={[
+                tw`ml-2`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 16,
+                  color: COLORS.black,
+                },
+              ]}
+            >
+              {item.ClientCode}
+            </Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`ml-5`, { fontFamily: "CustomFont-Regular", fontSize: 14, color: COLORS.red }]}>
-              Dimension: 
+            <Text
+              style={[
+                tw`ml-5`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 14,
+                  color: COLORS.red,
+                },
+              ]}
+            >
+              Dimension:
             </Text>
-            <Text style={[tw`ml-2`, { fontFamily: "CustomFont-Regular", fontSize: 16, color: COLORS.black }]}>
+            <Text
+              style={[
+                tw`ml-2`,
+                {
+                  fontFamily: "CustomFont-Regular",
+                  fontSize: 16,
+                  color: COLORS.black,
+                },
+              ]}
+            >
               {item.Dimensions.join(", ")}
             </Text>
           </View>
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={tw`p-2 absolute top-2 right-2`} onPress={() => toggleOutputMenu(item.id)}>
+      <TouchableOpacity
+        style={tw`p-2 absolute top-2 right-2`}
+        onPress={() => toggleOutputMenu(item.id)}
+      >
         <FontAwesome name="bars" size={20} color="black" />
       </TouchableOpacity>
-
       {selectedProductId === item.id && (
-        <Animated.View style={[tw`bg-white rounded mt-2`, { transform: [{ translateY: animatedValue.interpolate({ inputRange: [0, 1], outputRange: [20, 0] }) }] }]}>
-          <TouchableOpacity style={tw`bg-blue-500 p-2 rounded`} onPress={() => handleOutputPress(item)}>
-            <Text style={{ fontFamily: "CustomFont-Regular", fontSize: 16, color: COLORS.black, textAlign: 'center' }}>
+        <Animated.View
+          style={[
+            tw`bg-white rounded mt-2`,
+            {
+              transform: [
+                {
+                  translateY: animatedValue.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [20, 0],
+                  }),
+                },
+              ],
+            },
+          ]}
+        >
+          <TouchableOpacity
+            style={tw`bg-blue-500 p-2 rounded`}
+            onPress={() =>
+              //  handleOutputPress
+              item
+            }
+          >
+            <Text
+              style={{
+                fontFamily: "CustomFont-Regular",
+                fontSize: 16,
+                color: COLORS.black,
+                textAlign: "center",
+              }}
+            >
               Báo Output
             </Text>
           </TouchableOpacity>
@@ -348,18 +547,33 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     </View>
   );
 
-
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
+      <View
+        style={[
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
         <TouchableOpacity
-          onPress={() => navigation.goBack()} 
-          style={[tw`p-2`, { borderRadius: 50 }]} 
-          activeOpacity={0.7} 
+          onPress={() => navigation.goBack()}
+          style={[tw`p-2`, { borderRadius: 50 }]}
+          activeOpacity={0.7}
         >
-          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={getScaledSize(24)}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
-        <Text style={{ fontFamily: "CustomFont-Bold", fontSize: 20, flex: 1, textAlign: 'center' }}>
+        <Text
+          style={{
+            fontFamily: "CustomFont-Bold",
+            fontSize: 20,
+            flex: 1,
+            textAlign: "center",
+          }}
+        >
           Sản phẩm
         </Text>
       </View>
@@ -372,15 +586,126 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             lightTheme
             round
             containerStyle={tw`bg-transparent border-b border-gray-300 border-t-0`}
-            inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
+            inputContainerStyle={{
+              height: getScaledSize(40),
+              backgroundColor: COLORS.white,
+            }}
             inputStyle={{ fontSize: getScaledSize(16) }}
           />
           <View style={tw`flex-row mb-4`}>
-          <Button title="All" onPress={() => handleCategoryChange(null)} />
-          <Button title="Dorothy" onPress={() => handleCategoryChange("Dorothy")} />
-          <Button title="Durrant" onPress={() => handleCategoryChange("Durrant")} />
-          <Button title="Anthropologie" onPress={() => handleCategoryChange("	Anthropologie")} />
+          <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        <View style={tw`flex-row`}>
+          <TouchableOpacity
+            style={[tw`p-2 m-1`, getButtonStyle(null)]}
+            onPress={() => handleCategoryChange(null)}
+          >
+            <Text style={tw`text-center text-lg`}>All</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Dorothy"),
+              { backgroundColor: getButtonStyle("Dorothy").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Dorothy")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Dorothy").color },
+              ]}
+            >
+              Dorothy
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Durrant"),
+              { backgroundColor: getButtonStyle("Durrant").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Durrant")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Durrant").color },
+              ]}
+            >
+              Durrant
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Anthropologie"),
+              { backgroundColor: getButtonStyle("Anthropologie").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Anthropologie")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Anthropologie").color },
+              ]}
+            >
+              Anthropologie
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Serena & Lilly"),
+              { backgroundColor: getButtonStyle("Serena & Lilly").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Serena & Lilly")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Serena & Lilly").color },
+              ]}
+            >
+              Serena & Lilly
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Ashley Childers"),
+              { backgroundColor: getButtonStyle("Ashley Childers").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Ashley Childers")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Ashley Childers").color },
+              ]}
+            >
+              Ashley Childers
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              tw`p-2 m-1`,
+              getButtonStyle("Vaughan"),
+              { backgroundColor: getButtonStyle("Vaughan").backgroundColor },
+            ]}
+            onPress={() => handleCategoryChange("Vaughan")}
+          >
+            <Text
+              style={[
+                tw`text-center text-lg`,
+                { color: getButtonStyle("Vaughan").color },
+              ]}
+            >
+              Vaughan
+            </Text>
+          </TouchableOpacity>
         </View>
+      </ScrollView>
+          </View>
           <FlatList
             data={filteredProducts}
             renderItem={renderItem}
