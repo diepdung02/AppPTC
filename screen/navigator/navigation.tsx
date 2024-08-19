@@ -47,9 +47,16 @@ export type DataRequest = {
 
 export type DataItem = {
   id: number;
-  imageUrl: string;
-  title: string;
-  detail: DetailItem[];
+  collectionName:string;
+  pdfUri: string;
+  image:string;
+  PTCcode:string;
+  ClientCode:string;
+  productGroup:string;
+  description:string;
+  colorCode:string;
+  cbm:string;
+  Dimensions:string[];
 };
 
 export type NewsItem = {

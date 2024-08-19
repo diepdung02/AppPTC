@@ -20,7 +20,7 @@ import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
 import useCustomFonts from "../../../../hooks/useFont";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import * as MediaLibrary from "expo-media-library";
+
 
 // Lấy kích thước màn hình
 const { width, height } = Dimensions.get("window");
@@ -50,6 +50,10 @@ type Product = {
   ClientCode: string;
   Dimensions: string[];
   components: Component[];
+  productGroup:string;
+  description:string;
+  colorCode:string;
+  cbm:string;
   remainingComponents: Component[];
 };
 
@@ -65,6 +69,10 @@ const products: Product[] = [
     PTCcode: "MB618507.SWO.00",
     ClientCode: "DURR.CHST.ARML.SWO.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Stools, Ottomans",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Mặt ghế" },
@@ -83,6 +91,10 @@ const products: Product[] = [
     PTCcode: "MB618508.DWN.00",
     ClientCode: "DURR.CHST.ARML.DWN.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Stools, Ottomans",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -101,6 +113,10 @@ const products: Product[] = [
     PTCcode: "JC630505.RGL.02",
     ClientCode: "6344.RGL.000",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Stools, Ottomans",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -119,6 +135,10 @@ const products: Product[] = [
     PTCcode: "JC630501.BGL.01",
     ClientCode: "6197.BGL.000",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Chairs",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -138,6 +158,10 @@ const products: Product[] = [
     PTCcode: "MB618507.SWO.00",
     ClientCode: "DURR.CHST.ARML.SWO.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Stools, Ottomans",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Mặt ghế" },
@@ -156,6 +180,10 @@ const products: Product[] = [
     PTCcode: "MB618508.DWN.00",
     ClientCode: "DURR.CHST.ARML.DWN.BR.FRAME",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Stools, Ottomans",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -174,6 +202,10 @@ const products: Product[] = [
     PTCcode: "AN742117.BLC.00",
     ClientCode: "0054062328",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Cabinets, Wardrobes",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -192,6 +224,10 @@ const products: Product[] = [
     PTCcode: "AN742117.GRC.00",
     ClientCode: "0060651197",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Cabinets, Wardrobes",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -210,6 +246,10 @@ const products: Product[] = [
     PTCcode: "VA854701.DBH.00",
     ClientCode: "CFT0063",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Tables-Occasional",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -228,6 +268,10 @@ const products: Product[] = [
     PTCcode: "GV645101.DWW.01",
     ClientCode: "2578",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Sofas, Bench",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -246,6 +290,10 @@ const products: Product[] = [
     PTCcode: "SL865404.NOO.00",
     ClientCode: "TBDT56-01",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Sofas, Bench",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -264,6 +312,10 @@ const products: Product[] = [
     PTCcode: "SL865404.NOO.00",
     ClientCode: "TBDT56-01",
     Dimensions: ["120x60x75 cm"],
+    productGroup:"Sofas, Bench",
+    description:"Durrant Armless Counterheight Stool, no Upholstery",
+    colorCode:"SWO.MB/ ABS.01.MB",
+    cbm:"0.3523",
     components: [
       { id: 1, name: "Chân ghế" },
       { id: 2, name: "Lưng ghế" },
@@ -295,14 +347,6 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   useCustomFonts();
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await MediaLibrary.requestPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Media Library permission not granted");
-      }
-    })();
-  }, []);
 
   const handleCategoryChange = (collectionName: string | null) => {
     setSelectedCollectionName(collectionName || "");
@@ -383,131 +427,71 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   );
 
   const renderItem = ({ item }: { item: Product }) => (
-    <View key={item.id} style={tw` p-2 m-1 border border-gray-300 rounded-lg`}>
-      <TouchableOpacity onPress={() => handleProductPress(item)}>
-        <View style={tw`items-center`}>
+    <View key={item.id} style={tw`p-2 m-1 border border-gray-300 rounded-lg`}>
+      <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", { item })}>
+        <View style={tw`items-center flex-row`}>
           <Image
             source={{ uri: item.image }}
             style={[
               {
-                width: getScaledSize(150),
-                height: getScaledSize(120),
-                borderRadius: getScaledSize(8),
+                width: getScaledSize(100),
+                height: getScaledSize(100),
+                borderRadius: getScaledSize(10),
               },
               { resizeMode: "contain" },
             ]}
           />
-        </View>
-        <View style={tw`mt-5`}>
-          <View style={tw`flex-row`}>
-            <Text
-              style={[
-                tw`ml-5`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 14,
-                  color: COLORS.red,
-                },
-              ]}
-            >
-              Collection Name:
-            </Text>
-            <Text
-              style={[
-                tw`ml-2`,
-                { fontFamily: "CustomFont-Regular", fontSize: 16 },
-              ]}
-            >
-              {item.collectionName}
-            </Text>
-          </View>
-          <View style={tw`flex-row`}>
-            <Text
-              style={[
-                tw`ml-5`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 14,
-                  color: COLORS.red,
-                },
-              ]}
-            >
-              PTC Code:
-            </Text>
-            <Text
-              style={[
-                tw`ml-2`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 16,
-                  color: COLORS.black,
-                },
-              ]}
-            >
-              {item.PTCcode}
-            </Text>
-          </View>
-          <View style={tw`flex-row`}>
-            <Text
-              style={[
-                tw`ml-5`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 14,
-                  color: COLORS.red,
-                },
-              ]}
-            >
-              Client Code:
-            </Text>
-            <Text
-              style={[
-                tw`ml-2`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 16,
-                  color: COLORS.black,
-                },
-              ]}
-            >
-              {item.ClientCode}
-            </Text>
-          </View>
-          <View style={tw`flex-row`}>
-            <Text
-              style={[
-                tw`ml-5`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 14,
-                  color: COLORS.red,
-                },
-              ]}
-            >
-              Dimension:
-            </Text>
-            <Text
-              style={[
-                tw`ml-2`,
-                {
-                  fontFamily: "CustomFont-Regular",
-                  fontSize: 16,
-                  color: COLORS.black,
-                },
-              ]}
-            >
-              {item.Dimensions.join(", ")}
-            </Text>
+          <View style={tw`my-1 ml-3 flex-1`}>
+            {[
+              { label: 'Collection:', value: item.collectionName },
+              { label: 'Client Code:', value: item.ClientCode },
+              { label: 'Group:', value: item.productGroup },
+              { label: 'Dimension:', value: item.Dimensions.join(", ") },
+            ].map((info, index) => (
+              <View
+                key={index}
+                style={tw`bg-transparent border-b border-gray-300 border-t-0`}
+              >
+                <View style={tw`flex-row`}>
+                  <Text
+                    style={[
+                      tw``,
+                      {
+                        fontFamily: "CustomFont-Regular",
+                        fontSize: getScaledSize(14),
+                        color: COLORS.red,
+                        flex: 1,
+                      },
+                    ]}
+                  >
+                    {info.label}
+                  </Text>
+                  <Text
+                    style={[
+                      tw`flex-1`,
+                      {
+                        fontFamily: "CustomFont-Regular",
+                        fontSize: getScaledSize(14),
+                        color: COLORS.black,
+                      },
+                    ]}
+                  >
+                    {info.value}
+                  </Text>
+                </View>
+              </View>
+            ))}
           </View>
         </View>
       </TouchableOpacity>
-
+      
       <TouchableOpacity
-        style={tw`p-2 absolute top-2 right-2`}
+        style={tw`p-1 absolute right-2`}
         onPress={() => toggleOutputMenu(item.id)}
       >
         <FontAwesome name="bars" size={20} color="black" />
       </TouchableOpacity>
+      
       {selectedProductId === item.id && (
         <Animated.View
           style={[
@@ -526,15 +510,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
         >
           <TouchableOpacity
             style={tw`bg-blue-500 p-2 rounded`}
-            onPress={() =>
-              //  handleOutputPress
-              item
-            }
+            onPress={() => {
+              // handleOutputPress(item);
+            }}
           >
             <Text
               style={{
                 fontFamily: "CustomFont-Regular",
-                fontSize: 16,
+                fontSize: getScaledSize(16),
                 color: COLORS.black,
                 textAlign: "center",
               }}
@@ -546,6 +529,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       )}
     </View>
   );
+  
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
@@ -569,7 +553,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
         <Text
           style={{
             fontFamily: "CustomFont-Bold",
-            fontSize: 20,
+            fontSize: getScaledSize(20),
             flex: 1,
             textAlign: "center",
           }}
@@ -577,7 +561,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           Sản phẩm
         </Text>
       </View>
-      {!showPdf ? (
+      {/* {!showPdf ? ( */}
         <>
           <SearchBar
             placeholder="Tìm kiếm"
@@ -592,18 +576,18 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             }}
             inputStyle={{ fontSize: getScaledSize(16) }}
           />
-          <View style={tw`flex-row mb-4`}>
+          <View style={tw`flex-row mt-2`}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View style={tw`flex-row`}>
           <TouchableOpacity
-            style={[tw`p-2 m-1`, getButtonStyle(null)]}
+            style={[tw`p-3 ml-2 rounded-full`, getButtonStyle(null)]}
             onPress={() => handleCategoryChange(null)}
           >
-            <Text style={tw`text-center text-lg`}>All</Text>
+            <Text style={[tw`text-center `, {fontSize: getScaledSize(14)}]}>Tất cả</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3  ml-4 rounded-full`,
               getButtonStyle("Dorothy"),
               { backgroundColor: getButtonStyle("Dorothy").backgroundColor },
             ]}
@@ -611,8 +595,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Dorothy").color },
+                tw`text-center `, 
+                { color: getButtonStyle("Dorothy").color, fontSize: getScaledSize(14) },
               ]}
             >
               Dorothy
@@ -620,7 +604,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3  ml-4 rounded-full`,
               getButtonStyle("Durrant"),
               { backgroundColor: getButtonStyle("Durrant").backgroundColor },
             ]}
@@ -628,8 +612,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Durrant").color },
+                tw`text-center`,
+                { color: getButtonStyle("Durrant").color, fontSize: getScaledSize(14) },
               ]}
             >
               Durrant
@@ -637,7 +621,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3  ml-4 rounded-full`,
               getButtonStyle("Anthropologie"),
               { backgroundColor: getButtonStyle("Anthropologie").backgroundColor },
             ]}
@@ -645,8 +629,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Anthropologie").color },
+                tw`text-center`,
+                { color: getButtonStyle("Anthropologie").color, fontSize: getScaledSize(14) },
               ]}
             >
               Anthropologie
@@ -654,7 +638,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3 ml-4 rounded-full`,
               getButtonStyle("Serena & Lilly"),
               { backgroundColor: getButtonStyle("Serena & Lilly").backgroundColor },
             ]}
@@ -662,8 +646,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Serena & Lilly").color },
+                tw`text-center`,
+                { color: getButtonStyle("Serena & Lilly").color, fontSize: getScaledSize(14) },
               ]}
             >
               Serena & Lilly
@@ -671,7 +655,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3  ml-4 rounded-full`,
               getButtonStyle("Ashley Childers"),
               { backgroundColor: getButtonStyle("Ashley Childers").backgroundColor },
             ]}
@@ -679,8 +663,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Ashley Childers").color },
+                tw`text-center`,
+                { color: getButtonStyle("Ashley Childers").color, fontSize: getScaledSize(14) },
               ]}
             >
               Ashley Childers
@@ -688,7 +672,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={[
-              tw`p-2 m-1`,
+              tw`p-3 ml-4 rounded-full`,
               getButtonStyle("Vaughan"),
               { backgroundColor: getButtonStyle("Vaughan").backgroundColor },
             ]}
@@ -696,8 +680,8 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           >
             <Text
               style={[
-                tw`text-center text-lg`,
-                { color: getButtonStyle("Vaughan").color },
+                tw`text-center`,
+                { color: getButtonStyle("Vaughan").color, fontSize: getScaledSize(14) },
               ]}
             >
               Vaughan
@@ -713,9 +697,9 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             contentContainerStyle={tw`p-5`}
           />
         </>
-      ) : (
+      {/* ) : (
         <WebView source={{ uri: pdfUri }} style={tw`flex-1`} />
-      )}
+      )} */}
     </SafeAreaView>
   );
 };
