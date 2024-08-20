@@ -32,6 +32,7 @@ import ManagerMailDetail from './manager/ManagerMailDetail';
 import VoteScreen from './employee/src/feedback/VoteScreen';
 import BenefitScreen from './employee/home/BenefitScreen';
 import SalaryScreen from './employee/home/SalaryScreen';
+import ErrorScreen from './employee/src/Product/ErrorScreen';
 
 export{
     LoginScreen,
@@ -67,5 +68,6 @@ export{
     ManagerMailDetail,
     VoteScreen,
     BenefitScreen,
-    SalaryScreen
+    SalaryScreen,
+    ErrorScreen
 }

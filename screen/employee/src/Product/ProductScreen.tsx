@@ -429,60 +429,89 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   const renderItem = ({ item }: { item: Product }) => (
     <View key={item.id} style={tw`p-2 m-1 border border-gray-300 rounded-lg`}>
       <TouchableOpacity onPress={() => navigation.navigate("ProductDetail", { item })}>
-        <View style={tw`items-center flex-row`}>
-          <Image
-            source={{ uri: item.image }}
+       <View style={tw`flex-row items-start`}>
+  <Image
+    source={{ uri: item.image }}
+    style={[
+      {
+        width: getScaledSize(100),
+        height: getScaledSize(100),
+        borderRadius: getScaledSize(10),
+        marginTop:getScaledSize(-3)
+      },
+      { resizeMode: "contain" },
+    ]}
+  />
+  <View style={tw`ml-3 flex-1`}>
+    <View style={tw`flex-row items-center bg-transparent border-b border-gray-300 border-t-0 mt-2`}>
+      <Text
+        style={[
+          tw``,
+          {
+            fontFamily: "CustomFont-Regular",
+            fontSize: getScaledSize(14),
+            color: COLORS.red,
+            flex: 1,
+          },
+        ]}
+      >
+        Collection:
+      </Text>
+      <Text
+        style={[
+          tw`flex-1 mr-5`,
+          {
+            fontFamily: "CustomFont-Regular",
+            fontSize: getScaledSize(14),
+            color: COLORS.black,
+          },
+        ]}
+      >
+        {item.collectionName}
+      </Text>
+    </View>
+    {[
+      { label: 'Client Code:', value: item.ClientCode },
+      { label: 'Group:', value: item.productGroup },
+      { label: 'Dimension:', value: item.Dimensions.join(", ") },
+    ].map((info, index) => (
+      <View
+        key={index}
+        style={tw`bg-transparent border-b border-gray-300 border-t-0 mt-2`}
+      >
+        <View style={tw`flex-row`}>
+          <Text
             style={[
+              tw``,
               {
-                width: getScaledSize(100),
-                height: getScaledSize(100),
-                borderRadius: getScaledSize(10),
+                fontFamily: "CustomFont-Regular",
+                fontSize: getScaledSize(14),
+                color: COLORS.red,
+                flex: 1,
               },
-              { resizeMode: "contain" },
             ]}
-          />
-          <View style={tw`my-1 ml-3 flex-1`}>
-            {[
-              { label: 'Collection:', value: item.collectionName },
-              { label: 'Client Code:', value: item.ClientCode },
-              { label: 'Group:', value: item.productGroup },
-              { label: 'Dimension:', value: item.Dimensions.join(", ") },
-            ].map((info, index) => (
-              <View
-                key={index}
-                style={tw`bg-transparent border-b border-gray-300 border-t-0`}
-              >
-                <View style={tw`flex-row`}>
-                  <Text
-                    style={[
-                      tw``,
-                      {
-                        fontFamily: "CustomFont-Regular",
-                        fontSize: getScaledSize(14),
-                        color: COLORS.red,
-                        flex: 1,
-                      },
-                    ]}
-                  >
-                    {info.label}
-                  </Text>
-                  <Text
-                    style={[
-                      tw`flex-1`,
-                      {
-                        fontFamily: "CustomFont-Regular",
-                        fontSize: getScaledSize(14),
-                        color: COLORS.black,
-                      },
-                    ]}
-                  >
-                    {info.value}
-                  </Text>
-                </View>
-              </View>
-            ))}
-          </View>
+          >
+            {info.label}
+          </Text>
+          <Text
+            style={[
+              tw`flex-1 mr-5`,
+              {
+                fontFamily: "CustomFont-Regular",
+                fontSize: getScaledSize(14),
+                color: COLORS.black,
+              },
+            ]}
+          >
+            {info.value}
+          </Text>
         </View>
+      </View>
+    ))}
+  </View>
+</View>
+
+
       </TouchableOpacity>
       
       <TouchableOpacity
@@ -694,7 +723,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             data={filteredProducts}
             renderItem={renderItem}
             keyExtractor={(item) => item.id.toString()}
-            contentContainerStyle={tw`p-5`}
+            contentContainerStyle={tw`p-3`}
           />
         </>
       {/* ) : (

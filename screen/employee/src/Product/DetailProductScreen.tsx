@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,25 @@ import {
   TouchableOpacity,
   Dimensions,
   FlatList,
-  ScrollView,
-} from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import tw from 'twrnc';
-import { RootStackParamList } from '../../../navigator/navigation';
+  Modal,
+} from "react-native";
+import { RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import tw from "twrnc";
+import { RootStackParamList } from "../../../navigator/navigation";
 import COLORS from "../../../../constants/Color";
-import { SearchBar } from '@rneui/themed';
+import { SearchBar } from "@rneui/themed";
+import { WebView } from "react-native-webview"; // Import WebView component
 
-type ProductDetailScreenRouteProp = RouteProp<RootStackParamList, 'ProductDetail'>;
-type ProductDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'ProductDetail'>;
+type ProductDetailScreenRouteProp = RouteProp<
+  RootStackParamList,
+  "ProductDetail"
+>;
+type ProductDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "ProductDetail"
+>;
 
 type Props = {
   route: ProductDetailScreenRouteProp;
@@ -35,58 +42,159 @@ const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => Math.round(size * scale);
 
-const getButtonStyle = (tabName: string, selectedTab: string) => {
-  return selectedTab === tabName
-    ? { backgroundColor: COLORS.primary, color: COLORS.white }
-    : { backgroundColor: COLORS.white, color: COLORS.primary };
+const getButtonStyle = (tabName: string, selectedTab: string) => ({
+  backgroundColor: selectedTab === tabName ? COLORS.primary : COLORS.white,
+  color: selectedTab === tabName ? COLORS.white : COLORS.primary,
+});
+type TabData = {
+  docNumber: string;
+  docDescription: string;
+  pdfUri: string;
 };
+
+// Define the type for the data object
+type DataObject = {
+  Drawing: TabData[];
+  Panel: TabData[];
+  Quantity: TabData[];
+  Testing: TabData[];
+  Others: TabData[];
+  Instruction: TabData[];
+  Detail: TabData[]; // Add 'Detail' if it is a valid tab
+};
+const validTabs: Array<keyof DataObject> = [
+  "Drawing",
+  "Panel",
+  "Quantity",
+  "Testing",
+  "Others",
+  "Instruction",
+  "Detail",
+];
 
 const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
   const { item } = route.params;
 
-  const [selectedTab, setSelectedTab] = useState('Detail');
-  const [searchText, setSearchText] = useState('');
+  const [selectedTab, setSelectedTab] = useState<keyof DataObject>("Detail");
+  const [searchText, setSearchText] = useState("");
+  const [modalVisible, setModalVisible] = useState(false);
+  const [pdfModalVisible, setPdfModalVisible] = useState(false); // State for PDF modal
+  const [selectedPdfUri, setSelectedPdfUri] = useState<string | null>(null); // State for selected PDF URI
 
-  const quantityData = [
-    { docNumber: 'DRA-24535', docDescription: 'Update May 24, 2024 by Thanh Hai as per ECR-2308 & ECR-2325 - Increase the length of the bolt and insert nut & Color code. (Thay đổi chiều dài bu lông và tán cấy). From : HW09-417, HW09-890 To: HW09-1211, HW09-1212, - Add 4 PCS HW09-222 & Remove 4 PCS HW09-635. (Thêm 4 con HW09-222 và xóa 4 con HW09-635). /' },
-    { docNumber: 'DRA-16644', docDescription: 'Cập nhật theo ECR -1882 /' },
-    { docNumber: 'DRA-16512', docDescription: 'Đổi code HW99-366 sang code HW08-366 /' },
-    // Thêm nhiều dữ liệu khác nếu cần
-  ];
+  const data: DataObject = {
+    Drawing: [
+      {
+        docNumber: "DRA-23768",
+        docDescription:
+          "Update May 08,2024 By.TAN As per: ECR-2325 + 2308 Changing the finish from ABS.JC to ABS.01.MB Add HW99-222 for back rest Thêm HW09-222 cho tựa lưng Using HW09-1211 and HW09-1212 Instead HW09-417 and HW09-890. Sử dụng HW09-1211 + HW09-1212 Thay cho HW09-417 + HW09-890 /",
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+      {
+        docNumber: "DRA-16693",
+        docDescription:
+          "Update: Apr 22,2021 By. TAN. As per. ECR-1882. All of those items to be used same plywood seat base. Change dimensions follow drawing client request. Toàn bộ ghế durrant chair sử dụng một lại mê ngồi. Thay đổi kích thước kết cấu mới theo bản vẽ khách hàng xác nhận. Asper ECR: 1867. Add the wood support and blocked at center - location conected . (Thêm thanh giằng và ke góc giữa khung ghế) . /",
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+    ],
+    Panel: [
+      {
+        docNumber: "PLN-00312",
+        docDescription:
+          "System Sheet - SWO.MB-006 Approved Date: 01 Mar 2024 Panel ID: P-4902 / System Sheet - SWO.MB-006 Approved Date: 01 Mar 2024 Panel ID: P-4902.",
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+    ],
+    Quantity: [
+      {
+        docNumber: "STD-00165",
+        docDescription:
+          'Standard For Loading Container_R1 Updated page 16 and Combine "Standard for Container Loading - JC and MB" with "Standard For Loading Container" / Standard For Loading Container_R1 Updated page 16 and Combine "Standard for Container Loading - JC and MB" with "Standard For Loading Container"',
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+      {
+        docNumber: "STD-00039",
+        docDescription:
+          "Reject this Standard for Container Loading - JC and MB --> Use STD-00165 / Reject this Standard for Container Loading - JC and MB --> Use STD-00165",
+        pdfUri: "https://heyzine.com/flip-book/4228bc6ed6.html",
+      },
+      {
+        docNumber: "STD-00036",
+        docDescription: "Pallet Standard /",
+        pdfUri: "https://heyzine.com/flip-book/4228bc6ed6.html",
+      },
+    ],
+    Testing: [
+      {
+        docNumber: "TES-02048",
+        docDescription:
+          "MTS - 76123-040243 - Desiccant bag - Dimethyl Fumarate Content - PASS /",
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+    ],
+    Others: [
+      {
+        docNumber: "ECR-2308",
+        docDescription:
+          "Bu lông kết nối tựa lưng không đủ dài. Thực tế, để tính toán chiều dài bu lông, chúng ta phải tính cả đến chiều dày foam và vải bọc cho tựa lưng Áp dụng cho tất cả các sản phẩm thuộc dòng Durrant / Bolts to connect the back rest arent long enough. Actually, to calculate the length of the bolt, we have to calculate the thickness of foam and fabric for back rest also For all items in Durrant series.",
+        pdfUri: "https://heyzine.com/flip-book/9cd47802ed.html",
+      },
+      {
+        docNumber: "ECR-2325",
+        docDescription:
+          "Khách hàng yêu cầu - MB618501.DWN.00; MB618502.SWO.00; MB618503.DWN.00; MB618504.SWO.00; MB618505.DWN.00; MB618506.SWO.00; MB618507.SWO.00; MB618508.DWN.00; MB618509.SWO.00; MB618510.DWN.00; MB618511.DWN.00; MB618512.SWO.00; MB618515.DWN.00; MB618516.DWN.00; MB618517.SWO.00; MB618518.SWO.00 / Customer request - MB618501.DWN.00; MB618502.SWO.00; MB618503.DWN.00; MB618504.SWO.00; MB618505.DWN.00; MB618506.SWO.00; MB618507.SWO.00; MB618508.DWN.00; MB618509.SWO.00; MB618510.DWN.00; MB618511.DWN.00; MB618512.SWO.00; MB618515.DWN.00; MB618516.DWN.00; MB618517.SWO.00; MB618518.SWO.00",
+        pdfUri: "https://example.com/others2.pdf",
+      },
+    ],
+    Instruction: [],
+    Detail: [], // Add an empty array for 'Detail' if it's a valid tab
+  };
 
-  const filteredData = quantityData.filter(item =>
-    item.docNumber.includes(searchText) || item.docDescription.includes(searchText)
+  const filteredData = data[selectedTab].filter(
+    (item) =>
+      item.docNumber.toLowerCase().includes(searchText.toLowerCase()) ||
+      item.docDescription.toLowerCase().includes(searchText.toLowerCase())
   );
 
-  const renderTabContent = () => {
+  const renderTabContent = useCallback(() => {
     switch (selectedTab) {
-      case 'Detail':
+      case "Detail":
         return (
-          <View key={item.id} style={tw`p-2 border border-gray-300 rounded-lg`}>
+          <View style={tw`p-2 m-2 border border-gray-300 rounded-lg`}>
             <View style={tw`flex-row`}>
-              <Image
-                source={{ uri: item.image }}
-                style={[
-                  {
-                    width: getScaledSize(100),
-                    height: getScaledSize(100),
-                    borderRadius: getScaledSize(10),
-                  },
-                  { resizeMode: "contain" },
-                ]}
-              />
+              <TouchableOpacity
+                onPress={() => setModalVisible(true)} 
+                accessible={true}
+                accessibilityLabel="View product image"
+                accessibilityRole="button"
+              >
+                <Image
+                  source={{ uri: item.image }}
+                  style={[
+                    {
+                      width: getScaledSize(100),
+                      height: getScaledSize(100),
+                      borderRadius: getScaledSize(10),
+                      marginTop: getScaledSize(-10),
+                    },
+                    { resizeMode: "contain" },
+                  ]}
+                />
+              </TouchableOpacity>
               <View style={tw`flex-1 my-1 ml-3`}>
                 {[
-                  { label: 'PTC Code:', value: item.PTCcode },
-                  { label: 'Description:', value: item.description },
-                  { label: 'Collection:', value: item.collectionName },
-                  { label: 'Group:', value: item.productGroup },
-                  { label: 'Color Code:', value: item.colorCode },
-                  { label: 'Dimension:', value: item.Dimensions.join(", ") },
-                  { label: 'CBM:', value: item.cbm },
-                  { label: 'Client Code:', value: item.ClientCode },
+                  { label: "PTC Code:", value: item.PTCcode },
+                  { label: "Description:", value: item.description },
+                  { label: "Collection:", value: item.collectionName },
+                  { label: "Group:", value: item.productGroup },
+                  { label: "Color Code:", value: item.colorCode },
+                  { label: "Dimension:", value: item.Dimensions.join(", ") },
+                  { label: "CBM:", value: item.cbm },
+                  { label: "Client Code:", value: item.ClientCode },
                 ].map((info, index) => (
-                  <View key={index} style={tw`bg-transparent border-b border-gray-300`}>
+                  <View
+                    key={index}
+                    style={tw` bg-transparent border-b border-gray-300`}
+                  >
                     <View style={tw`flex-row`}>
                       <View style={tw`flex-1`}>
                         <Text
@@ -122,78 +230,93 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
             </View>
           </View>
         );
-      case 'Quantity':
+      case "Drawing":
+      case "Panel":
+      case "Quantity":
+      case "Testing":
+      case "Others":
+      case "Instruction":
         return (
-          <View style={tw``}>
-            <FlatList
-              data={filteredData}
-              keyExtractor={(item) => item.docNumber}
-              renderItem={({ item }) => (
-                <View style={tw`p-3 border border-gray-300 rounded-lg mb-2`}>
-                  <Text style={{ fontSize: getScaledSize(14), fontFamily: "CustomFont-Bold" }}>Doc Number: {item.docNumber}</Text>
-                  <Text style={{ fontSize: getScaledSize(14), fontFamily: "CustomFont-Regular" }}>Doc Description: {item.docDescription}</Text>
-                </View>
-              )}
-            />
-            <Text style={{ fontSize: getScaledSize(14), marginTop: getScaledSize(8), fontFamily: "CustomFont-Regular" }}>
-              Total: {filteredData.length} items
-            </Text>
-          </View>
-        );
-      case 'Drawing':
-        return (
-          <View style={tw`p-5`}>
-            <Text style={{ fontSize: getScaledSize(18), fontFamily: "CustomFont-Bold" }}>Drawing Information</Text>
-            {/* Thêm thông tin Drawing ở đây */}
-          </View>
-        );
-      case 'Panel':
-        return (
-          <View style={tw`p-5`}>
-            <Text style={{ fontSize: getScaledSize(18), fontFamily: "CustomFont-Bold" }}>Panel Information</Text>
-            {/* Thêm thông tin Panel ở đây */}
-          </View>
-        );
-      case 'Testing':
-        return (
-          <View style={tw`p-5`}>
-            <Text style={{ fontSize: getScaledSize(18), fontFamily: "CustomFont-Bold" }}>Testing Information</Text>
-            {/* Thêm thông tin Testing ở đây */}
-          </View>
-        );
-      case 'Others':
-        return (
-          <View style={tw`p-5`}>
-            <Text style={{ fontSize: getScaledSize(18), fontFamily: "CustomFont-Bold" }}>Other Information</Text>
-            {/* Thêm thông tin Others ở đây */}
-          </View>
-        );
-      case 'Instruction':
-        return (
-          <View style={tw`p-5`}>
-            <Text style={{ fontSize: getScaledSize(18), fontFamily: "CustomFont-Bold" }}>Instruction Information</Text>
-            {/* Thêm thông tin Instruction ở đây */}
-          </View>
+          <FlatList
+            data={filteredData}
+            keyExtractor={(item) => item.docNumber}
+            ListHeaderComponent={
+              <Text
+                style={{
+                  fontSize: getScaledSize(14),
+                  marginBottom: getScaledSize(8),
+                  fontFamily: "CustomFont-Regular",
+                }}
+              >
+                Total: {filteredData.length} items
+              </Text>
+            }
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={tw`p-3 border border-gray-300 rounded-lg mb-2`}
+                onPress={() => {
+                  if (item.pdfUri) {
+                    setSelectedPdfUri(item.pdfUri); // Set the selected PDF URI
+                    setPdfModalVisible(true); // Open the PDF modal
+                  }
+                }}
+              >
+                <Text
+                  style={{
+                    fontSize: getScaledSize(14),
+                    fontFamily: "CustomFont-Bold",
+                  }}
+                >
+                  Doc Number: {item.docNumber}
+                </Text>
+                <Text
+                  style={{
+                    fontSize: getScaledSize(14),
+                    fontFamily: "CustomFont-Regular",
+                  }}
+                >
+                  Doc Description: {item.docDescription}
+                </Text>
+              </TouchableOpacity>
+            )}
+          />
         );
       default:
         return null;
     }
-  };
+  }, [selectedTab, filteredData, item]);
 
   return (
     <SafeAreaView style={tw`flex-1 px-5 bg-gray-100`}>
-      <View style={tw`flex-row items-center bg-white`}>
+      <View
+        style={[
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`h-15 w-15 items-center justify-center`}
+          style={[tw`p-2`, { borderRadius: 50 }]}
+          activeOpacity={0.7}
         >
-          <FontAwesome name="arrow-left" size={getScaledSize(20)} color="black" />
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={getScaledSize(24)}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
-        <Text style={{ fontSize: getScaledSize(18), marginLeft: getScaledSize(8), fontFamily: "CustomFont-Bold" }}>
+        <Text
+          style={{
+            fontFamily: "CustomFont-Bold",
+            fontSize: getScaledSize(20),
+            flex: 1,
+            textAlign: "center",
+          }}
+        >
           Chi tiết sản phẩm
         </Text>
       </View>
-      <View style={tw`mt-4`}>
+      <View>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={setSearchText}
@@ -208,24 +331,103 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
           inputStyle={{ fontSize: getScaledSize(16) }}
         />
       </View>
-      <View style={tw`flex-row mb-2`}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={tw`flex-row `}>
-            {['Detail', 'Quantity', 'Drawing', 'Panel', 'Testing', 'Others', 'Instruction'].map((tab) => (
-              <TouchableOpacity
-                key={tab}
-                style={[tw`p-3 m-2 rounded-full`, getButtonStyle(tab, selectedTab)]}
-                onPress={() => setSelectedTab(tab)}
+      <View style={tw`flex-row`}>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={[
+            "Detail",
+            "Drawing",
+            "Panel",
+            "Quantity",
+            "Testing",
+            "Others",
+            "Instruction",
+          ]}
+          keyExtractor={(item) => item}
+          renderItem={({ item: tab }) => (
+            <TouchableOpacity
+              key={tab}
+              onPress={() => setSelectedTab(tab as keyof DataObject)}
+              style={[
+                tw`p-3 m-2 rounded-full`,
+                getButtonStyle(tab as keyof DataObject, selectedTab),
+              ]}
+              accessible={true}
+              accessibilityLabel={`Select ${tab} tab`}
+              accessibilityRole="button"
+            >
+              <Text
+                style={{
+                  color: getButtonStyle(tab as keyof DataObject, selectedTab)
+                    .color,
+                  fontSize: getScaledSize(14),
+                }}
               >
-                <Text style={{ color: getButtonStyle(tab, selectedTab).color, textAlign: 'center', fontSize: getScaledSize(14) }}>
-                  {tab}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </ScrollView>
+                {tab}
+              </Text>
+            </TouchableOpacity>
+          )}
+        />
       </View>
-      {renderTabContent()}
+      <View style={tw`flex-1 bg-transparent px-3`}>{renderTabContent()}</View>
+
+      {/* Modal for displaying the product image */}
+      <Modal
+        visible={modalVisible}
+        transparent
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <TouchableOpacity
+          style={tw`flex-1 bg-black bg-opacity-50 justify-center items-center`}
+          onPress={() => setModalVisible(false)}
+        >
+          <TouchableOpacity
+            style={{
+              backgroundColor: "white",
+              padding: getScaledSize(20),
+              borderRadius: getScaledSize(10),
+            }}
+            onPress={() => {}}
+          >
+            <Image
+              source={{ uri: item.image }}
+              style={{
+                width: getScaledSize(300),
+                height: getScaledSize(300),
+                borderRadius: getScaledSize(10),
+              }}
+            />
+          </TouchableOpacity>
+        </TouchableOpacity>
+      </Modal>
+
+      {/* Modal for displaying the PDF in a WebView */}
+      <Modal
+        visible={pdfModalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setPdfModalVisible(false)}
+      >
+        <View style={tw`flex-1 bg-white`}>
+          <TouchableOpacity
+            onPress={() => setPdfModalVisible(false)}
+            style={tw`absolute top-10 left-10 z-10 h-100 w-100`}
+          >
+            <MaterialCommunityIcons
+              name="close-circle"
+              size={getScaledSize(30)}
+              color={COLORS.black}
+            />
+          </TouchableOpacity>
+          {selectedPdfUri && (
+            <WebView
+              source={{ uri: selectedPdfUri }}
+              style={{ marginTop: 50 }}
+            />
+          )}
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

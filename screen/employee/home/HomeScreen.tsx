@@ -69,14 +69,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   // Define valid routes
   const routes: {
-    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen' | 'EvaluateScreen' | 'VoteScreen';
+    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen' | 'EvaluateScreen' | 'VoteScreen' | 'ErrorScreen';
     image: string;
     label: string;
   }[] = [
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: t("check goods") },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: t("product") },
     { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: t("output") },
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
+    { route: 'ErrorScreen', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
     { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: t("requestLeave") },
     { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: t("requestOvertime") },
     { route: 'LeftDeptScreen', image: 'https://img.upanh.tv/2024/07/09/left_dept.png', label: t("leftDept") },

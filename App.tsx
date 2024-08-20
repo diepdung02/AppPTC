@@ -40,7 +40,8 @@ import {
   EvaluateScreen,
   VoteScreen,
   BenefitScreen,
-  SalaryScreen
+  SalaryScreen,
+  ErrorScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -338,6 +339,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="SalaryScreen"
           component={SalaryScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ErrorScreen"
+          component={ErrorScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
