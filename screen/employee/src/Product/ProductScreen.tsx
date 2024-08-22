@@ -433,9 +433,10 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   const filteredProducts = products.filter(
     (product) =>
-      (product.collectionName
-        .toLowerCase()
-        .includes(searchKeyword.toLowerCase()) ||
+      (product.collectionName.toLowerCase().includes(searchKeyword.toLowerCase()) ||
+        product.productGroup.toLowerCase().includes(searchKeyword.toLowerCase())||
+        product.description.toLowerCase().includes(searchKeyword.toLowerCase())||
+        product.ClientCode.toLowerCase().includes(searchKeyword.toLowerCase())||
         product.PTCcode.toLowerCase().includes(searchKeyword.toLowerCase())) &&
       (selectedCollectionName === "" ||
         product.collectionName === selectedCollectionName)

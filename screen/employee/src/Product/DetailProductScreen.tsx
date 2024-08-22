@@ -287,7 +287,7 @@ Length: ${dim.length} cm  `
   }, [selectedTab, filteredData, item]);
 
   return (
-    <SafeAreaView style={tw`flex-1 px-5 bg-gray-100`}>
+    <SafeAreaView style={[tw`flex-1 px-5 `, {backgroundColor:COLORS.colorMain}]}>
       <View
         style={[
           tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
@@ -410,7 +410,7 @@ Length: ${dim.length} cm  `
         <View style={tw`flex-1 bg-white`}>
           <TouchableOpacity
             onPress={() => setPdfModalVisible(false)}
-            style={tw`absolute top-10 left-10 z-10 h-100 w-100`}
+            style={tw`absolute top-10 left-10 z-10 `}
           >
             <MaterialCommunityIcons
               name="close-circle"
