@@ -12,6 +12,11 @@ const ClearDataScreen = () => {
       console.error('Error clearing AsyncStorage:', error.message);
       Alert.alert('Error', 'Failed to clear AsyncStorage');
     }
+    // "fonts": {
+    //   "CustomFont-Regular": "./assets/fonts/Roboto-Regular.ttf",
+    //   "CustomFont-Bold": "./assets/fonts/Roboto-Bold.ttf",
+    //   "CustomFont-Italic": "./assets/fonts/Roboto-Italic.ttf"
+    // }
   };
 
   return (

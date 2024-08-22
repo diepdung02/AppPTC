@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, ScrollView, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
+import { View, Text, Button, TextInput, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import tw from 'twrnc';
 import RNPickerSelect from 'react-native-picker-select';
 

@@ -16,7 +16,7 @@ import tw from "twrnc";
 import { RootStackParamList } from "../../../navigator/navigation";
 import COLORS from "../../../../constants/Color";
 import { SearchBar } from "@rneui/themed";
-import { WebView } from "react-native-webview"; // Import WebView component
+import { WebView } from "react-native-webview"; 
 
 type ProductDetailScreenRouteProp = RouteProp<
   RootStackParamList,
@@ -52,7 +52,6 @@ type TabData = {
   pdfUri: string;
 };
 
-// Define the type for the data object
 type DataObject = {
   Drawing: TabData[];
   Panel: TabData[];
@@ -60,26 +59,18 @@ type DataObject = {
   Testing: TabData[];
   Others: TabData[];
   Instruction: TabData[];
-  Detail: TabData[]; // Add 'Detail' if it is a valid tab
+  Detail: TabData[]; 
 };
-const validTabs: Array<keyof DataObject> = [
-  "Drawing",
-  "Panel",
-  "Quantity",
-  "Testing",
-  "Others",
-  "Instruction",
-  "Detail",
-];
+
+
 
 const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
   const { item } = route.params;
-
   const [selectedTab, setSelectedTab] = useState<keyof DataObject>("Detail");
   const [searchText, setSearchText] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
-  const [pdfModalVisible, setPdfModalVisible] = useState(false); // State for PDF modal
-  const [selectedPdfUri, setSelectedPdfUri] = useState<string | null>(null); // State for selected PDF URI
+  const [pdfModalVisible, setPdfModalVisible] = useState(false); 
+  const [selectedPdfUri, setSelectedPdfUri] = useState<string | null>(null);
 
   const data: DataObject = {
     Drawing: [
@@ -146,7 +137,7 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
       },
     ],
     Instruction: [],
-    Detail: [], // Add an empty array for 'Detail' if it's a valid tab
+    Detail: [], 
   };
 
   const filteredData = data[selectedTab].filter(
@@ -160,9 +151,9 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
       case "Detail":
         return (
           <View style={tw`p-2 m-2 border border-gray-300 rounded-lg`}>
-            <View style={tw`flex-row`}>
+            <View style={tw`items-center`}>
               <TouchableOpacity
-                onPress={() => setModalVisible(true)} 
+                onPress={() => setModalVisible(true)}
                 accessible={true}
                 accessibilityLabel="View product image"
                 accessibilityRole="button"
@@ -171,15 +162,17 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
                   source={{ uri: item.image }}
                   style={[
                     {
-                      width: getScaledSize(100),
-                      height: getScaledSize(100),
+                      width: getScaledSize(300),
+                      height: getScaledSize(300),
                       borderRadius: getScaledSize(10),
-                      marginTop: getScaledSize(-10),
+                      marginTop: getScaledSize(-30),
                     },
                     { resizeMode: "contain" },
                   ]}
                 />
               </TouchableOpacity>
+            </View>
+            <View style={tw`flex-row`}>
               <View style={tw`flex-1 my-1 ml-3`}>
                 {[
                   { label: "PTC Code:", value: item.PTCcode },
@@ -187,16 +180,23 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
                   { label: "Collection:", value: item.collectionName },
                   { label: "Group:", value: item.productGroup },
                   { label: "Color Code:", value: item.colorCode },
-                  { label: "Dimension:", value: item.Dimensions.join(", ") },
-                  { label: "CBM:", value: item.cbm },
+                  {
+                    label: "Dimension:",
+                    value: item.Dimensions.map(
+                      (dim) => `Width: ${dim.width} cm 
+Height: ${dim.height} cm 
+Length: ${dim.length} cm  `
+                    ).join("; "),
+                  },
                   { label: "Client Code:", value: item.ClientCode },
+                  { label: "CBM:", value: item.cbm },
                 ].map((info, index) => (
                   <View
                     key={index}
                     style={tw` bg-transparent border-b border-gray-300`}
                   >
                     <View style={tw`flex-row`}>
-                      <View style={tw`flex-1`}>
+                      <View style={tw`w-25`}>
                         <Text
                           style={[
                             tw``,
@@ -213,7 +213,7 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
                       </View>
                       <Text
                         style={[
-                          tw`flex-1`,
+                          tw`flex-1 `,
                           {
                             fontFamily: "CustomFont-Regular",
                             fontSize: getScaledSize(14),
@@ -256,8 +256,8 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
                 style={tw`p-3 border border-gray-300 rounded-lg mb-2`}
                 onPress={() => {
                   if (item.pdfUri) {
-                    setSelectedPdfUri(item.pdfUri); // Set the selected PDF URI
-                    setPdfModalVisible(true); // Open the PDF modal
+                    setSelectedPdfUri(item.pdfUri); 
+                    setPdfModalVisible(true); 
                   }
                 }}
               >
@@ -372,7 +372,6 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
       </View>
       <View style={tw`flex-1 bg-transparent px-3`}>{renderTabContent()}</View>
 
-      {/* Modal for displaying the product image */}
       <Modal
         visible={modalVisible}
         transparent
@@ -402,7 +401,6 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
         </TouchableOpacity>
       </Modal>
 
-      {/* Modal for displaying the PDF in a WebView */}
       <Modal
         visible={pdfModalVisible}
         transparent={true}

@@ -44,6 +44,11 @@ export type DataRequest = {
   title: string;
   detail: DetailItem[];
 };
+type Dimension = {
+  height: number;  // Height in cm
+  width: number;   // Width in cm
+  length: number;  // Length in cm
+};
 
 export type DataItem = {
   id: number;
@@ -56,7 +61,7 @@ export type DataItem = {
   description:string;
   colorCode:string;
   cbm:string;
-  Dimensions:string[];
+  Dimensions:Dimension[];
 };
 
 export type NewsItem = {
