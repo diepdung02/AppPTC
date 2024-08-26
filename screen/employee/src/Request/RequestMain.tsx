@@ -4,18 +4,17 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar,
   FlatList,
   Dimensions
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchBar } from "@rneui/themed";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
+
 import tw from "twrnc"; // Import twrnc
 import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
-import moment from "moment";
+
 
 const { width, height } = Dimensions.get('window');
 

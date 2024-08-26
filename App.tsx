@@ -41,7 +41,8 @@ import {
   VoteScreen,
   BenefitScreen,
   SalaryScreen,
-  ErrorScreen
+  ErrorScreen,
+  ErrorDetailScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -344,6 +345,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="ErrorScreen"
           component={ErrorScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ErrorDetailScreen"
+          component={ErrorDetailScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

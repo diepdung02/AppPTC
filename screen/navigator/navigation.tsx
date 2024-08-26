@@ -154,6 +154,7 @@ export type RootStackParamList = {
   BenefitScreen: undefined;
   SalaryScreen: undefined;
   ErrorScreen: undefined;
+  ErrorDetailScreen: undefined;
   OutputScreen: {
     product: Product;
     productId: number;

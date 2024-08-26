@@ -33,6 +33,7 @@ import VoteScreen from './employee/src/feedback/VoteScreen';
 import BenefitScreen from './employee/home/BenefitScreen';
 import SalaryScreen from './employee/home/SalaryScreen';
 import ErrorScreen from './employee/src/Product/ErrorScreen';
+import ErrorDetailScreen from './employee/src/Product/ErrorDetailScreen';
 
 export{
     LoginScreen,
@@ -69,5 +70,6 @@ export{
     VoteScreen,
     BenefitScreen,
     SalaryScreen,
-    ErrorScreen
+    ErrorScreen,
+    ErrorDetailScreen
 }
