@@ -417,6 +417,28 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
             }}
           />
         </View>
+         <Text style={tw`text-lg font-bold mt-4`}>Chọn loại tài liệu đính kèm:</Text>
+      <TouchableOpacity onPress={handleMediaPick} style={tw`mt-4`}>
+        <Icon name="camera-alt" size={40} color="blue" />
+        <Text style={tw`text-center mt-2`}>Chụp ảnh / Quay video</Text>
+      </TouchableOpacity>
+
+      <ScrollView style={tw`mt-4`} horizontal>
+        {attachments.map((attachment, index) => (
+          <TouchableOpacity key={index} onPress={() => handleAttachmentPress(attachment)} style={tw`mr-4`}>
+            {attachment.type === 'image' ? (
+              <Image source={{ uri: attachment.uri }} style={tw`w-40 h-40 rounded-lg`} resizeMode="cover" />
+            ) : (
+              <Video
+                source={{ uri: attachment.uri }}
+                style={tw`w-40 h-40 rounded-lg`}
+                useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            )}
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
 
       <Text style={tw`text-lg font-bold mt-4`}>Thời gian báo lỗi:</Text>
       <Text style={tw`text-lg mb-2`}>{new Date().toLocaleString()}</Text>
