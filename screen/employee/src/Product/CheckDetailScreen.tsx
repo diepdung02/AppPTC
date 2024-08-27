@@ -1,20 +1,28 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-  Alert,
-  Dimensions,
-  TextInput,
-} from "react-native";
-import tw from "twrnc";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import CheckBox from "react-native-check-box";
+import React, { useState } from 'react';
+import { View, Text, TextInput, Dimensions, ScrollView, SafeAreaView, Alert, Image, TouchableOpacity, Button, Modal, Pressable } from 'react-native';
+import tw from 'twrnc';
+import RNPickerSelect from 'react-native-picker-select';
+import * as ImagePicker from 'expo-image-picker';
+import { Video, ResizeMode } from 'expo-av';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import COLORS from "../../../../constants/Color";
-import { SearchBar } from "@rneui/themed";
-import RNPickerSelect from "react-native-picker-select";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
+
+type Report = {
+  reportNo: string;
+  confirmDate: string;
+  ponoOrRoute: string;
+  itemCode: string;
+  itemMaterial: string;
+  locationOrTeam: string;
+  qty: number;
+  requestDate: string;
+  checkAndVerifyBy: string;
+  status: string;
+  created: string;
+  noted: string;
+};
 
 const { width, height } = Dimensions.get("window");
 
@@ -29,187 +37,60 @@ const scale = Math.min(scaleWidth, scaleHeight);
 
 const getScaledSize = (size: number) => Math.round(size * scale);
 
-type Report = {
-  stt: number;
-  reportNo: string;
-  ponoOrRoute: string;
-  itemCode: string;
-  itemMaterial: string;
-  locationOrTeam: string;
-  qty: number;
-  requestDate: string;
-  confirmDate: string;
-  checkAndVerifyBy: string;
-  status: string;
-  created: string;
-  noted: string;
-  detail: {
-    item: string;
-    name: string;
-    route: string;
-    po: string;
-    team: string;
-    booker: string;
-    location: string;
-    qcPerson: string;
-    confirmDate: string;
-    quantity: number;
-    status: string;
-    actualCheckedQuantity: number;
-    rejectedQuantity: number;
-    overall: string;
-    material: string;
-    lamination: string;
-    machinery: string;
-    carving: string;
-    veneer: string;
-    wirebrush: string;
-    assembly: string;
-    finishing: string;
-    upholstery: string;
-    packing: string;
-    planning: string;
-    action: string;
-  };
-};
+const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
+  const [status, setStatus] = useState<string>('');
+  const [actualCheckedQuantity, setActualCheckedQuantity] = useState<number>(0);
+  const [rejectedQuantity, setRejectedQuantity] = useState<number>(0);
+  const [errorDescription, setErrorDescription] = useState<string>('');
+  const [attachments, setAttachments] = useState<Array<{ uri: string, type: 'image' | 'video' }>>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [selectedAttachment, setSelectedAttachment] = useState<{ uri: string, type: 'image' | 'video' } | null>(null);
 
-const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
-  const { report }: { report: Report | undefined } = route.params;
-  const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const [search, setSearch] = useState("");
-  const [actualCheckedQuantity, setActualCheckedQuantity] = useState<number>(
-    report?.detail.actualCheckedQuantity || 0
-  );
-  const [rejectedQuantity, setRejectedQuantity] = useState<number>(
-    report?.detail.rejectedQuantity || 0
-  );
-  const [status, setStatus] = useState<string>(report?.detail.status || "Pass");
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-  const [dropdownContent, setDropdownContent] = useState<string[]>([]);
-
-  const handleStartCheck = () => {
-    if (selectedItems.size === 0) {
-      // Hiển thị cảnh báo nếu không có phần tử nào được chọn
-      Alert.alert(
-        "Chưa chọn phần tử",
-        "Vui lòng chọn ít nhất một phần tử để kiểm tra."
-      );
-      return; // Ngừng thực hiện nếu không có phần tử nào được chọn
-    }
-  
-    // Nếu có ít nhất một phần tử được chọn, điều hướng đến CheckDetailScreen
-    navigation.navigate('CheckDetailScreen', { report });
-  };
-  
-
-  const handleComplete = () => {
-    Alert.alert("Hoàn thành", "Báo lỗi đã được hoàn thành.");
-  };
-
-  const handleSelect = (option: string) => {
-    setSelectedItems((prevState) => {
-      const newSelectedItems = new Set(prevState);
-      if (newSelectedItems.has(option)) {
-        newSelectedItems.delete(option);
-      } else {
-        newSelectedItems.add(option);
-      }
-      return new Set(newSelectedItems);
-    });
-  };
-
-  const handleSearch = (text: string) => {
-    setSearch(text);
-  };
-
-  const handleDropdownToggle = (title: string, content: string) => {
-    if (openDropdown === title) {
-      setOpenDropdown(null);
-      setDropdownContent([]);
-    } else {
-      const options = content
-        .split("\n")
-        .map((item) => item.trim())
-        .filter((item) => item)
-        .filter((option) =>
-          option.toLowerCase().includes(search.toLowerCase())
-        );
-      setDropdownContent(options);
-      setOpenDropdown(title);
-    }
-  };
-
-  const renderDropdown = (title: string, content: string) => {
-    // Tạo hàm để lấy các tùy chọn đã chọn
-    const getSelectedOptionsText = () => {
-      const selectedOptions = content
-        .split("\n")
-        .map((item) => item.trim())
-        .filter((item) => item)
-        .filter((option) => selectedItems.has(option));
-      return selectedOptions.length > 0
-        ? selectedOptions.join(", ")
-        : "Select options";
-    };
-
-    return (
-      <View style={tw`mb-4`}>
-        <TouchableOpacity
-          style={[tw`border border-gray-300 p-2 rounded`, {backgroundColor:COLORS.white} ]}
-          onPress={() => handleDropdownToggle(title, content)}
-        >
-          <Text
-            style={[
-              tw``,
-              { fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16) },
-            ]}
-          >
-            {title}
-          </Text>
-          <Text style={tw`text-gray-500`}>
-            {openDropdown === title
-              ? getSelectedOptionsText()
-              : getSelectedOptionsText()}
-          </Text>
-        </TouchableOpacity>
-        {openDropdown === title && (
-          <View style={tw`border border-gray-300 mt-2 p-2 rounded bg-white`}>
-            {dropdownContent.map((option, index) => (
-              <TouchableOpacity
-                key={index}
-                style={tw`flex-row items-center my-2`}
-                onPress={() => handleSelect(option)}
-              >
-                <CheckBox
-                  isChecked={selectedItems.has(option)}
-                  onClick={() => handleSelect(option)}
-                />
-                <Text
-                  style={[
-                    tw`ml-2`,
-                    {
-                      fontFamily: "CustomFont-Regular",
-                      fontSize: getScaledSize(14),
-                    },
-                  ]}
-                >
-                  {option}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      </View>
-    );
-  };
+  // Get the report from the route params
+  const { report }: { report?: Report } = route.params;
 
   if (!report) {
     return (
       <SafeAreaView style={tw`flex-1 justify-center items-center`}>
-        <Text>Không có dữ liệu báo lỗi.</Text>
+        <Text style={tw`text-lg font-bold`}>Không có thông tin báo cáo.</Text>
       </SafeAreaView>
     );
   }
+
+  // Function to pick media from the device
+  const handleMediaPick = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const { uri, type } = result.assets[0];
+      setAttachments([...attachments, { uri, type: type === 'image' ? 'image' : 'video' }]);
+    } else {
+      Alert.alert('Chưa chọn tài liệu', 'Vui lòng chọn một tài liệu để đính kèm.');
+    }
+  };
+
+  // Function to handle attachment press
+  const handleAttachmentPress = (attachment: { uri: string, type: 'image' | 'video' }) => {
+    setSelectedAttachment(attachment);
+    setModalVisible(true);
+  };
+
+  // Function to handle form submission
+  const handleSubmit = () => {
+    // Implement submission logic here
+    Alert.alert('Thông báo', 'Báo cáo đã được gửi.');
+  };
+
+  // Function to handle modal close
+  const handleCloseModal = () => {
+    setModalVisible(false);
+    setSelectedAttachment(null);
+  };
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
@@ -239,20 +120,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           Chi tiết báo lỗi
         </Text>
       </View>
-
-      {/* <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
-        <SearchBar
-          placeholder="Tìm kiếm"
-          onChangeText={handleSearch}
-          value={search}
-          lightTheme
-          round
-          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
-          inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
-          inputStyle={{ fontSize: getScaledSize(16) }}
-        />
-      </View> */}
-
       <ScrollView style={tw`p-4`}>
         <View style={tw`mb-4`}>
           <Text
@@ -551,37 +418,50 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           />
         </View>
 
-        {renderDropdown("Overall", report.detail.overall || "")}
-        {renderDropdown("Material", report.detail.material || "")}
-        {renderDropdown("Lamination", report.detail.lamination || "")}
-        {renderDropdown("Machinery", report.detail.machinery || "")}
-        {renderDropdown("Carving", report.detail.carving || "")}
-        {renderDropdown("Veneer", report.detail.veneer || "")}
-        {renderDropdown("Wirebrush", report.detail.wirebrush || "")}
-        {renderDropdown("Assembly", report.detail.assembly || "")}
-        {renderDropdown("Finishing", report.detail.finishing || "")}
-        {renderDropdown("Upholstery", report.detail.upholstery || "")}
-        {renderDropdown("Packing", report.detail.packing || "")}
-        {renderDropdown("Planning", report.detail.planning || "")}
-      </ScrollView>
-      <View
-        style={tw`flex-row justify-around bg-white p-2 border-t border-gray-300`}
-      >
-        <TouchableOpacity
-            style={[tw`flex-1 m-4 p-2 rounded`, { backgroundColor:COLORS.primary}]}
-          onPress={handleStartCheck}
+      <Text style={tw`text-lg font-bold mt-4`}>Thời gian báo lỗi:</Text>
+      <Text style={tw`text-lg mb-2`}>{new Date().toLocaleString()}</Text>
+
+      <Button title="Gửi báo cáo" onPress={handleSubmit} />
+      <Button title="Quay lại" onPress={() => console.log("Quay lại")} />
+
+      {selectedAttachment && (
+        <Modal
+          visible={modalVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={handleCloseModal}
         >
-          <Text style={tw`text-white text-center`}>Bắt đầu kiểm tra</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[tw`flex-1 m-4 p-2 rounded`, { backgroundColor:COLORS.green}]}
-          onPress={handleComplete}
-        >
-          <Text style={tw`text-white text-center`}>Hoàn thành</Text>
-        </TouchableOpacity>
-      </View>
+          <View style={tw`flex-1 justify-center items-center bg-black bg-opacity-80 z-50`}>
+            <Pressable 
+              style={tw`absolute top-10 right-5 p-4 bg-gray-700 rounded-full`} 
+              onPress={handleCloseModal}
+              hitSlop={10}
+              accessibilityRole="button"
+            >
+              <Text style={tw`text-white text-3xl`}>×</Text>
+            </Pressable>
+
+            {selectedAttachment.type === 'image' ? (
+              <Image
+                source={{ uri: selectedAttachment.uri }}
+                style={tw`w-full h-full`}
+                resizeMode="contain"
+              />
+            ) : (
+              <Video
+                source={{ uri: selectedAttachment.uri }}
+                style={tw`w-full h-full`}
+                useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+              />
+            )}
+          </View>
+        </Modal>
+      )}
+    </ScrollView>
+
     </SafeAreaView>
   );
 };
 
-export default ErrorDetailScreen;
+export default CheckDetailScreen;

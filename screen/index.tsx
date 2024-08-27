@@ -34,6 +34,7 @@ import BenefitScreen from './employee/home/BenefitScreen';
 import SalaryScreen from './employee/home/SalaryScreen';
 import ErrorScreen from './employee/src/Product/ErrorScreen';
 import ErrorDetailScreen from './employee/src/Product/ErrorDetailScreen';
+import CheckDetailScreen from './employee/src/Product/CheckDetailScreen';
 
 export{
     LoginScreen,
@@ -71,5 +72,6 @@ export{
     BenefitScreen,
     SalaryScreen,
     ErrorScreen,
-    ErrorDetailScreen
+    ErrorDetailScreen,
+    CheckDetailScreen
 }
