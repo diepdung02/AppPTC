@@ -5,57 +5,17 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
-    "description": "This is a sample app",
-    "githubUrl": "https://github.com/example/myapp",
-    "primaryColor": "#ffffff",
-    "splash": {
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.example.myapp",
-      "buildNumber": "1.0.0",
-      "infoPlist": {
-        "NSCameraUsageDescription": "This app uses the camera to scan QR codes."
-      }
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      },
-      "permissions": [
-        "CAMERA",
-        "ACCESS_FINE_LOCATION"
-      ],
-      "package": "com.example.myapp",
-      "versionCode": 1,
-      "minSdkVersion": 21,
-      "buildType": "apk"
+      }
     },
     "web": {
-      "startUrl": "/",
-      "display": "standalone",
-      "themeColor": "#ffffff"
-    },
-    "eas": {
-      "build": {
-        "production": {
-          "distribution": "store",
-          "android": {
-            "buildType": "apk"
-          },
-          "ios": {
-            "simulator": true
-          }
-        },
-        "preview": {
-          "distribution": "internal",
-          "android": {
-            "buildType": "apk"
-          }
-        }
-      }
+      "favicon": "./assets/favicon.png"
     }
+
   }
 }
