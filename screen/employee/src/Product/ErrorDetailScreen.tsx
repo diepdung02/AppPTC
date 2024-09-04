@@ -465,3 +465,4 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
 };
 
 export default ErrorDetailScreen;
+// Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine

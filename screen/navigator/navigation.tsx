@@ -156,6 +156,9 @@ export type RootStackParamList = {
   ErrorScreen: undefined;
   ErrorDetailScreen: undefined;
   CheckDetailScreen: undefined;
+  CheckGoodsScreen: undefined;
+  ManagerEvaluteScreen: undefined;
+  Output: undefined;
   OutputScreen: {
     product: Product;
     productId: number;

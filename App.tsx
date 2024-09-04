@@ -43,7 +43,10 @@ import {
   SalaryScreen,
   ErrorScreen,
   ErrorDetailScreen,
-  CheckDetailScreen
+  CheckDetailScreen,
+  Output,
+  CheckGoodsScreen,
+  ManagerEvaluteScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -356,6 +359,21 @@ const App: React.FC = () => (
         <Stack.Screen
           name="CheckDetailScreen"
           component={CheckDetailScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Output"
+          component={Output}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CheckGoodsScreen"
+          component={CheckGoodsScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ManagerEvaluteScreen"
+          component={ManagerEvaluteScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

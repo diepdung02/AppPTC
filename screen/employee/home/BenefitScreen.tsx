@@ -94,7 +94,6 @@ const BenefitScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />
-
       <TouchableOpacity
         style={[tw`p-${getScaledSize(4)} rounded-lg w-full`, { backgroundColor: COLORS.primary }]}
         onPress={handleViewSalary}

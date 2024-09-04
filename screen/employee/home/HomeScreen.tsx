@@ -67,15 +67,15 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     );
   }
 
-  // Define valid routes
+
   const routes: {
-    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen' | 'EvaluateScreen' | 'VoteScreen' | 'ErrorScreen';
+    route: 'Product' | 'OutputList' | 'RequestMain' | 'Overtime' | 'Schedule' | 'LeftDeptScreen' | 'EvaluateScreen' | 'VoteScreen' | 'ErrorScreen' | 'Output' | 'CheckGoodsScreen';
     image: string;
     label: string;
   }[] = [
-    { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: t("check goods") },
+    { route: 'CheckGoodsScreen', image: 'https://img.upanh.tv/2024/07/09/checklist.png', label: t("check goods") },
     { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/product.png', label: t("product") },
-    { route: 'OutputList', image: 'https://img.upanh.tv/2024/07/09/output.png', label: t("output") },
+    { route: 'Output', image: 'https://img.upanh.tv/2024/07/09/output.png', label: t("output") },
     { route: 'ErrorScreen', image: 'https://img.upanh.tv/2024/07/09/error.png', label: t("error") },
     { route: 'RequestMain', image: 'https://img.upanh.tv/2024/07/09/leave.png', label: t("requestLeave") },
     { route: 'Overtime', image: 'https://img.upanh.tv/2024/07/09/overtime.png', label: t("requestOvertime") },
@@ -100,10 +100,10 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           placeholder="Tìm kiếm"
           inputContainerStyle={tw`bg-white`}
           containerStyle={[
-            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`, // Không có viền trên
+            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`,
             {
-              borderBottomWidth: 1, // Viền dưới
-              borderBottomColor: COLORS.border, // Màu viền dưới với opacity
+              borderBottomWidth: 1,
+              borderBottomColor: COLORS.border, 
             },
           ]}
           onChangeText={updateSearch}
@@ -118,12 +118,12 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             {row.map((item, index) => (
               <TouchableOpacity
                 key={index}
-                style={[tw`items-center`, { width: getScaledSize(50) }]} // Adjust width based on scaling
+                style={[tw`items-center`, { width: getScaledSize(50) }]} 
                 onPress={() => navigation.navigate(item.route)}
               >
                 <Image
                   source={{ uri: item.image }}
-                  style={[tw`mb-${getScaledSize(7)}`, { width: getScaledSize(70), height: getScaledSize(70) }]} // Maintain aspect ratio
+                  style={[tw`mb-${getScaledSize(7)}`, { width: getScaledSize(70), height: getScaledSize(70) }]} 
                 />
                 <Text style={[tw`text-center w-32 mb-${getScaledSize(3)}`, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Regular' }]}>{item.label}</Text>
               </TouchableOpacity>

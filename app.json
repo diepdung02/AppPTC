@@ -11,11 +11,11 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.minhdung02.MyApp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     }
-
   }
 }
