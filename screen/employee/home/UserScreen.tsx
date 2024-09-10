@@ -20,18 +20,32 @@ type Props = {
   navigation: StackNavigationProp<RootStackParamList, "BenefitScreen">;
 };
 
-const { width, height } = Dimensions.get('window');
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
+
+  const width = Dimensions.get('window').width;
+
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 const UserScreen: React.FC<Props> = ({ navigation }) => {
   const { t } = useTranslation();
-  const [selectedLanguage, setSelectedLanguage] = useState("vietnamese");
+  const [selectedLanguage, setSelectedLanguage] = useState<"english" | "vietnamese">("vietnamese");
 
   const selectLanguage = (language: "english" | "vietnamese") => {
     setSelectedLanguage(language);
@@ -43,7 +57,12 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
       <View style={tw`items-center justify-center my-${getScaledSize(15)}`}>
         <Image
           source={{ uri: "https://img.upanh.tv/2024/07/09/avatar.jpg" }}
-          style={tw`w-${getScaledSize(50)} h-${getScaledSize(50)} rounded-full`}
+          style={{
+            width: getScaledSize(100),
+            height: getScaledSize(100),
+            borderRadius: getScaledSize(50),
+          }}
+          resizeMode="cover"
         />
       </View>
       <View style={tw`m-${getScaledSize(2)}`}>
@@ -56,53 +75,47 @@ const UserScreen: React.FC<Props> = ({ navigation }) => {
           { label: t("position"), value: "INTERN" },
         ].map((item, index) => (
           <View key={index} style={tw`border-b-2 border-black flex-row items-center`}>
-            <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
+            <Text style={[tw`p-${getScaledSize(2)} w-1/2`, { fontSize: getScaledSize(16) }]}>{item.label}</Text>
             <Text style={[tw`mt-${getScaledSize(1.5)} mx-${getScaledSize(10)} text-red-500`, { fontSize: getScaledSize(16) }]}>{item.value}</Text>
           </View>
         ))}
 
         <TouchableOpacity onPress={() => navigation.navigate("BenefitScreen")}>
           <View style={tw`border-b-2 border-black flex-row items-center`}>
-            <View style={tw`flex-row items-center`}>
-              <Text style={[tw`p-${getScaledSize(1)} w-1/2`, { fontSize: getScaledSize(16) }]}>{t("benefit")}</Text>
-              <View style={tw`ml-${getScaledSize(40)}`}>
-                <FontAwesome name="arrow-right" size={getScaledSize(20)} color="black" />
-              </View>
-            </View>
+            <Text style={[tw`p-${getScaledSize(2)} w-1/2`, { fontSize: getScaledSize(16) }]}>{t("benefit")}</Text>
+            <FontAwesome name="arrow-right" size={getScaledSize(20)} color="black" style={tw`ml-${getScaledSize(40)}`} />
           </View>
         </TouchableOpacity>
 
         <View style={tw`mt-${getScaledSize(2)} border-b-2 border-black`}>
           <View style={tw`flex-row justify-between items-center`}>
-            <Text style={[tw`p-${getScaledSize(1)} w-1/4`, { fontSize: getScaledSize(16) }]}>{t("language")}</Text>
+            <Text style={[tw`p-${getScaledSize(2)} w-1/4`, { fontSize: getScaledSize(16) }]}>{t("language")}</Text>
             <TouchableOpacity
               onPress={() => selectLanguage("english")}
-              style={tw`flex-row items-center ml-${getScaledSize(40)}`}
+              style={tw`flex-row items-center ml-${getScaledSize(20)}`}
             >
-              <View style={{ transform: [{ scale: getScaledSize(1) }] }}>
-                <CheckBox
-                  isChecked={selectedLanguage === "english"}
-                  onClick={() => selectLanguage("english")}
-                  checkBoxColor="lightgray"
-                  checkedCheckBoxColor={COLORS.red}
-                  uncheckedCheckBoxColor="black"
-                />
-              </View>
+              <CheckBox
+                isChecked={selectedLanguage === "english"}
+                onClick={() => selectLanguage("english")}
+                checkBoxColor="lightgray"
+                checkedCheckBoxColor={COLORS.red}
+                uncheckedCheckBoxColor="black"
+                style={{ transform: [{ scale: getScaledSize(1) }] }} 
+              />
               <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>{t("english")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => selectLanguage("vietnamese")}
-              style={tw`flex-row items-center `}
+              style={tw`flex-row items-center`}
             >
-              <View style={{ transform: [{ scale: getScaledSize(1) }] }}>
-                <CheckBox
-                  isChecked={selectedLanguage === "vietnamese"}
-                  onClick={() => selectLanguage("vietnamese")}
-                  checkBoxColor={COLORS.lightGray}
-                  checkedCheckBoxColor={COLORS.red}
-                  uncheckedCheckBoxColor={COLORS.black}
-                />
-              </View>
+              <CheckBox
+                isChecked={selectedLanguage === "vietnamese"}
+                onClick={() => selectLanguage("vietnamese")}
+                checkBoxColor={COLORS.lightGray}
+                checkedCheckBoxColor={COLORS.red}
+                uncheckedCheckBoxColor={COLORS.black}
+                style={{ transform: [{ scale: getScaledSize(1) }] }} 
+              />
               <Text style={[tw`ml-${getScaledSize(1)}`, { fontSize: getScaledSize(16) }]}>{t("vietnamese")}</Text>
             </TouchableOpacity>
           </View>

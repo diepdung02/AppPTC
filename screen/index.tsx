@@ -38,6 +38,7 @@ import CheckDetailScreen from './employee/src/Product/CheckDetailScreen';
 import Output from './employee/src/Product/Output';
 import CheckGoodsScreen from './employee/src/Product/CheckGoodsScreen';
 import ManagerEvaluteScreen from './manager/ManagerEvaluteScreen';
+import CheckGoodsDetailScreen from './employee/src/Product/CheckGoodsDetailScreen';
 
 export{
     LoginScreen,
@@ -79,5 +80,6 @@ export{
     CheckDetailScreen,
     Output,
     CheckGoodsScreen,
-    ManagerEvaluteScreen
+    ManagerEvaluteScreen,
+    CheckGoodsDetailScreen
 }

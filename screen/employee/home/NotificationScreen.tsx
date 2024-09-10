@@ -16,21 +16,28 @@ import { RootStackParamList } from "../../navigator/navigation";
 import useCustomFonts from "../../../hooks/useFont";
 import { useTranslation } from 'react-i18next';
 
-// Base dimensions for scaling
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Get screen dimensions
-const { width, height } = Dimensions.get("window");
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-// Calculate scale
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+  const width = Dimensions.get('window').width;
 
-// Function to get scaled size
-const getScaledSize = (size: number) => size * scale;
 
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 // Fake data for testing
 const fakeNotifications = [
   {

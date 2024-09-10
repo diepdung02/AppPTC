@@ -37,6 +37,40 @@ const fakeReviews = [
       { category: "Năng suất", level: 5, comment: "Năng suất làm việc cao và hiệu quả." },
     ],
   },
+  {
+    month: "Tháng 8",
+    reviews: [
+      { category: "Chăm chỉ", level: 5, comment: "Nhân viên làm việc rất chăm chỉ và có trách nhiệm." },
+      { category: "Kỹ năng giao tiếp", level: 4, comment: "Thái độ làm việc tốt nhưng cần cải thiện kỹ năng giao tiếp." },
+      { category: "Sáng tạo", level: 5, comment: "Rất sáng tạo và có nhiều đóng góp tích cực cho dự án." },
+      { category: "Chủ động trong công việc", level: 5, comment: "Rất chủ động và sáng tạo trong công việc." },
+      { category: "Làm việc nhóm", level: 4, comment: "Làm việc nhóm hiệu quả và tích cực." },
+      { category: "Làm việc độc lập", level: 4, comment: "Có khả năng làm việc độc lập tốt." },
+      { category: "Trung thực", level: 5, comment: "Luôn trung thực và đáng tin cậy." },
+      { category: "Mối quan hệ với đồng nghiệp", level: 4, comment: "Mối quan hệ tốt với đồng nghiệp và xây dựng môi trường làm việc tích cực." },
+      { category: "Kỹ năng chuyên môn", level: 5, comment: "Kỹ năng chuyên môn vững vàng và đáng tin cậy." },
+      { category: "Đi làm đúng giờ", level: 5, comment: "Luôn đi làm đúng giờ và tuân thủ giờ làm việc." },
+      { category: "Đi làm đầy đủ", level: 5, comment: "Đi làm đầy đủ và không vắng mặt không lý do." },
+      { category: "Năng suất", level: 5, comment: "Năng suất làm việc cao và hiệu quả." },
+    ],
+  },
+  {
+    month: "Tháng 9",
+    reviews: [
+      { category: "Chăm chỉ", level: 5, comment: "Nhân viên làm việc rất chăm chỉ và có trách nhiệm." },
+      { category: "Kỹ năng giao tiếp", level: 4, comment: "Thái độ làm việc tốt nhưng cần cải thiện kỹ năng giao tiếp." },
+      { category: "Sáng tạo", level: 5, comment: "Rất sáng tạo và có nhiều đóng góp tích cực cho dự án." },
+      { category: "Chủ động trong công việc", level: 5, comment: "Rất chủ động và sáng tạo trong công việc." },
+      { category: "Làm việc nhóm", level: 4, comment: "Làm việc nhóm hiệu quả và tích cực." },
+      { category: "Làm việc độc lập", level: 4, comment: "Có khả năng làm việc độc lập tốt." },
+      { category: "Trung thực", level: 5, comment: "Luôn trung thực và đáng tin cậy." },
+      { category: "Mối quan hệ với đồng nghiệp", level: 4, comment: "Mối quan hệ tốt với đồng nghiệp và xây dựng môi trường làm việc tích cực." },
+      { category: "Kỹ năng chuyên môn", level: 5, comment: "Kỹ năng chuyên môn vững vàng và đáng tin cậy." },
+      { category: "Đi làm đúng giờ", level: 5, comment: "Luôn đi làm đúng giờ và tuân thủ giờ làm việc." },
+      { category: "Đi làm đầy đủ", level: 5, comment: "Đi làm đầy đủ và không vắng mặt không lý do." },
+      { category: "Năng suất", level: 5, comment: "Năng suất làm việc cao và hiệu quả." },
+    ],
+  },
 ];
 
 type Props = {

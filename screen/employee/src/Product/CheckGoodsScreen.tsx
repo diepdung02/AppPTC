@@ -1,193 +1,380 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, ScrollView, Image } from 'react-native';
-import tw from 'twrnc';
-import * as ImagePicker from 'expo-image-picker';
-import { Video, ResizeMode } from "expo-av";
+import React from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+} from "react-native";
+import tw from "twrnc";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SearchBar } from "@rneui/themed";
+import COLORS from "../../../../constants/Color";
 
-const CheckGoodsScreen: React.FC = () => {
-  // Example data
-  const [itemCode, setItemCode] = useState('I001');
-  const [itemName, setItemName] = useState('Sản phẩm X');
-  const [quantityToCheck, setQuantityToCheck] = useState(50);
-  const [qcStatus, setQcStatus] = useState('Chưa kiểm tra');
-  const [qcInspector, setQcInspector] = useState('');
-  const [qcDate, setQcDate] = useState('');
-  const [notes, setNotes] = useState('');
-  const [attachments, setAttachments] = useState<{ uri: string; type: 'image' | 'video' }[]>([]);
+// Lấy kích thước màn hình
+const { width, height } = Dimensions.get("window");
 
-  const handleCapture = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+// Kích thước cơ sở để tính toán tỷ lệ
+const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
+const BASE_HEIGHT = 667; // Kích thước màn hình cơ sở
 
-    if (!result.canceled) {
-      const { uri, type } = result.assets[0];
-      setAttachments([
-        ...attachments,
-        { uri, type: type === 'image' ? 'image' : 'video' },
-      ]);
-    } else {
-      Alert.alert(
-        'Chưa chụp ảnh hoặc quay video',
-        'Vui lòng chụp ảnh hoặc quay video để đính kèm.'
-      );
-    }
+// Tính tỷ lệ scale
+const scaleWidth = width / BASE_WIDTH;
+const scaleHeight = height / BASE_HEIGHT;
+const scale = Math.min(scaleWidth, scaleHeight);
+
+const getScaledSize = (size: number) => Math.round(size * scale);
+
+type ReportDetail = {
+  item: string;
+  name: string;
+  route: string;
+  po: string;
+  team: string;
+  booker: string;
+  location: string;
+  qcPerson: string;
+  confirmDate: string;
+  quantity: number;
+  status: string;
+  actualCheckedQuantity: number;
+  rejectedQuantity: number;
+  overall: string;
+  material: string;
+  lamination: string;
+  machinery: string;
+  carving: string;
+  veneer: string;
+  wirebrush: string;
+  assembly: string;
+  finishing: string;
+  upholstery: string;
+  packing: string;
+  planning: string;
+  action: string;
+};
+
+type Report = {
+  stt: number;
+  reportNo: string;
+  ponoOrRoute: string;
+  itemCode: string;
+  itemMaterial: string;
+  locationOrTeam: string;
+  qty: number;
+  qtyRealCheck: number;
+  requestDate: string;
+  confirmDate: string;
+  checkAndVerifyBy: string;
+  status: string;
+  created: string;
+  noted: string;
+  reason: string;
+  action: string;
+  detail: ReportDetail; // Thêm phần chi tiết vào kiểu dữ liệu Report
+};
+
+const reports: Report[] = [
+  {
+    stt: 1,
+    reportNo: "59888",
+    ponoOrRoute: "\nPO:",
+    itemCode: "WO-07-2021-00016_16",
+    itemMaterial: "RH832857.LCM.00",
+    locationOrTeam: "\nLocation: 2_WAS\nTeam: 2_WAD2",
+    qty: 6,
+    qtyRealCheck: 6,
+    requestDate: "17-03-2022",
+    confirmDate: "16-03-2022",
+    checkAndVerifyBy: "\nCheck by: qctest\nVerify by: hongbt",
+    status: "Đã đạt",
+    created: "08:31 17-03-2022",
+    noted: "",
+    reason: "Ok",
+    action: "OK",
+    detail: {
+      item: "RH832857.LCM.00",
+      name: "",
+      route: "WO-07-2021-00016_16",
+      po: "(ItemVT: )",
+      team: "2_WAD2",
+      booker: "CS Hiếu",
+      location: "2_WAS",
+      qcPerson: "qctest",
+      confirmDate: "3/16/2022",
+      quantity: 6,
+      status: "Không đạt",
+      actualCheckedQuantity: 0,
+      rejectedQuantity: 0,
+      overall:
+        "Tổng quan\nTổng quát : kích thước\nTổng quát : cấu trúc\nTổng quát : thông tin handle over\nTổng quát : Mối mọt - không chấp nhận",
+      material: "Nguyên vật liệu : tuân thủ tiêu chuẩn /bản vẽ ",
+      lamination:
+        "Kiểm độ ẩm\nGhép : độ ẩm giữa 2 mối ghép ≤ 2%\nGhép : đường keo\nGhép : nứt/hở",
+      machinery:
+        "Công Đoạn Máy : Lỗ khoan/ lỗ mộng- theo bản vẽ/ rập\nCông Đoạn Máy : Sự vuông góc/ tưa/ cháy",
+      carving:
+        "Chi Tiết Chạm : tuân theo mẫu chạm\nChi Tiết Chạm : Dấu máy/ dấu nhám\nChi Tiết Chạm : Dơ bẩn",
+      veneer:
+        "Veneer : Dộp\nVeneer : dằm gỗ/veneer\nVeneer : Màu sắc- theo bản vẽ và tiêu chuẩn\nVeneer : Hướng- theo bản vẽ và tiêu chuẩn\nVeneer : loại ( bông/sọc) - theo bản vẽ và tiêu chuẩn\nVeneer : Mẻ/ Vá\nVeneer : Nứt/ chia tách\nVeneer : ghép veneer- Theo bản vẽ/ mẫu\nVeneer : Mắt gỗ- bể/ nứt\nVeneer : lõm",
+      wirebrush:
+        "Đánh Cước : tuân theo mẫu của PTC\nĐánh Cước : Lông gỗ\nĐánh Cước : Dằm gỗ/ veneer",
+      assembly:
+        "Lắp Ráp/Fitting : Tuân theo bản vẽ\nLắp Ráp/Fitting : cong vênh- <3mm\nLắp Ráp/Fitting : Mối ghép hở\nLắp Ráp/Fitting : Móp/ nứt/ mẻ\nLắp Ráp/Fitting : Lồi vít\nLắp Ráp/Fitting : Nứt do bắt vít\nKiểm màu hoàn thiện đạt\nLắp Ráp/Fitting : HW bị gỉ sét\nLắp Ráp/Fitting : Bulong và ốc cấy bị tuôn ren\nLắp Ráp/Fitting : Sự cân bằng trên bàn cân\nLắp Ráp/Fitting : Hướng dẫn lắp ráp và hardware\nLắp Ráp/Fitting : Khe hở giữa kính - Tuân theo bản vẽ /tiêu chuẩn\nLắp Ráp/Fitting : Vết trầy xước/ bể kiếng- theo tiêu chuẩn\nLắp Ráp/Fitting : Kiếng nhô ra ngoài khung\nLắp Ráp/Fitting : Lỗ tay nắm- sứt mẻ gỗ\nLắp Ráp/Fitting : Lỗ đinh- Không chấp nhận\nLắp Ráp/Fitting : Lỗ kệ- không gập ghềnh- Tuân theo bản vẽ\nLắp Ráp/Fitting : hộc kéo- cánh cửa- bằng phẳng theo tiêu chuẩn\nLắp Ráp/Fitting : Hộc kéo - nhẹ/ Không quơ\nLắp Ráp/Fitting : Mặt hộc kéo/ ráp keo - chắc chắn\nLắp Ráp/Fitting : Tay nắm - thằng hàng",
+      finishing:
+        "Hoàn thiện : Màu- theo mẫu\nHoàn thiện : Độ bóng\nHoàn thiện : Bong tróc/ mẽ/ bọt khí\nHoàn thiện : khu vực sửa dày/ nhựa\nHoàn thiện : Mùi hôi\nHoàn thiện : Da cam\nHoàn thiện : Dơ/ Không láng\nHoàn thiện : Đọng thành giọt\nHoàn thiện : Lem\nHoàn thiện : Nhựa gỗ\nHoàn thiện : Bề mặt không phẳng\nHoàn thiện : Nhìn thấy lỗi sửa\nHoàn thiện : Sự mịn màng\nHoàn thiện : Dấu tay, dấu keo\nHoàn thiện : Nhìn thấy gỗ trắng ( trừ các vị trí có ráp keo\nHoàn thiện : Sứt mẻ /móp\nHoàn thiện : Góc/ cạnh sắc nhọn\nHoàn thiện : Sơn vào ray trượt\nHoàn thiện : thời gian khô",
+      upholstery:
+        "Bọc nệm : Xệ/ lò xo dài\nBọc nệm : Vải bọc : Nhăn, bụi bẩn, hư hỏng\nBọc nệm : Hướng vải- Theo bản vẽ\nBọc nệm : Cấu trúc tuân theo bản vẽ/tiêu chuẩn",
+      packing:
+        "Đóng gói : bề mặt và lòng trong hộc kéo - láng mịn và không vụn gỗ/veneer\nĐóng gói : HW và hướng dẫn lắp ráp - đầy đủ và theo bản vẽ\nĐóng gói : đóng gói-tuân theo tiêu chuẩn đóng gói\nĐóng gói: tem nhãn theo tiêu chuẩn",
+      planning: "Lỗi sai kế hoạch\nKiểm xác suất\nSố lượng thực loại",
+      action: "Action",
+    },
+  },
+  {
+    stt: 2,
+    reportNo: "170283",
+    ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
+    itemCode: "RH787301.WLT.00",
+    itemMaterial: "RH832857.LCM.00",
+    locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
+    qty: 2,
+    qtyRealCheck: 0,
+    requestDate: "13-07-2024",
+    confirmDate: "31-08-2024",
+    checkAndVerifyBy: "\nCheck by: qctest\nVerify by: uyennd",
+    status: "Không đạt",
+    created: "07:34 13-07-2024",
+    noted: "hoa tessting",
+    reason: "Ok",
+    action: "hoa tessting",
+    detail: {
+      item: "RH832857.LCM.00",
+      name: "",
+      route: "WO-07-2021-00016_16",
+      po: "(ItemVT: )",
+      team: "2_WAD2",
+      booker: "CS Hiếu",
+      location: "2_WAS",
+      qcPerson: "qctest",
+      confirmDate: "3/16/2022",
+      quantity: 6,
+      status: "Fail - Không đạt",
+      actualCheckedQuantity: 0,
+      rejectedQuantity: 0,
+      overall: "Tổng quan",
+      material: "Nguyên vật liệu : tuân thủ tiêu chuẩn /bản vẽ",
+      lamination:
+        "Kiểm độ ẩm\nGhép : độ ẩm giữa 2 mối ghép ≤ 2%\nGhép : đường keo\nGhép : nứt/hở",
+      machinery:
+        "Công Đoạn Máy : Lỗ khoan/ lỗ mộng- theo bản vẽ/ rập\nCông Đoạn Máy : Sự vuông góc/ tưa/ cháy",
+      carving:
+        "Chi Tiết Chạm : tuân theo mẫu chạm\nChi Tiết Chạm : Dấu máy/ dấu nhám\nChi Tiết Chạm : Dơ bẩn",
+      veneer:
+        "Veneer : Dộp\nVeneer : dằm gỗ/veneer\nVeneer : Màu sắc- theo bản vẽ và tiêu chuẩn\nVeneer : Hướng- theo bản vẽ và tiêu chuẩn\nVeneer : loại ( bông/sọc) - theo bản vẽ và tiêu chuẩn\nVeneer : Mẻ/ Vá\nVeneer : Nứt/ chia tách\nVeneer : ghép veneer- Theo bản vẽ/ mẫu\nVeneer : Mắt gỗ- bể/ nứt\nVeneer : lõm",
+      wirebrush:
+        "Đánh Cước : tuân theo mẫu của PTC\nĐánh Cước : Lông gỗ\nĐánh Cước : Dằm gỗ/ veneer",
+      assembly:
+        "Lắp Ráp/Fitting : Tuân theo bản vẽ\nLắp Ráp/Fitting : cong vênh- <3mm\nLắp Ráp/Fitting : Mối ghép hở\nLắp Ráp/Fitting : Móp/ nứt/ mẻ\nLắp Ráp/Fitting : Lồi vít\nLắp Ráp/Fitting : Nứt do bắt vít\nKiểm màu hoàn thiện đạt\nLắp Ráp/Fitting : HW bị gỉ sét\nLắp Ráp/Fitting : Bulong và ốc cấy bị tuôn ren\nLắp Ráp/Fitting : Sự cân bằng trên bàn cân\nLắp Ráp/Fitting : Hướng dẫn lắp ráp và hardware\nLắp Ráp/Fitting : Khe hở giữa kính - Tuân theo bản vẽ /tiêu chuẩn\nLắp Ráp/Fitting : Vết trầy xước/ bể kiếng- theo tiêu chuẩn\nLắp Ráp/Fitting : Kiếng nhô ra ngoài khung\nLắp Ráp/Fitting : Lỗ tay nắm- sứt mẻ gỗ\nLắp Ráp/Fitting : Lỗ đinh- Không chấp nhận\nLắp Ráp/Fitting : Lỗ kệ- không gập ghềnh- Tuân theo bản vẽ\nLắp Ráp/Fitting : hộc kéo- cánh cửa- bằng phẳng theo tiêu chuẩn\nLắp Ráp/Fitting : Hộc kéo - nhẹ/ Không quơ\nLắp Ráp/Fitting : Mặt hộc kéo/ ráp keo - chắc chắn\nLắp Ráp/Fitting : Tay nắm - thằng hàng",
+      finishing:
+        "Hoàn thiện : Màu- theo mẫu\nHoàn thiện : Độ bóng\nHoàn thiện : Bong tróc/ mẽ/ bọt khí\nHoàn thiện : khu vực sửa dày/ nhựa\nHoàn thiện : Mùi hôi\nHoàn thiện : Da cam\nHoàn thiện : Dơ/ Không láng\nHoàn thiện : Đọng thành giọt\nHoàn thiện : Lem\nHoàn thiện : Nhựa gỗ\nHoàn thiện : Bề mặt không phẳng\nHoàn thiện : Nhìn thấy lỗi sửa\nHoàn thiện : Sự mịn màng\nHoàn thiện : Dấu tay, dấu keo\nHoàn thiện : Nhìn thấy gỗ trắng ( trừ các vị trí có ráp keo\nHoàn thiện : Sứt mẻ /móp\nHoàn thiện : Góc/ cạnh sắc nhọn\nHoàn thiện : Sơn vào ray trượt\nHoàn thiện : thời gian khô",
+      upholstery:
+        "Bọc nệm : Xệ/ lò xo dài\nBọc nệm : Vải bọc : Nhăn, bụi bẩn, hư hỏng\nBọc nệm : Hướng vải- Theo bản vẽ\nBọc nệm : Cấu trúc tuân theo bản vẽ/tiêu chuẩn",
+      packing:
+        "Đóng gói : bề mặt và lòng trong hộc kéo - láng mịn và không vụn gỗ/veneer\nĐóng gói : HW và hướng dẫn lắp ráp - đầy đủ và theo bản vẽ\nĐóng gói : đóng gói-tuân theo tiêu chuẩn đóng gói\nĐóng gói: tem nhãn theo tiêu chuẩn",
+      planning: "Lỗi sai kế hoạch\nKiểm xác suất\nSố lượng thực loại",
+      action: "Action",
+    },
+  },
+];
+
+const DetailRow = ({
+  label,
+  value,
+  customValueStyle = {},
+  valueColor = "#666", // Mặc định màu chữ của giá trị
+  backgroundColor = "#fff", // Mặc định màu nền
+}: {
+  label: string;
+  value: string;
+  customValueStyle?: object;
+  valueColor?: string;
+  backgroundColor?: string;
+}) => (
+  <View
+    style={[
+      tw`flex-row justify-between items-center mb-2`,
+      { backgroundColor },
+    ]}
+  >
+    <Text
+      style={[
+        {
+          fontFamily: "CustomFont-Bold",
+          fontSize: getScaledSize(14),
+          color: "#444",
+        },
+      ]}
+    >
+      {label}:
+    </Text>
+    <Text
+      style={[
+        {
+          fontFamily: "CustomFont-Regular",
+          fontSize: getScaledSize(14),
+          color: valueColor,
+        },
+        customValueStyle,
+      ]}
+    >
+      {value}
+    </Text>
+  </View>
+);
+
+const CheckGoodsScreen = ({ navigation }: any) => {
+  const [search, setSearch] = React.useState<string>("");
+
+  const handleSearch = (text: string) => {
+    setSearch(text.toLowerCase());
   };
 
-  const handleMediaPick = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    
-    if (!result.canceled) {
-      const { uri, type } = result.assets[0];
-      setAttachments([
-        ...attachments,
-        { uri, type: type === 'image' ? 'image' : 'video' },
-      ]);
-    } else {
-      Alert.alert(
-        'Chưa chọn tài liệu',
-        'Vui lòng chọn một tài liệu để đính kèm.'
-      );
-    }
+  // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
+  const filteredReports = reports.filter((report) => {
+    // Chuyển đổi tất cả các trường thành chữ thường để tìm kiếm không phân biệt chữ hoa chữ thường
+    const searchTerm = search.trim().toLowerCase();
+    return (
+      report.reportNo.toLowerCase().includes(searchTerm) ||
+      report.ponoOrRoute.toLowerCase().includes(searchTerm) ||
+      report.itemCode.toLowerCase().includes(searchTerm) ||
+      report.itemMaterial.toLowerCase().includes(searchTerm) ||
+      report.locationOrTeam.toLowerCase().includes(searchTerm) ||
+      report.status.toLowerCase().includes(searchTerm) ||
+      report.noted.toLowerCase().includes(searchTerm)
+    );
+  });
+
+  const handleReportPress = (report: Report) => {
+    navigation.navigate("CheckGoodsDetailScreen", { report });
   };
 
-  const handleSubmit = () => {
-    // Implement submission logic here
-    Alert.alert('Hoàn tất', 'Kiểm tra hàng đã được gửi đi.');
+  const getStatusColorAndTextColor = (status: string) => {
+    let statusColor, textColor;
+    switch (status) {
+      case "Đã đạt":
+        statusColor = COLORS.green;
+        textColor = COLORS.black;
+        break;
+      case "Không đạt":
+        statusColor = COLORS.red;
+        textColor = COLORS.white;
+        break;
+      case "Đang kiểm":
+        statusColor = COLORS.yellow;
+        textColor = COLORS.black;
+        break;
+      default:
+        statusColor = COLORS.darkGray;
+        textColor = COLORS.black;
+        break;
+    }
+    return { statusColor, textColor };
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-gray-100`}>
-      <ScrollView style={tw`flex-1`}>
-        {/* Header */}
-        <View style={tw`bg-white p-4 border-b border-gray-200`}>
-          <Text style={tw`text-xl font-bold text-center`}>
-            Kiểm Tra Hàng
-          </Text>
-        </View>
-
-        {/* Item Information */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Mã sản phẩm:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={itemCode}
-              onChangeText={setItemCode}
-            />
-          </View>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Tên sản phẩm:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={itemName}
-              onChangeText={setItemName}
-            />
-          </View>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Số lượng kiểm tra:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={quantityToCheck.toString()}
-              keyboardType="numeric"
-              onChangeText={(text) => setQuantityToCheck(Number(text))}
-            />
-          </View>
-        </View>
-
-        {/* QC Status */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Trạng thái QC:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={qcStatus}
-              onChangeText={setQcStatus}
-            />
-          </View>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Người kiểm tra:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={qcInspector}
-              onChangeText={setQcInspector}
-            />
-          </View>
-          <View style={tw`mb-2`}>
-            <Text style={tw`text-gray-500`}>Ngày kiểm tra:</Text>
-            <TextInput
-              style={tw`border border-gray-300 p-2 rounded`}
-              value={qcDate}
-              onChangeText={setQcDate}
-            />
-          </View>
-        </View>
-
-        {/* Notes */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <Text style={tw`text-gray-500 mb-2`}>Ghi chú:</Text>
-          <TextInput
-            style={tw`border border-gray-300 p-2 rounded`}
-            value={notes}
-            onChangeText={setNotes}
-            multiline
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View
+        style={[
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={tw`p-2`}
+          activeOpacity={0.7}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={COLORS.black}
           />
-        </View>
+        </TouchableOpacity>
+        <Text
+          style={[
+            tw`text-xl flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+          ]}
+        >
+          Báo cáo kiểm hàng
+        </Text>
+      </View>
 
-        {/* Media Evidence */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <Text style={tw`text-gray-500 mb-2`}>Hình ảnh/Video minh chứng:</Text>
-          <TouchableOpacity
-            style={tw`bg-green-500 py-2 px-6 rounded-full mb-2`}
-            onPress={handleCapture}
-          >
-            <Text style={tw`text-white font-semibold`}>Chụp Ảnh/Quay Video</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={tw`bg-red-500 py-2 px-6 rounded-full mb-2`}
-            onPress={handleMediaPick}
-          >
-            <Text style={tw`text-white font-semibold`}>Chọn Hình Ảnh/Video</Text>
-          </TouchableOpacity>
-          {attachments.map((attachment, index) => (
-            <View key={index} style={tw`border border-gray-300 p-4 mb-2`}>
-              {attachment.type === 'image' ? (
-                <Image
-                  source={{ uri: attachment.uri }}
-                  style={tw`w-full h-40 bg-gray-200`}
-                />
-              ) : (
-                <Video
-                  source={{ uri: attachment.uri }}
-                  style={tw`w-full h-40`}
-                  resizeMode={ResizeMode.CONTAIN}
-                  useNativeControls
-                />
-              )}
-            </View>
-          ))}
-          {attachments.length === 0 && (
-            <Text style={tw`text-gray-500`}>Chưa có hình ảnh hoặc video minh chứng</Text>
-          )}
-        </View>
+      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+        <SearchBar
+          placeholder="Tìm kiếm"
+          onChangeText={handleSearch}
+          value={search}
+          lightTheme
+          round
+          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
+          inputContainerStyle={{ height: 40, backgroundColor: COLORS.white }}
+          inputStyle={{ fontSize: 16 }}
+        />
+      </View>
 
-        {/* Action Buttons */}
-        <View style={tw`flex-row justify-around p-4 mt-4`}>
-          <TouchableOpacity
-            style={tw`bg-blue-500 py-2 px-6 rounded-full`}
-            onPress={handleSubmit}
-          >
-            <Text style={tw`text-white font-semibold`}>Gửi</Text>
-          </TouchableOpacity>
-        </View>
+      <ScrollView style={tw`p-4`}>
+        {filteredReports.map((report) => {
+          const { statusColor, textColor } = getStatusColorAndTextColor(
+            report.status
+          );
+
+          return (
+            <TouchableOpacity
+              key={report.stt}
+              style={[
+                tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                { backgroundColor: COLORS.white },
+              ]}
+              onPress={() => handleReportPress(report)}
+            >
+              <View>
+                <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                  Report No: {report.reportNo}
+                </Text>
+                <DetailRow label="Stt" value={report.stt.toString()} />
+                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
+                <DetailRow label="Item Code" value={report.itemCode} />
+                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
+                <DetailRow
+                  label="Location/Team"
+                  value={report.locationOrTeam}
+                />
+                <DetailRow label="Qty" value={report.qty.toString()} />
+                <DetailRow
+                  label="Qty Real Check"
+                  value={report.qtyRealCheck.toString()}
+                />
+                <DetailRow label="Request Date" value={report.requestDate} />
+                <DetailRow label="Confirm Date" value={report.confirmDate} />
+                <DetailRow
+                  label="Check & Verify by"
+                  value={report.checkAndVerifyBy}
+                />
+                <DetailRow
+                  label="Status"
+                  value={report.status}
+                  valueColor={textColor}
+                  backgroundColor={statusColor}
+                />
+                <DetailRow label="Created" value={report.created} />
+                <DetailRow label="Noted" value={report.noted} />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );

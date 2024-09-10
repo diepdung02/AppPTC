@@ -7,16 +7,28 @@ import tw from 'twrnc';
 import COLORS from '../../../constants/Color';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-// Get screen dimensions for scaling
-const { width, height } = Dimensions.get('window');
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-const getScaledSize = (size: number) => size * scale;
+  const width = Dimensions.get('window').width;
+
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 type MailDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,

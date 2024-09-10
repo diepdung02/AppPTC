@@ -84,7 +84,7 @@ const reports: Report[] = [
     requestDate: "17-03-2022",
     confirmDate: "16-03-2022",
     checkAndVerifyBy: "\nCheck by: qctest\nVerify by: hongbt",
-    status: "Chưa kiểm",
+    status: "Đã đạt",
     created: "08:31 17-03-2022",
     noted: "",
     detail: {
@@ -98,7 +98,7 @@ const reports: Report[] = [
       qcPerson: "qctest",
       confirmDate: "3/16/2022",
       quantity: 6,
-      status: "Fail - Không đạt",
+      status: "Không đạt",
       actualCheckedQuantity: 0,
       rejectedQuantity: 0,
       overall:
@@ -137,7 +137,7 @@ const reports: Report[] = [
     requestDate: "13-07-2024",
     confirmDate: "31-08-2024",
     checkAndVerifyBy: "\nCheck by: qctest\nVerify by: uyennd",
-    status: "Chưa kiểm",
+    status: "Không đạt",
     created: "07:34 13-07-2024",
     noted: "hoa tessting",
     detail: {
@@ -184,12 +184,21 @@ const DetailRow = ({
   label,
   value,
   customValueStyle = {},
+  valueColor = "#666", // Mặc định màu chữ của giá trị
+  backgroundColor = "#fff", // Mặc định màu nền
 }: {
   label: string;
   value: string;
   customValueStyle?: object;
+  valueColor?: string;
+  backgroundColor?: string;
 }) => (
-  <View style={tw`flex-row justify-between items-center mb-2`}>
+  <View
+    style={[
+      tw`flex-row justify-between items-center mb-2`,
+      { backgroundColor },
+    ]}
+  >
     <Text
       style={[
         {
@@ -206,7 +215,7 @@ const DetailRow = ({
         {
           fontFamily: "CustomFont-Regular",
           fontSize: getScaledSize(14),
-          color: "#666",
+          color: valueColor,
         },
         customValueStyle,
       ]}
@@ -225,6 +234,29 @@ const ErrorScreen = ({ navigation }: any) => {
 
   const handleReportPress = (report: Report) => {
     navigation.navigate("ErrorDetailScreen", { report });
+  };
+
+  const getStatusColorAndTextColor = (status: string) => {
+    let statusColor, textColor;
+    switch (status) {
+      case "Đã đạt":
+        statusColor = COLORS.green;
+        textColor = COLORS.black;
+        break;
+      case "Không đạt":
+        statusColor = COLORS.red;
+        textColor = COLORS.white;
+        break;
+      case "Đang kiểm":
+        statusColor = COLORS.yellow;
+        textColor = COLORS.black;
+        break;
+      default:
+        statusColor = COLORS.darkGray;
+        textColor = COLORS.black;
+        break;
+    }
+    return { statusColor, textColor };
   };
 
   return (
@@ -283,41 +315,51 @@ const ErrorScreen = ({ navigation }: any) => {
       <ScrollView style={tw`p-4`}>
         {reports
           .filter((report) => report.reportNo.includes(search))
-          .map((report) => (
-            <TouchableOpacity
-              style={[
-                tw`p-2.5 m-1.25 rounded-md shadow-md`,
-                { backgroundColor: COLORS.white },
-              ]}
-              key={report.stt}
-              onPress={() => handleReportPress(report)}
-            >
-              <View>
-                <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
-                  Report No: {report.reportNo}
-                </Text>
+          .map((report) => {
+            const { statusColor, textColor } = getStatusColorAndTextColor(
+              report.status
+            );
 
-                <DetailRow label="Stt" value={report.stt.toString()} />
-                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
-                <DetailRow label="Item Code" value={report.itemCode} />
-                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
-                <DetailRow
-                  label="Location/Team"
-                  value={report.locationOrTeam}
-                />
-                <DetailRow label="Qty" value={report.qty.toString()} />
-                <DetailRow label="Request Date" value={report.requestDate} />
-                <DetailRow label="Confirm Date" value={report.confirmDate} />
-                <DetailRow
-                  label="Check & Verify by"
-                  value={report.checkAndVerifyBy}
-                />
-                <DetailRow label="Status" value={report.status} />
-                <DetailRow label="Created" value={report.created} />
-                <DetailRow label="Noted" value={report.noted} />
-              </View>
-            </TouchableOpacity>
-          ))}
+            return (
+              <TouchableOpacity
+                style={[
+                  tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                  { backgroundColor: COLORS.white },
+                ]}
+                key={report.stt}
+                onPress={() => handleReportPress(report)}
+              >
+                <View>
+                  <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                    Report No: {report.reportNo}
+                  </Text>
+                  <DetailRow label="Stt" value={report.stt.toString()} />
+                  <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
+                  <DetailRow label="Item Code" value={report.itemCode} />
+                  <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
+                  <DetailRow
+                    label="Location/Team"
+                    value={report.locationOrTeam}
+                  />
+                  <DetailRow label="Qty" value={report.qty.toString()} />
+                  <DetailRow label="Request Date" value={report.requestDate} />
+                  <DetailRow label="Confirm Date" value={report.confirmDate} />
+                  <DetailRow
+                    label="Check & Verify by"
+                    value={report.checkAndVerifyBy}
+                  />
+                  <DetailRow
+                    label="Status"
+                    value={report.status}
+                    valueColor={textColor}
+                    backgroundColor={statusColor}
+                  />
+                  <DetailRow label="Created" value={report.created} />
+                  <DetailRow label="Noted" value={report.noted} />
+                </View>
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
     </SafeAreaView>
   );

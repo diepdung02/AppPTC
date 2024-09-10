@@ -19,18 +19,28 @@ type Props = {
   navigation: StackNavigationProp<RootStackParamList, 'SendMail'>;
 };
 
-const { width, height } = Dimensions.get('window');
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Base dimensions for scaling
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-// Calculate scale based on the smaller ratio
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+  const width = Dimensions.get('window').width;
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 const SalaryScreen: React.FC<Props> = ({ navigation }) => {
   const fontsLoaded = useCustomFonts();
