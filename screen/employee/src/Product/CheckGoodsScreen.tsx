@@ -12,19 +12,25 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
 import COLORS from "../../../../constants/Color";
 
-// Lấy kích thước màn hình
-const { width, height } = Dimensions.get("window");
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Kích thước cơ sở để tính toán tỷ lệ
-const BASE_WIDTH = 375; // Kích thước màn hình cơ sở
-const BASE_HEIGHT = 667; // Kích thước màn hình cơ sở
+// Hàm tính kích thước responsive
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
 
-// Tính tỷ lệ scale
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+const getScaledSize = (size: number, isWidth = true) => {
+  const minWidth = 320;
+  const maxWidth = 1024;
+  const width = Dimensions.get('window').width;
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+  if (width < minWidth) {
+    return size * 0.5;
+  } else if (width > maxWidth) {
+    return size * 1.2;
+  }
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
+};
 
 type ReportDetail = {
   item: string;

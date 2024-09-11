@@ -39,6 +39,7 @@ import Output from './employee/src/Product/Output';
 import CheckGoodsScreen from './employee/src/Product/CheckGoodsScreen';
 import ManagerEvaluteScreen from './manager/ManagerEvaluteScreen';
 import CheckGoodsDetailScreen from './employee/src/Product/CheckGoodsDetailScreen';
+import UploadQcImageScreen from './employee/src/Product/UploadQcImageScreen';
 
 export{
     LoginScreen,
@@ -81,5 +82,6 @@ export{
     Output,
     CheckGoodsScreen,
     ManagerEvaluteScreen,
-    CheckGoodsDetailScreen
+    CheckGoodsDetailScreen,
+    UploadQcImageScreen
 }

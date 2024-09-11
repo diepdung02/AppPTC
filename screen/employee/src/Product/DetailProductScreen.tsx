@@ -32,15 +32,25 @@ type Props = {
   navigation: ProductDetailScreenNavigationProp;
 };
 
-const { width, height } = Dimensions.get("window");
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+// Hàm tính kích thước responsive
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+const getScaledSize = (size: number, isWidth = true) => {
+  const minWidth = 320;
+  const maxWidth = 1024;
+  const width = Dimensions.get('window').width;
+
+  if (width < minWidth) {
+    return size * 0.5;
+  } else if (width > maxWidth) {
+    return size * 1.2;
+  }
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
+};
 
 const getButtonStyle = (tabName: string, selectedTab: string) => ({
   backgroundColor: selectedTab === tabName ? COLORS.primary : COLORS.white,
@@ -287,7 +297,7 @@ Length: ${dim.length} cm  `
   }, [selectedTab, filteredData, item]);
 
   return (
-    <SafeAreaView style={[tw`flex-1 px-5 `, {backgroundColor:COLORS.colorMain}]}>
+     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
           tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,

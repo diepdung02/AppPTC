@@ -13,18 +13,28 @@ import moment from 'moment';
 import { addManagerNotification, ManagerNotificationItem } from '../../../../redux/managerSlice/managerNotificationSlice';
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-const { width, height } = Dimensions.get('window');
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Kích thước cơ sở để điều chỉnh kích thước
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-// Tính toán tỷ lệ dựa trên tỷ lệ nhỏ hơn
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+  const width = Dimensions.get('window').width;
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 type Props = {
   navigation: StackNavigationProp<{}>;
@@ -253,7 +263,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               numberOfLines={4}
               placeholder="Nhập lý do..."
               placeholderTextColor={COLORS.darkGray}
-              style={[tw` p-3 rounded h-50`, { fontSize: getScaledSize(16), color: COLORS.black, fontFamily: 'CustomFont-Regular', backgroundColor:COLORS.white }]}
+              style={[tw` p-3 rounded `, { fontSize: getScaledSize(16), color: COLORS.black, fontFamily: 'CustomFont-Regular', backgroundColor:COLORS.white, height:getScaledSize(100) }]}
             />
           </View>
           <View style={tw`flex-row justify-center mt-${getScaledSize(5)}`}>

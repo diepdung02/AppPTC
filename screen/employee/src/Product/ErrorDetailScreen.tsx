@@ -228,7 +228,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
       </View>
 
       <ScrollView style={tw`p-4`}>
-        <View style={tw`mb-1 p-4 bg-white rounded-lg shadow-lg`}>
+      <View style={tw`bg-white p-4 rounded-lg shadow-md mb-6`}>
           <Text
             style={[
               tw`text-center mb-4`,

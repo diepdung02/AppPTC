@@ -69,7 +69,7 @@ const BenefitScreen: React.FC<Props> = ({ navigation }) => {
   }
 
   const renderItem = ({ item }: { item: typeof benefits[0] }) => (
-    <View style={tw`mb-${getScaledSize(2)} p-${getScaledSize(2)} bg-white rounded-lg shadow w-full flex-row items-center`}>
+    <View style={tw`m-${getScaledSize(2)} p-${getScaledSize(2)} bg-white rounded-lg shadow w-full flex-row items-center`}>
       <MaterialCommunityIcons name={item.icon} size={getScaledSize(20)} color={COLORS.primary} style={tw`mr-${getScaledSize(4)}`} />
       <View>
         <Text style={[tw`text-xl`, { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(14) }]}>
@@ -83,19 +83,32 @@ const BenefitScreen: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[tw`flex-1 p-${getScaledSize(6)} mt-${getScaledSize(15)}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`flex-row items-center mb-${getScaledSize(6)}`}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+      <View
+        style={[
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`w-${getScaledSize(10)} h-${getScaledSize(10)} items-center justify-center`}
+          style={tw`p-2`}
+          activeOpacity={0.7}
         >
-          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
-        <View style={tw`flex-1 items-center`}>
-          <Text style={[tw`text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
-            Chế Độ Phúc Lợi
-          </Text>
-        </View>
+        <Text
+          style={[
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18), },
+          ]}
+        >
+          Chế độ phúc lợi
+        </Text>
       </View>
 
       <FlatList

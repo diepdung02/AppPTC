@@ -5,25 +5,31 @@ import {
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
-  Alert,
   Dimensions,
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import CheckBox from "react-native-check-box";
 import COLORS from "../../../../constants/Color";
 
-const { width, height } = Dimensions.get("window");
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+// Hàm tính kích thước responsive
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
 
-// Calculate scale based on the smaller ratio
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+const getScaledSize = (size: number, isWidth = true) => {
+  const minWidth = 320;
+  const maxWidth = 1024;
+  const width = Dimensions.get('window').width;
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+  if (width < minWidth) {
+    return size * 0.5;
+  } else if (width > maxWidth) {
+    return size * 1.2;
+  }
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
+};
 
 type Report = {
   stt: number;
@@ -75,25 +81,22 @@ type Report = {
 const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
   const { report }: { report: Report | undefined } = route.params;
 
-  const handleStartCheck = () => {
-    if (!report) {
-      Alert.alert("Lỗi", "Không có dữ liệu báo lỗi.");
-      return;
-    }
-    navigation.navigate("CheckDetailScreen", {
-      report,
-    });
-  };
-
-  const handleComplete = () => {
-    Alert.alert("Hoàn thành", "Báo lỗi đã được hoàn thành.");
-    // Add any additional handling here
+  const handleUploadQcImage = () => {
+    navigation.navigate("UploadQcImageScreen");
   };
 
   if (!report) {
     return (
       <SafeAreaView style={tw`flex-1 justify-center items-center`}>
-        <Text>Không có dữ liệu báo lỗi.</Text>
+        <Text
+          style={{
+            fontFamily: "CustomFont-Regular",
+            fontSize: getScaledSize(14),
+            color: COLORS.text,
+          }}
+        >
+          Không có dữ liệu báo lỗi.
+        </Text>
       </SafeAreaView>
     );
   }
@@ -119,16 +122,15 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18), },
           ]}
         >
           Chi tiết báo lỗi
         </Text>
       </View>
-
       <ScrollView style={tw`p-4`}>
-        <View style={tw`mb-1 p-4 bg-white rounded-lg shadow-lg`}>
+        <View style={[tw`mb-1 p-4 rounded-lg shadow-lg`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[
               tw`text-center mb-4`,
@@ -151,13 +153,13 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
               { label: "Item Vật Tư", value: report.itemMaterial },
               { label: "Location/Team", value: report.locationOrTeam },
               { label: "Qty", value: report.qty },
-              { label: "Material: ",value: "follow PTC's standard/ Drawing" }, 
-              { label: "Được kiểm bởi: ",value: " QC Nguyễn Trọng An" }, 
-              { label: "Trạng Thái:", value: "Hoàn thành" }, 
-              { label: "Hoàn thành lúc:", value: "08:27 07-08-2023" }, 
-              { label: "Qty Check", value: String(report.qty) }, 
-              { label: "Qty Reject", value: String(report.qtyRealCheck) }, 
-              { label: "Lý Do", value: report.reason }, 
+              { label: "Material: ", value: "follow PTC's standard/ Drawing" },
+              { label: "Được kiểm bởi: ", value: " QC Nguyễn Trọng An" },
+              { label: "Trạng Thái:", value: "Hoàn thành" },
+              { label: "Hoàn thành lúc:", value: "08:27 07-08-2023" },
+              { label: "Qty Check", value: String(report.qty) },
+              { label: "Qty Reject", value: String(report.qtyRealCheck) },
+              { label: "Lý Do", value: report.reason },
               { label: "Xử Lý", value: report.action },
             ].map((item, index) => (
               <View
@@ -167,14 +169,14 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
                 <Text
                   style={[
                     {
-                      fontFamily: "CustomFont-Bold",
+                      fontFamily: "CustomFont-Regular",
                       fontSize: getScaledSize(14),
                       color: COLORS.darkGray,
-                      width: '45%',
+                      width: "45%",
                     },
                   ]}
-                   numberOfLines={2}
-                   ellipsizeMode="tail"
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
                 >
                   {item.label}:
                 </Text>
@@ -184,19 +186,26 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
                       fontFamily: "CustomFont-Regular",
                       fontSize: getScaledSize(14),
                       color: COLORS.text,
-                      flex: 1, 
+                      flex: 1,
                     },
-                    
                   ]}
                   numberOfLines={0}
-                   ellipsizeMode="tail"
+                  ellipsizeMode="tail"
                 >
-                  {item.value }
+                  {item.value}
                 </Text>
               </View>
             ))}
-
-           
+            <View style={tw`flex-1 justify-center items-center`}>
+              <TouchableOpacity
+                style={[tw`p-4 rounded`, { backgroundColor: COLORS.blue }]}
+                onPress={handleUploadQcImage}
+              >
+                <Text style={[tw``,{fontFamily: "CustomFont-Regular", fontSize: getScaledSize(14),}]}>
+                  New Upload
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </ScrollView>

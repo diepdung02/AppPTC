@@ -171,28 +171,32 @@ const EvaluateScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5 mt-1`, { backgroundColor: COLORS.white }]}>
+      <View
+        style={[
+          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
         <TouchableOpacity
-          onPress={() => navigation.goBack()} 
-          style={[tw`p-2`, { borderRadius: 50 }]} 
-          activeOpacity={0.7} 
+          onPress={() => navigation.goBack()}
+          style={tw`p-2`}
+          activeOpacity={0.7}
         >
-          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={COLORS.black}
+          />
         </TouchableOpacity>
-
-        <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+        <Text
+          style={[
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18), },
+          ]}
+        >
           Danh sách đánh giá
         </Text>
-
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("OvertimeRequest")}
-          style={[tw`p-2`, { borderRadius: 50 }]} 
-          activeOpacity={0.7} 
-        >
-          <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
-        </TouchableOpacity> */}
       </View>
-
       <FlatList
         data={filteredData}
         renderItem={renderItem}

@@ -129,46 +129,48 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         onPress={() => navigation.navigate("DetailRequest", { item })}
       >
         <View >
-          <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
+          <Text style={[tw` mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
           <View style={tw`absolute`}>
-            <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 30 * scale }]}>
-              {item.code.split("").map((char: string, index: number) => (
-                <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
-              ))}
-            </View>
+      <View style={[tw`flex-col items-start`, { position: 'absolute', left: getScaledSize(310), top: getScaledSize(30) }]}>
+        {item.code.split("").map((char: string, index: number) => (
+          <Text key={index} style={[tw``, { fontSize: getScaledSize(12) }]}>{char}</Text>
+        ))}
+      </View>
+    </View>
+    <View style={[tw``, {height:getScaledSize(220)}]}>
+          <View style={[tw`flex-row`]}>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày bắt đầu:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày bắt đầu:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày kết thúc:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endDate}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày kết thúc:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endDate}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Loại nghỉ phép:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.leaveType}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Loại nghỉ phép:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.leaveType}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Lí do:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Lí do:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.dayOffs}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.dayOffs}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ còn lại:</Text>
+            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.remainingDaysOff}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ còn lại:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.remainingDaysOff}</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ đã sử dụng:</Text>
+            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.usedDaysOff}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Số ngày nghỉ đã sử dụng:</Text>
-            <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.usedDaysOff}</Text>
-          </View>
-          <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Trạng thái:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Trạng thái:</Text>
             <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
           </View>
+        </View>
         </View>
       </TouchableOpacity>
     );
@@ -185,7 +187,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
       </TouchableOpacity>
 
-      <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+      <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
         Danh sách đơn nghỉ phép
       </Text>
 

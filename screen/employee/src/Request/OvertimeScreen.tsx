@@ -125,34 +125,35 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
               ))}
             </View>
           </View>
-
+          <View style={[tw``, {height:getScaledSize(170)}]}>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Ngày bắt đầu:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày bắt đầu:</Text>
             <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ bắt đầu:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Giờ bắt đầu:</Text>
             <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Giờ kết thúc:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Giờ kết thúc:</Text>
             <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Lí do:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Lí do:</Text>
             <Text style={[tw`text-lg ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{truncateText(item.reason, 15)}</Text>
           </View>
           <View style={tw`flex-row`}>
-            <Text style={[tw`w-37.5 text-lg`, { fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12) }]}>Trạng thái:</Text>
+            <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Trạng thái:</Text>
             <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
           </View>
+        </View>
         </View>
       </TouchableOpacity>
     );
   };
 
   return (
-    <SafeAreaView style={[tw`flex-1 mt-${StatusBar.currentHeight || 0}`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()} 
@@ -165,7 +166,6 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
         <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
           Danh sách đơn tăng ca
         </Text>
-
         <TouchableOpacity
           onPress={() => navigation.navigate("OvertimeRequest")}
           style={[tw`p-2`, { borderRadius: 50 }]} 

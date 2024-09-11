@@ -11,7 +11,6 @@ import {
   TouchableOpacity,
   Modal,
   Keyboard,
-  TouchableWithoutFeedback,
 } from "react-native";
 import tw from "twrnc";
 import RNPickerSelect from "react-native-picker-select";
@@ -35,14 +34,29 @@ type Report = {
   noted: string;
 };
 
-const { width, height } = Dimensions.get("window");
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
+
+
+const getScaledSize = (size: number, isWidth = true) => {
+  const minWidth = 320;  
+  const maxWidth = 1024;
+
+  const width = Dimensions.get('window').width; 
+
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } 
+  else if (width > maxWidth) {
+    return size * 1.2; 
+  }
+
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
+};
 
 const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   const [status, setStatus] = useState<string>("");
@@ -116,9 +130,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
     }
   };
 
-  const dismissKeyboard = () => {
-    Keyboard.dismiss();
-  };
+
 
   const handleAttachmentPress = (attachment: {
     uri: string;
@@ -221,9 +233,9 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View
+    <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-2.7 px-5 mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >

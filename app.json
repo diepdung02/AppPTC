@@ -2,7 +2,8 @@
   "expo": {
     "name": "MyApp",
     "slug": "MyApp",
-    "version": "1.0.0",
+    "version": "1.0.1",
+
     "orientation": "portrait",
     "userInterfaceStyle": "automatic", 
     "ios": {
@@ -12,6 +13,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
+      "versionCode": 2,
       "package": "com.minhdung02.MyApp"
     },
     "web": {
