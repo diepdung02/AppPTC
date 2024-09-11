@@ -137,7 +137,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         ))}
       </View>
     </View>
-    <View style={[tw``, {height:getScaledSize(220)}]}>
+    <View style={[ {height:getScaledSize(220)}]}>
           <View style={[tw`flex-row`]}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày bắt đầu:</Text>
             <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
