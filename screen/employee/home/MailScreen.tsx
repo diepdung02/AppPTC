@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Dimensions,
   Image,
+  RefreshControl
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -101,6 +102,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeEmails);
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false); 
 
   useEffect(() => {
     // Filter emails based on search query
@@ -121,6 +123,14 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
     return text.length > maxLength
       ? text.substring(0, maxLength) + "..."
       : text;
+  };
+  
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const fontsLoaded = useCustomFonts();
@@ -161,6 +171,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <FlatList
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
@@ -243,8 +254,8 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
       backgroundColor: COLORS.primary,
       width: 70,
       height: 70,
-      justifyContent: 'center', // Căn giữa theo trục chính
-      alignItems: 'center',     // Căn giữa theo trục phụ
+      justifyContent: 'center', 
+      alignItems: 'center',    
     },
   ]}
   onPress={() => navigation.navigate("SendMail")}

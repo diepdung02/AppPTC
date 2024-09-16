@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Image,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import tw from "twrnc";
@@ -133,6 +134,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeNotifications);
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false); 
 
   // Load custom fonts
   const fontsLoaded = useCustomFonts();
@@ -149,6 +151,13 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         item.summary.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredData(filtered);
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const truncateText = (text: string, maxLength: number) => {
@@ -282,6 +291,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
       </View>
         
       <FlatList
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={filteredData}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

@@ -10,7 +10,7 @@ import {
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
@@ -69,30 +69,36 @@ type Report = {
   itemMaterial: string;
   locationOrTeam: string;
   qty: number;
+  qtyRealCheck: number;
   requestDate: string;
   confirmDate: string;
   checkAndVerifyBy: string;
   status: string;
   created: string;
   noted: string;
+  reason: string;
+  action: string;
   detail: ReportDetail; // Thêm phần chi tiết vào kiểu dữ liệu Report
 };
 
 const reports: Report[] = [
   {
     stt: 1,
-    reportNo: "Null",
+    reportNo: "59888",
     ponoOrRoute: "\nPO:",
     itemCode: "WO-07-2021-00016_16",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: 2_WAS\nTeam: 2_WAD2",
     qty: 6,
+    qtyRealCheck: 6,
     requestDate: "17-03-2022",
     confirmDate: "16-03-2022",
     checkAndVerifyBy: "\nCheck by: qctest\nVerify by: hongbt",
     status: "Đã đạt",
     created: "08:31 17-03-2022",
     noted: "",
+    reason: "Ok",
+    action: "OK",
     detail: {
       item: "RH832857.LCM.00",
       name: "",
@@ -140,12 +146,15 @@ const reports: Report[] = [
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
+    qtyRealCheck: 0,
     requestDate: "13-07-2024",
     confirmDate: "31-08-2024",
     checkAndVerifyBy: "\nCheck by: qctest\nVerify by: uyennd",
     status: "Không đạt",
     created: "07:34 13-07-2024",
     noted: "hoa tessting",
+    reason: "Ok",
+    action: "hoa tessting",
     detail: {
       item: "RH832857.LCM.00",
       name: "",
@@ -231,15 +240,30 @@ const DetailRow = ({
   </View>
 );
 
-const ErrorScreen = ({ navigation }: any) => {
+const CheckGoodsScreen = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
 
   const handleSearch = (text: string) => {
-    setSearch(text);
+    setSearch(text.toLowerCase());
   };
 
+  // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
+  const filteredReports = reports.filter((report) => {
+    // Chuyển đổi tất cả các trường thành chữ thường để tìm kiếm không phân biệt chữ hoa chữ thường
+    const searchTerm = search.trim().toLowerCase();
+    return (
+      report.reportNo.toLowerCase().includes(searchTerm) ||
+      report.ponoOrRoute.toLowerCase().includes(searchTerm) ||
+      report.itemCode.toLowerCase().includes(searchTerm) ||
+      report.itemMaterial.toLowerCase().includes(searchTerm) ||
+      report.locationOrTeam.toLowerCase().includes(searchTerm) ||
+      report.status.toLowerCase().includes(searchTerm) ||
+      report.noted.toLowerCase().includes(searchTerm)
+    );
+  });
+
   const handleReportPress = (report: Report) => {
-    navigation.navigate("ErrorDetailScreen", { report });
+    navigation.navigate("CheckGoodsDetailScreen", { report });
   };
 
   const getStatusColorAndTextColor = (status: string) => {
@@ -290,19 +314,8 @@ const ErrorScreen = ({ navigation }: any) => {
             { color: COLORS.black, fontFamily: "CustomFont-Bold" },
           ]}
         >
-          Danh sách báo lỗi
+          Báo cáo kiểm hàng
         </Text>
-        <TouchableOpacity
-          onPress={() => navigation.navigate("LeaveRequest")}
-          style={tw`p-2`}
-          activeOpacity={0.7}
-        >
-          <MaterialCommunityIcons
-            name="plus-circle-outline"
-            size={24}
-            color={COLORS.black}
-          />
-        </TouchableOpacity>
       </View>
 
       <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
@@ -319,56 +332,58 @@ const ErrorScreen = ({ navigation }: any) => {
       </View>
 
       <ScrollView style={tw`p-4`}>
-        {reports
-          .filter((report) => report.reportNo.includes(search))
-          .map((report) => {
-            const { statusColor, textColor } = getStatusColorAndTextColor(
-              report.status
-            );
+        {filteredReports.map((report) => {
+          const { statusColor, textColor } = getStatusColorAndTextColor(
+            report.status
+          );
 
-            return (
-              <TouchableOpacity
-                style={[
-                  tw`p-2.5 m-1.25 rounded-md shadow-md`,
-                  { backgroundColor: COLORS.white },
-                ]}
-                key={report.stt}
-                onPress={() => handleReportPress(report)}
-              >
-                <View>
-                  <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
-                    Report No: {report.reportNo}
-                  </Text>
-                  <DetailRow label="Stt" value={report.stt.toString()} />
-                  <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
-                  <DetailRow label="Item Code" value={report.itemCode} />
-                  <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
-                  <DetailRow
-                    label="Location/Team"
-                    value={report.locationOrTeam}
-                  />
-                  <DetailRow label="Qty" value={report.qty.toString()} />
-                  <DetailRow label="Request Date" value={report.requestDate} />
-                  <DetailRow label="Confirm Date" value={report.confirmDate} />
-                  <DetailRow
-                    label="Check & Verify by"
-                    value={report.checkAndVerifyBy}
-                  />
-                  <DetailRow
-                    label="Status"
-                    value={report.status}
-                    valueColor={textColor}
-                    backgroundColor={statusColor}
-                  />
-                  <DetailRow label="Created" value={report.created} />
-                  <DetailRow label="Noted" value={report.noted} />
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+          return (
+            <TouchableOpacity
+              key={report.stt}
+              style={[
+                tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                { backgroundColor: COLORS.white },
+              ]}
+              onPress={() => handleReportPress(report)}
+            >
+              <View>
+                <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                  Report No: {report.reportNo}
+                </Text>
+                <DetailRow label="Stt" value={report.stt.toString()} />
+                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
+                <DetailRow label="Item Code" value={report.itemCode} />
+                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
+                <DetailRow
+                  label="Location/Team"
+                  value={report.locationOrTeam}
+                />
+                <DetailRow label="Qty" value={report.qty.toString()} />
+                <DetailRow
+                  label="Qty Real Check"
+                  value={report.qtyRealCheck.toString()}
+                />
+                <DetailRow label="Request Date" value={report.requestDate} />
+                <DetailRow label="Confirm Date" value={report.confirmDate} />
+                <DetailRow
+                  label="Check & Verify by"
+                  value={report.checkAndVerifyBy}
+                />
+                <DetailRow
+                  label="Status"
+                  value={report.status}
+                  valueColor={textColor}
+                  backgroundColor={statusColor}
+                />
+                <DetailRow label="Created" value={report.created} />
+                <DetailRow label="Noted" value={report.noted} />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default ErrorScreen;
+export default CheckGoodsScreen;

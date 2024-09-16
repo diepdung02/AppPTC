@@ -32,14 +32,16 @@ import ManagerMailDetail from './manager/ManagerMailDetail';
 import VoteScreen from './employee/src/feedback/VoteScreen';
 import BenefitScreen from './employee/home/BenefitScreen';
 import SalaryScreen from './employee/home/SalaryScreen';
-import ErrorScreen from './employee/src/Product/ErrorScreen';
-import ErrorDetailScreen from './employee/src/Product/ErrorDetailScreen';
-import CheckDetailScreen from './employee/src/Product/CheckDetailScreen';
+import ErrorScreen from './employee/src/Product/quanlity/ErrorScreen';
+import ErrorDetailScreen from './employee/src/Product/quanlity/ErrorDetailScreen';
+import CheckDetailScreen from './employee/src/Product/quanlity/CheckDetailScreen';
 import Output from './employee/src/Product/Output';
-import CheckGoodsScreen from './employee/src/Product/CheckGoodsScreen';
+import CheckGoodsScreen from './employee/src/Product/quanlity/CheckGoodsScreen';
 import ManagerEvaluteScreen from './manager/ManagerEvaluteScreen';
-import CheckGoodsDetailScreen from './employee/src/Product/CheckGoodsDetailScreen';
-import UploadQcImageScreen from './employee/src/Product/UploadQcImageScreen';
+import CheckGoodsDetailScreen from './employee/src/Product/quanlity/CheckGoodsDetailScreen';
+import UploadQcImageScreen from './employee/src/Product/quanlity/UploadQcImageScreen';
+import UploadCarCassScreen from './employee/src/Product/quanlity/UpLoadCheckCarCass';
+import UpLoadImageProduct from './employee/src/Product/quanlity/UpLoadImageProduct';
 
 export{
     LoginScreen,
@@ -83,5 +85,7 @@ export{
     CheckGoodsScreen,
     ManagerEvaluteScreen,
     CheckGoodsDetailScreen,
-    UploadQcImageScreen
+    UploadQcImageScreen,
+    UploadCarCassScreen,
+    UpLoadImageProduct
 }

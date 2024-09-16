@@ -2,82 +2,81 @@ import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
-  Image,
+  ScrollView,
+  RefreshControl,
   SafeAreaView,
   TouchableOpacity,
+  Image,
   Dimensions,
+  Modal,
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../navigator/navigation";
 import tw from "twrnc";
 import COLORS from "../../../constants/Color";
 import useCustomFonts from "../../../hooks/useFont";
 import { useTranslation } from "react-i18next";
+import { BlurView } from 'expo-blur';
 
-const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
+const { width: initialWidth, height: initialHeight } = Dimensions.get("window");
 
-const scaleWidth = initialWidth / 375; 
-const scaleHeight = initialHeight / 667; 
-
+const scaleWidth = initialWidth / 375;
+const scaleHeight = initialHeight / 667;
 
 const getScaledSize = (size: number, isWidth = true) => {
-  const minWidth = 320;  
+  const minWidth = 320;
   const maxWidth = 1024;
 
-  const width = Dimensions.get('window').width; 
-
+  const width = Dimensions.get("window").width;
 
   if (width < minWidth) {
-    return size * 0.5; 
-  } 
-  else if (width > maxWidth) {
-    return size * 1.2; 
+    return size * 0.5;
+  } else if (width > maxWidth) {
+    return size * 1.2;
   }
 
-  
   return isWidth ? size * scaleWidth : size * scaleHeight;
 };
 
 type Props = {
-  navigation: StackNavigationProp<RootStackParamList, "Home">;
+  navigation: any; // Adjust the type based on your actual navigation prop type
 };
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [currentTime, setCurrentTime] = useState<string>("");
   const [search, setSearch] = useState("");
+  const [modalVisible, setModalVisible] = useState(false); // State for modal visibility
+  const [refreshing, setRefreshing] = useState(false); 
   const { t } = useTranslation();
 
   useEffect(() => {
     const updateCurrentTime = () => {
       const now = new Date();
       const formatter = new Intl.DateTimeFormat("en-GB", {
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-        hour12: false, 
-      });      
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+        hour12: false,
+      });
       const formattedTime = formatter.format(now);
       setCurrentTime(formattedTime);
     };
-  
+
     updateCurrentTime();
-    const intervalId = setInterval(updateCurrentTime, 1000); 
-  
+    const intervalId = setInterval(updateCurrentTime, 1000);
+
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-    };
-
-    const subscription = Dimensions.addEventListener('change', handleResize);
+  const onRefresh = () => {
+    setRefreshing(true);
     
-    return () => subscription?.remove(); 
-  }, []);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
 
   const updateSearch = (search: string) => {
     setSearch(search);
@@ -93,26 +92,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     );
   }
 
-  const routes: {
-    route:
-      | "Product"
-      | "OutputList"
-      | "RequestMain"
-      | "Overtime"
-      | "Schedule"
-      | "LeftDeptScreen"
-      | "EvaluateScreen"
-      | "VoteScreen"
-      | "ErrorScreen"
-      | "Output"
-      | "CheckGoodsScreen";
-    image: string;
-    label: string;
-  }[] = [
+  const routes = [
     {
-      route: "CheckGoodsScreen",
-      image: "https://img.upanh.tv/2024/07/09/checklist.png",
-      label: t("check goods"),
+      route: "QualityScreen",
+      image: "https://img.upanh.tv/2024/09/16/quality-control.png",
+      label: t("quality"),
     },
     {
       route: "Product",
@@ -123,11 +107,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       route: "Output",
       image: "https://img.upanh.tv/2024/07/09/output.png",
       label: t("output"),
-    },
-    {
-      route: "ErrorScreen",
-      image: "https://img.upanh.tv/2024/07/09/error.png",
-      label: t("error"),
     },
     {
       route: "RequestMain",
@@ -147,19 +126,16 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     {
       route: "EvaluateScreen",
       image: "https://img.upanh.tv/2024/07/09/evaluate.png",
-      label: t("evalute"),
+      label: t("evaluate"),
     },
     {
       route: "Schedule",
       image: "https://img.upanh.tv/2024/07/09/calendar.png",
       label: t("schedule"),
     },
-    // { route: 'VoteScreen', image: 'https://img.upanh.tv/2024/07/09/vote.png', label: t("vote") },
-    // { route: 'Product', image: 'https://img.upanh.tv/2024/07/09/transfer_dept.png', label: t("transferDept") }
   ];
 
-
-  const filteredRoutes = routes.filter(item =>
+  const filteredRoutes = routes.filter((item) =>
     item.label.toLowerCase().includes(search.toLowerCase())
   );
 
@@ -172,77 +148,184 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`p-${getScaledSize(4)} `}>
-        <SearchBar
-          placeholder="Tìm kiếm"
-          inputContainerStyle={tw`bg-white`}
-          containerStyle={[
-            tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`,
-            {
-              borderBottomWidth: 1,
-              borderBottomColor: COLORS.border,
-            },
-          ]}
-          onChangeText={updateSearch}
-          value={search}
-          placeholderTextColor={COLORS.black}
-        />
-      </View>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        <View style={tw`p-${getScaledSize(4)}`}>
+          <SearchBar
+            placeholder="Tìm kiếm"
+            inputContainerStyle={tw`bg-white`}
+            containerStyle={[
+              tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`,
+              {
+                borderBottomWidth: 1,
+                borderBottomColor: COLORS.border,
+              },
+            ]}
+            onChangeText={updateSearch}
+            value={search}
+            placeholderTextColor={COLORS.black}
+          />
+        </View>
 
-      <View style={tw`flex-1 mt-${getScaledSize(10)} px-${getScaledSize(2)}`}>
-        {rows.map((row, rowIndex) => (
-          <View
-            key={`row-${rowIndex}`}
-            style={tw`flex-wrap flex-row justify-center`}
-          >
-            {row.map((item, index) => (
-              <TouchableOpacity
-                key={`item-${rowIndex}-${index}`}
-                style={[
-                  tw`items-center m-${getScaledSize(2)}`,
-                  { width: getScaledSize(90) },
-                ]}
-                onPress={() => navigation.navigate(item.route)}
-              >
-                <Image
-                  source={{ uri: item.image }}
+        <View style={tw`flex-1 mt-${getScaledSize(10)} px-${getScaledSize(2)}`}>
+          {rows.map((row, rowIndex) => (
+            <View
+              key={`row-${rowIndex}`}
+              style={tw`flex-wrap flex-row justify-center`}
+            >
+              {row.map((item, index) => (
+                <TouchableOpacity
+                  key={`item-${rowIndex}-${index}`}
                   style={[
-                    tw`mb-${getScaledSize(2)}`,
-                    { width: getScaledSize(70), height: getScaledSize(70) },
-                    { aspectRatio: 1 }, 
+                    tw`items-center m-${getScaledSize(2)}`,
+                    { width: getScaledSize(90) },
                   ]}
-                  onError={(e) => console.error(e.nativeEvent.error)}
-                  defaultSource={require("../../../assets/favicon.png")} 
-                />
-
-                <Text
-                  style={[
-                    tw`text-center`,
-                    {
-                      fontSize: getScaledSize(14),
-                      fontFamily: "CustomFont-Regular",
-                    },
-                  ]}
+                  onPress={() =>
+                    item.route === "QualityScreen"
+                      ? setModalVisible(true)
+                      : navigation.navigate(item.route)
+                  }
                 >
-                  {item.label}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        ))}
-      </View>
+                  <Image
+                    source={{ uri: item.image }}
+                    style={[
+                      tw`mb-${getScaledSize(2)}`,
+                      { width: getScaledSize(70), height: getScaledSize(70) },
+                      { aspectRatio: 1 },
+                    ]}
+                    onError={(e) => console.error(e.nativeEvent.error)}
+                    defaultSource={require("../../../assets/favicon.png")}
+                  />
+                  <Text
+                    style={[
+                      tw`text-center`,
+                      {
+                        fontSize: getScaledSize(14),
+                        fontFamily: "CustomFont-Regular",
+                      },
+                    ]}
+                  >
+                    {item.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
 
-      <View style={tw`absolute bottom-${getScaledSize(2)} w-full items-center`}>
-        <Text
-          style={[
-            tw``,
-            { fontSize: getScaledSize(14), fontFamily: "CustomFont-Bold" },
-            { color: COLORS.red },
-          ]}
-        >
-          {currentTime}
-        </Text>
-      </View>
+      <Modal
+  visible={modalVisible}
+  transparent={true}
+  animationType="slide"
+  onRequestClose={() => setModalVisible(false)}
+>
+  <TouchableOpacity
+    style={tw`w-full h-full`}
+    activeOpacity={1}
+    onPress={() => setModalVisible(false)} // Đóng modal khi nhấn vào bất kỳ đâu ngoài modal
+  >
+    <View
+  style={[tw`absolute w-full h-full`, { backgroundColor: 'rgba(255, 255, 255, 0.85)' }]}
+>
+    <BlurView
+      style={[tw`w-full h-full justify-center items-center`]}
+      intensity={100}
+      tint="light"
+    >
+      <TouchableOpacity
+  style={[
+    tw`w-80 p-5 justify-center items-center rounded-lg`,
+    { backgroundColor: "rgba(0, 0, 0, 0.12)" },
+  ]}
+  activeOpacity={1} // Vô hiệu hóa sự kiện nhấn vào modal
+  onPress={() => {}} // Để modal không bị đóng khi nhấn vào modal
+>
+  <View style={tw`flex-row justify-around w-full`}>
+    <TouchableOpacity
+      style={tw`items-center`}
+      onPress={() => {
+        setModalVisible(false);
+        navigation.navigate("CheckGoodsScreen");
+      }}
+    >
+      <Image
+        source={{
+          uri: "https://img.upanh.tv/2024/07/09/checklist.png",
+        }}
+        style={[
+          tw`mb-${getScaledSize(2)}`,
+          { width: getScaledSize(70), height: getScaledSize(70) },
+          { aspectRatio: 1 },
+        ]}
+      />
+      <Text style={tw`mt-2 text-lg`}>{t("check goods")}</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={tw`items-center`}
+      onPress={() => {
+        setModalVisible(false);
+        navigation.navigate("ErrorScreen");
+      }}
+    >
+      <Image
+        source={{ uri: "https://img.upanh.tv/2024/07/09/error.png" }}
+        style={[
+          tw`mb-${getScaledSize(2)}`,
+          { width: getScaledSize(70), height: getScaledSize(70) },
+          { aspectRatio: 1 },
+        ]}
+      />
+      <Text style={tw`mt-2 text-lg`}>{t("error")}</Text>
+    </TouchableOpacity>
+  </View>
+
+  <View style={tw`flex-row justify-around w-full mt-5`}>
+    <TouchableOpacity
+      style={tw`items-center`}
+      onPress={() => {
+        setModalVisible(false);
+        navigation.navigate("UpLoadImageProduct");
+      }}
+    >
+      <Image
+        source={{ uri: "https://img.upanh.tv/2024/09/16/photo.png" }}
+        style={[
+          tw`mb-${getScaledSize(2)}`,
+          { width: getScaledSize(70), height: getScaledSize(70) },
+          { aspectRatio: 1 },
+        ]}
+      />
+      <Text style={tw`mt-2 text-lg w-30 text-center`}>{t("uploadImage")}</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={tw`items-center`}
+      onPress={() => {
+        setModalVisible(false);
+        navigation.navigate("UpLoadImageProduct");
+      }}
+    >
+      <Image
+        source={{ uri: "https://img.upanh.tv/2024/09/16/camera.png" }}
+        style={[
+          tw`mb-${getScaledSize(2)}`,
+          { width: getScaledSize(70), height: getScaledSize(70) },
+          { aspectRatio: 1 },
+        ]}
+      />
+      <Text style={tw`mt-2 text-lg w-30 text-center`}>{t("reportImage")}</Text>
+    </TouchableOpacity>
+  </View>
+</TouchableOpacity>
+    </BlurView>
+</View>
+  </TouchableOpacity>
+</Modal>
     </SafeAreaView>
   );
 };

@@ -17,7 +17,7 @@ import RNPickerSelect from "react-native-picker-select";
 import * as ImagePicker from "expo-image-picker";
 import { Video, ResizeMode } from "expo-av";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 
 type Report = {
   reportNo: string;
@@ -167,9 +167,9 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       [item]: {
         ...prevDetails[item],
         isCompleted: true,
-        qtyCheck: 0, // Bạn có thể đặt giá trị mặc định hoặc lấy từ một nguồn khác
-        qtyReject: 0, // Bạn có thể đặt giá trị mặc định hoặc lấy từ một nguồn khác
-        solution: prevDetails[item]?.action || 'Chưa có giải pháp' // Sử dụng hành động làm giải pháp
+        qtyCheck: 0, 
+        qtyReject: 0, 
+        solution: prevDetails[item]?.action || 'Chưa có giải pháp' 
       }
     }));
   };
@@ -204,10 +204,8 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
     // Log dữ liệu ra console
     console.log("Dữ liệu báo cáo đã gửi:", reportData);
 
-    // Hiển thị thông báo về dữ liệu đã được gửi
     Alert.alert("Thông báo", "Báo cáo đã được gửi thành công.");
 
-    // Xóa hoặc reset dữ liệu nếu cần
     setActualCheckedQuantity(0);
     setRejectedQuantity(0);
     setAttachments([]);
@@ -225,9 +223,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
     return updatedDetails;
   });
 
-  // Thực hiện các hành động khác như gửi dữ liệu xóa đến API nếu cần
-  // Ví dụ: gửi dữ liệu đến API
-  // deleteFromApi(item);
 };
 
 

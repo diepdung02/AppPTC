@@ -17,18 +17,28 @@ import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
 
 
-const { width, height } = Dimensions.get('window');
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Kích thước cơ sở để chia tỷ lệ
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-// Calculate scale based on the smaller ratio
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+  const width = Dimensions.get('window').width;
 
-const getScaledSize = (size: number) => Math.round(size * scale);
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 type LeftDeptScreenProps = {
   navigation: StackNavigationProp<RootStackParamList, "LeftDeptScreen">;
@@ -125,7 +135,7 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
         <View style={tw`flex-1`}>
           <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin ra vào cổng:</Text>
           <View style={tw`absolute`}>
-            <View style={[tw`flex-col items-end`, { position: 'absolute', left: 310 * scale, top: 10 * scale }]}>
+            <View style={[tw`flex-col items-end`, { position: 'absolute', left: getScaledSize(310), top: getScaledSize(30) }]}>
               {item.code.split("").map((char: string, index: number) => (
                 <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
               ))}

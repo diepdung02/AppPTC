@@ -10,7 +10,7 @@ import {
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
@@ -240,7 +240,7 @@ const DetailRow = ({
   </View>
 );
 
-const CheckGoodsScreen = ({ navigation }: any) => {
+const UpLoadImageProduct = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
 
   const handleSearch = (text: string) => {
@@ -314,8 +314,15 @@ const CheckGoodsScreen = ({ navigation }: any) => {
             { color: COLORS.black, fontFamily: "CustomFont-Bold" },
           ]}
         >
-          Báo cáo kiểm hàng
+          QC Upload Image
         </Text>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("UploadQcImageScreen")}
+          style={[tw`p-2`, { borderRadius: 50 }]} 
+          activeOpacity={0.7} 
+        >
+          <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
+        </TouchableOpacity>
       </View>
 
       <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
@@ -386,4 +393,4 @@ const CheckGoodsScreen = ({ navigation }: any) => {
   );
 };
 
-export default CheckGoodsScreen;
+export default UpLoadImageProduct;

@@ -12,7 +12,7 @@ import {
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import CheckBox from "react-native-check-box";
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 import RNPickerSelect from "react-native-picker-select";
 
 const { width, height } = Dimensions.get("window");
@@ -465,4 +465,4 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
 };
 
 export default ErrorDetailScreen;
-// Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope LocalMachine
+

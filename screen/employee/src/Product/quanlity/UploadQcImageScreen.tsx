@@ -3,9 +3,9 @@ import { View, Text, TextInput, ScrollView, Dimensions, SafeAreaView, TouchableO
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import tw from 'twrnc';
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "../../../navigator/navigation";
+import { RootStackParamList } from "../../../../navigator/navigation";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
@@ -48,6 +48,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
   const [drawingCodeHardware, setDrawingCodeHardware] = useState('');
   const [inspector, setInspector] = useState('');
   const [inspectionLocation, setInspectionLocation] = useState('');
+  const [typeOfInspection, setTypeOfInspection] = useState('');
+  const [status, setStatus] = useState('');
 
   type Option = {
     label: string;
@@ -61,6 +63,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     drawingCodeHardware: Option[];
     inspector: Option[];
     inspectionLocation: Option[];
+    typeOfInspection: Option[];
+    status: Option[];
   };
 
   // Options cho các dropdown picker
@@ -86,15 +90,25 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
       { label: 'DRA 45218', value: 'DRA 45218' },
     ],
     inspector: [
-      { label: 'Inspector 1', value: 'inspector1' },
-      { label: 'Inspector 2', value: 'inspector2' },
-      { label: 'Inspector 3', value: 'inspector3' },
+      { label: 'QC ERP', value: 'QC ERP' },
+      { label: 'QC Bùi Thị Hồng', value: 'QC Bùi Thị Hồng' },
+      { label: 'QC Bùi Văn Dụng', value: 'QC Bùi Văn Dụng' },
     ],
     inspectionLocation: [
-      { label: 'Location 1', value: 'location1' },
-      { label: 'Location 2', value: 'location2' },
-      { label: 'Location 3', value: 'location3' },
+      { label: 'Antique 2 - PTC 2 - Làm màu giả cổ ', value: 'Antique 2 - PTC 2 - Làm màu giả cổ ' },
+      { label: 'Deg - PTC 2 - Làm cũ gương - PTC2', value: 'Deg - PTC 2 - Làm cũ gương - PTC2' },
+      { label: 'Fit-wash - Ptc 2 - Ráp - Ptc 2', value: 'Fit-wash - Ptc 2 - Ráp - Ptc 2' },
     ],
+    typeOfInspection: [
+      { label: 'CarCass', value: 'CarCass' },
+      { label: 'Final', value: 'Final' },
+      { label: 'Frame', value: 'Frame' },
+    ],
+    status: [
+      { label: 'Đạt', value: 'Đạt' },
+      { label: 'Không đạt', value: 'Không đạt' },
+    ],
+    
   };
 
   const showDatePicker = useCallback(() => {
@@ -170,42 +184,73 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             </Text>
           </View>
       <ScrollView contentContainerStyle={tw`p-5`}>
+      
+      <View style={tw`mb-4`}>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Kiểu kiểm hàng:</Text>
+          <RNPickerSelect
+            placeholder={{ label: "--Kiểu kiểm hàng--", value: "" }}
+            items={options.typeOfInspection}
+            onValueChange={setTypeOfInspection}
+            value={typeOfInspection}
+            style={pickerSelectStyles}
+          />
+        </View>
+        <View style={tw`mb-4`}>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã sản phẩm:</Text>
+          <TextInput
+            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            value={itemCode}
+            onChangeText={handleItemCodeChange}
+            placeholder="--Nhập tìm ItemCode ít nhất 6 kí tự--"
+            
+          />
+        </View>
         <View style={tw`mb-4`}>
           <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Item Code:</Text>
           <TextInput
             style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={itemCode}
             onChangeText={handleItemCodeChange}
-            placeholder="Enter Item Code"
+            editable={false}
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Quantity:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Status:</Text>
+          <TextInput
+            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            value={status}
+            onChangeText={setStatus}
+            placeholder="--Tình trạng--"
+            keyboardType="numeric"
+          />
+        </View>
+        <View style={tw`mb-4`}>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Số lượng kiểm:</Text>
           <TextInput
             style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={quantity}
             onChangeText={setQuantity}
-            placeholder="Enter Quantity"
+            placeholder="--Số lượng kiểm--"
             keyboardType="numeric"
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>WO/PO Quantity:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Số lượng WO/PO:</Text>
           <TextInput
             style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={woPoQuantity}
             onChangeText={setWoPoQuantity}
-            placeholder="Enter WO/PO Quantity"
+            placeholder="--Số lượng WO/PO--"
             keyboardType="numeric"
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Notes:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Ghi chú:</Text>
           <TextInput
             style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={notes}
             onChangeText={setNotes}
-            placeholder="Enter Notes"
+            placeholder="--Ghi chú--"
             multiline
             numberOfLines={4}
           />
@@ -216,13 +261,13 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={colorCode}
             onChangeText={setColorCode}
-            placeholder="Enter Color Code"
+            placeholder="--Color Code--"
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Route Code:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã Route:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Route Code", value: "" }}
+            placeholder={{ label: "--Chọn Router Code--", value: "" }}
             items={filteredOptions.routeCode}
             onValueChange={setRouteCode}
             value={routeCode}
@@ -232,7 +277,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
         <View style={tw`mb-4`}>
           <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Client PO:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Client PO", value: "" }}
+            placeholder={{ label: "--Chọn PO--", value: "" }}
             items={filteredOptions.clientPo}
             onValueChange={setClientPo}
             value={clientPo}
@@ -240,9 +285,9 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Drawing Code (Car Cass):</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã bản vẽ CarCass:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Drawing Code Car Cass", value: "" }}
+            placeholder={{ label: "-- Chọn mã bản vẽ CarCass--", value: "" }}
             items={filteredOptions.drawingCodeCarCass}
             onValueChange={setDrawingCodeCarCass}
             value={drawingCodeCarCass}
@@ -250,9 +295,9 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Drawing Code (Hardware):</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã bản vẽ HardWare:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Drawing Code Hardware", value: "" }}
+            placeholder={{ label: "--Chọn mã bản vẽ HardWare--", value: "" }}
             items={filteredOptions.drawingCodeHardware}
             onValueChange={setDrawingCodeHardware}
             value={drawingCodeHardware}
@@ -260,9 +305,9 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Inspector:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Người kiểm hàng:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Inspector", value: "" }}
+            placeholder={{ label: "--Chọn người kiểm hàng--", value: "" }}
             items={options.inspector}
             onValueChange={setInspector}
             value={inspector}
@@ -270,9 +315,9 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Inspection Location:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Nơi kiểm hàng:</Text>
           <RNPickerSelect
-            placeholder={{ label: "Select Inspection Location", value: "" }}
+            placeholder={{ label: "--Chọn nơi kiểm hàng", value: "" }}
             items={options.inspectionLocation}
             onValueChange={setInspectionLocation}
             value={inspectionLocation}
@@ -280,7 +325,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Inspection Date:</Text>
+          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Ngày kiểm hàng:</Text>
           <TouchableOpacity onPress={showDatePicker} style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}>
             <Text>{inspectionDate.toDateString()}</Text>
           </TouchableOpacity>
@@ -294,16 +339,16 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
         </View>
         <TouchableOpacity
           style={[tw` p-3 rounded-lg`, { alignItems: 'center', backgroundColor:COLORS.blue }]}
-          onPress={() => {}}
+          onPress={() => navigation.navigate("UploadCarCassScreen")}
         >
-          <Text style={[tw`text-white text-lg`]} >Submit</Text>
+          <Text style={[tw`text-white text-lg`]} >Lưu lại và tải hình ảnh</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-// Custom style cho RNPickerSelect
+
 const pickerSelectStyles = {
   inputIOS: {
     fontSize: getScaledSize(16),

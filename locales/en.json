@@ -16,10 +16,13 @@
     "error":"Error",
     "requestOvertime":"Request Overtime",
     "schedule":"Schedule",
-    "evalute":"Evalute",
+    "evaluate":"Evalute",
     "vote":"Vote",
     "leftDept":"Left Dept",
     "transferDept":"Transfer Dept",
-    "search":"Search"
+    "search":"Search",
+    "quality":"Quality",
+    "uploadImage":"Upload product images",
+    "reportImage":"Product image report"
   }
   

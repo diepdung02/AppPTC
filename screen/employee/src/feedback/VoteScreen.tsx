@@ -1,73 +1,156 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Alert, SafeAreaView } from 'react-native';
-import tw from 'twrnc';
-import COLORS from '../../../../constants/Color'; // Đảm bảo bạn đã định nghĩa các màu ở đây
+import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 
-
-const VoteScreen: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-
-  const handleVote = () => {
-    if (selectedOption) {
-      Alert.alert('Bầu chọn thành công', `Bạn đã bầu chọn: ${selectedOption}`);
-    } else {
-      Alert.alert('Lỗi', 'Vui lòng chọn một tùy chọn trước khi gửi.');
-    }
-  };
+const VoteScreen = () => {
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-${COLORS.colorMain}`}>
-      <View style={tw`p-4`}>
-        <Text style={tw`text-xl font-bold mb-4 text-${COLORS.black}`}>
-          Chọn món quà Trung Thu:
-        </Text>
-        <TouchableOpacity
-          style={[
-            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Bánh Trung Thu' ? COLORS.primary : COLORS.white}`,
-            { borderColor: selectedOption === 'Bánh Trung Thu' ? COLORS.primary : COLORS.border }
-          ]}
-          onPress={() => setSelectedOption('Bánh Trung Thu')}
-        >
-          <Text style={tw`text-lg text-${selectedOption === 'Bánh Trung Thu' ? COLORS.white : COLORS.black}`}>
-            Bánh Trung Thu
-          </Text>
-        </TouchableOpacity>
+    <View style={styles.container}>
+      {/* Nút mở modal */}
+      <TouchableOpacity onPress={() => setModalVisible(true)} style={styles.openButton}>
+        <Text style={styles.openButtonText}>Open Social Apps</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[
-            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Đèn lồng' ? COLORS.primary : COLORS.white}`,
-            { borderColor: selectedOption === 'Đèn lồng' ? COLORS.primary : COLORS.border }
-          ]}
-          onPress={() => setSelectedOption('Đèn lồng')}
-        >
-          <Text style={tw`text-lg text-${selectedOption === 'Đèn lồng' ? COLORS.white : COLORS.black}`}>
-            Đèn lồng
-          </Text>
-        </TouchableOpacity>
+      {/* Modal để hiển thị các icon */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Social</Text>
 
-        <TouchableOpacity
-          style={[
-            tw`p-4 rounded-lg mb-2 border border-${COLORS.border} bg-${selectedOption === 'Kẹo' ? COLORS.primary : COLORS.white}`,
-            { borderColor: selectedOption === 'Kẹo' ? COLORS.primary : COLORS.border }
-          ]}
-          onPress={() => setSelectedOption('Kẹo')}
-        >
-          <Text style={tw`text-lg text-${selectedOption === 'Kẹo' ? COLORS.white : COLORS.black}`}>
-            Kẹo
-          </Text>
-        </TouchableOpacity>
+            <View style={styles.iconContainer}>
+              {/* Facebook */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('Facebook')}>
+                <Image
+                  source={{ uri: 'https://link_to_facebook_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>Facebook</Text>
+              </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[tw`p-4 rounded-lg  mt-4`, {backgroundColor:COLORS.primary}]}
-          onPress={handleVote}
-        >
-          <Text style={tw`text-lg text-white text-center`}>
-            Gửi bầu chọn
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
+              {/* Instagram */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('Instagram')}>
+                <Image
+                  source={{ uri: 'https://link_to_instagram_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>Instagram</Text>
+              </TouchableOpacity>
+
+              {/* Zalo */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('Zalo')}>
+                <Image
+                  source={{ uri: 'https://link_to_zalo_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>Zalo</Text>
+              </TouchableOpacity>
+
+              {/* Messenger */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('Messenger')}>
+                <Image
+                  source={{ uri: 'https://link_to_messenger_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>Messenger</Text>
+              </TouchableOpacity>
+
+              {/* TikTok */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('TikTok')}>
+                <Image
+                  source={{ uri: 'https://link_to_tiktok_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>TikTok</Text>
+              </TouchableOpacity>
+
+              {/* YouTube */}
+              <TouchableOpacity style={styles.iconWrapper} onPress={() => alert('YouTube')}>
+                <Image
+                  source={{ uri: 'https://link_to_youtube_icon' }}
+                  style={styles.icon}
+                />
+                <Text style={styles.iconText}>YouTube</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Nút đóng modal */}
+            <TouchableOpacity onPress={() => setModalVisible(false)} style={styles.closeButton}>
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  openButton: {
+    padding: 10,
+    backgroundColor: '#007bff',
+    borderRadius: 8,
+  },
+  openButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    alignItems: 'center',
+  },
+  modalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+  iconWrapper: {
+    alignItems: 'center',
+    margin: 15,
+  },
+  icon: {
+    width: 60,
+    height: 60,
+    borderRadius: 15,
+  },
+  iconText: {
+    marginTop: 8,
+    fontSize: 12,
+    textAlign: 'center',
+  },
+  closeButton: {
+    marginTop: 20,
+    padding: 10,
+    backgroundColor: '#ff5c5c',
+    borderRadius: 8,
+  },
+  closeButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
+});
 
 export default VoteScreen;

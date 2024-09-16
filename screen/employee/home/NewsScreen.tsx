@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   Dimensions,
   Image,
+  RefreshControl
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -210,6 +211,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeNews);
   const { t } = useTranslation();
+  const [refreshing, setRefreshing] = useState(false); 
 
 
   useEffect(() => {
@@ -223,6 +225,14 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
 
   const handleItemPress = (item: (typeof fakeNews)[0]) => {
     navigation.navigate("NewsDetail", { newsItem: item });
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const truncateText = (text: string, maxLength: number) => {
@@ -269,6 +279,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
       </View>
 
       <FlatList
+       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (

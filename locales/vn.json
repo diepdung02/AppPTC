@@ -17,10 +17,13 @@
     "error":"Báo lỗi",
     "requestOvertime":"Tăng ca",
     "schedule":"Lịch",
-    "evalute":"Đánh giá",
+    "evaluate":"Đánh giá",
     "vote":"Bầu chọn",
     "leftDept":"Giấy ra cổng",
     "transferDept":"Rời khỏi",
-    "search":"Tìm kiếm"
+    "search":"Tìm kiếm",
+    "quality":"Chất lượng",
+    "uploadImage":"Tải lên hình ảnh sản phẩm",
+    "reportImage":"Báo cáo hình ảnh sản phẩm"
   }
   

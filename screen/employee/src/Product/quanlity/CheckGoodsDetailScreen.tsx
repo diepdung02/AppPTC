@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import COLORS from "../../../../constants/Color";
+import COLORS from "../../../../../constants/Color";
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
@@ -95,7 +95,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
             color: COLORS.text,
           }}
         >
-          Không có dữ liệu báo lỗi.
+          Không có dữ liệu kiểm hàng.
         </Text>
       </SafeAreaView>
     );
@@ -126,7 +126,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
             { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18), },
           ]}
         >
-          Chi tiết báo lỗi
+          Chi tiết kiểm hàng
         </Text>
       </View>
       <ScrollView style={tw`p-4`}>
@@ -141,7 +141,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
               },
             ]}
           >
-            Thông tin báo lỗi
+            Thông tin kiểm hàng
           </Text>
 
           <View style={tw`border-t border-gray-200 pt-4`}>

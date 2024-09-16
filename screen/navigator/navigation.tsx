@@ -159,6 +159,8 @@ export type RootStackParamList = {
   CheckGoodsScreen: undefined;
   CheckGoodsDetailScreen: undefined;
   UploadQcImageScreen: undefined;
+  UploadCarCassScreen: undefined;
+  UpLoadImageProduct: undefined;
   ManagerEvaluteScreen: undefined;
   Output: undefined;
   OutputScreen: {
