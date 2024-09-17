@@ -65,6 +65,7 @@ type Report = {
   stt: number;
   reportNo: string;
   ponoOrRoute: string;
+  itemName: string;
   itemCode: string;
   itemMaterial: string;
   locationOrTeam: string;
@@ -87,7 +88,7 @@ const reports: Report[] = [
     reportNo: "59888",
     ponoOrRoute: "\nPO:",
     itemCode: "WO-07-2021-00016_16",
-   
+    itemName:"Zig Zag Console Table, Macassar",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: 2_WAS\nTeam: 2_WAD2",
     qty: 6,
@@ -144,7 +145,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -200,7 +201,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -256,7 +257,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -312,7 +313,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -368,7 +369,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -424,7 +425,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -480,7 +481,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -536,7 +537,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -592,7 +593,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -648,7 +649,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -704,7 +705,7 @@ const reports: Report[] = [
     reportNo: "170283",
     ponoOrRoute: "\nPO:4619856\nRoute:WO-01-2024-00019_16",
     itemCode: "RH787301.WLT.00",
-    
+    itemName:"JACKSON CHEST 3 DRAWERS",
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: GCTX\nTeam: DEP",
     qty: 2,
@@ -761,8 +762,8 @@ const DetailRow = ({
   label,
   value,
   customValueStyle = {},
-  valueColor = "#666", // Mặc định màu chữ của giá trị
-  backgroundColor = "#fff", // Mặc định màu nền
+  valueColor = COLORS.black, // Mặc định màu chữ của giá trị
+  backgroundColor = COLORS.white, // Mặc định màu nền
 }: {
   label: string;
   value: string;
@@ -772,7 +773,7 @@ const DetailRow = ({
 }) => (
   <View
     style={[
-      tw`flex-row justify-between items-center mb-2`,
+      tw`flex-row justify-between items-center mb-${getScaledSize(2)}`,
       { backgroundColor },
     ]}
   >
@@ -781,7 +782,7 @@ const DetailRow = ({
         {
           fontFamily: "CustomFont-Bold",
           fontSize: getScaledSize(14),
-          color: "#444",
+          color: COLORS.darkGray,
         },
       ]}
     >
@@ -802,16 +803,15 @@ const DetailRow = ({
   </View>
 );
 
-const UpLoadImageProduct = ({ navigation }: any) => {
+const ReportImageScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
 
+
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
   };
-
-  
 
   // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
   const filteredReports = reports.filter((report) => {
@@ -866,13 +866,13 @@ const UpLoadImageProduct = ({ navigation }: any) => {
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-mb-${getScaledSize(2.5)} px-mb-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`p-2`}
+          style={tw`p-mb-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -883,22 +883,22 @@ const UpLoadImageProduct = ({ navigation }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
           ]}
         >
-          Tải hình ảnh sản phẩm
+          Báo cáo hình ảnh sản phẩm
         </Text>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate("UploadQcImageScreen")}
           style={[tw`p-2`, { borderRadius: 50 }]} 
           activeOpacity={0.7} 
         >
           <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
-      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={handleSearch}
@@ -911,27 +911,29 @@ const UpLoadImageProduct = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-4`}>
-         {paginatedReports.map((report) => {
+      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+        {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status
           );
+
           return (
             <TouchableOpacity
               key={report.stt}
               style={[
-                tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
                 { backgroundColor: COLORS.white },
               ]}
               onPress={() => handleReportPress(report)}
             >
               <View>
-                <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                <Text style={[tw` mb-${getScaledSize(4)} `, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
                   Report No: {report.reportNo}
                 </Text>
                 <DetailRow label="Stt" value={report.stt.toString()} />
-                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
                 <DetailRow label="Item Code" value={report.itemCode} />
+                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
+                <DetailRow label="Item Name" value={report.itemName} />
                 <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
                 <DetailRow
                   label="Location/Team"
@@ -961,25 +963,25 @@ const UpLoadImageProduct = ({ navigation }: any) => {
           );
         })}
       </ScrollView>
-      <View style={tw`flex-row justify-between p-4`}>
+      <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
         <TouchableOpacity
           onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
-          style={[tw`p-2`, { backgroundColor: COLORS.primary }]}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
           disabled={currentPage === 1}
         >
-          <Text style={tw`text-white`}>Previous</Text>
+          <Text style={[{color:COLORS.white}]}>Previous</Text>
         </TouchableOpacity>
         <Text>{`${currentPage} / ${totalPages}`}</Text>
         <TouchableOpacity
           onPress={() => setCurrentPage(page => Math.min(page + 1, totalPages))}
-          style={[tw`p-2`, { backgroundColor: COLORS.primary }]}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
           disabled={currentPage === totalPages}
         >
-          <Text style={tw`text-white`}>Next</Text>
+          <Text style={[{color:COLORS.white}]}>Next</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
 
-export default UpLoadImageProduct;
+export default ReportImageScreen;

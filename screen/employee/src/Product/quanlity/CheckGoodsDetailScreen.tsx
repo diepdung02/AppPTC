@@ -102,10 +102,10 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
   }
 
   return (
-    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
@@ -129,11 +129,11 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
           Chi tiết kiểm hàng
         </Text>
       </View>
-      <ScrollView style={tw`p-4`}>
-        <View style={[tw`mb-1 p-4 rounded-lg shadow-lg`, {backgroundColor:COLORS.white}]}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+        <View style={[tw`mb-${getScaledSize(1)} p-${getScaledSize(4)} rounded-lg shadow-lg`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[
-              tw`text-center mb-4`,
+              tw`text-center mb-${getScaledSize(4)}`,
               {
                 fontFamily: "CustomFont-Bold",
                 fontSize: getScaledSize(18),
@@ -144,7 +144,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
             Thông tin kiểm hàng
           </Text>
 
-          <View style={tw`border-t border-gray-200 pt-4`}>
+          <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
             {[
               { label: "Report No", value: report.reportNo },
               { label: "Confirm Date", value: report.confirmDate },
@@ -164,7 +164,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
             ].map((item, index) => (
               <View
                 key={index}
-                style={tw`flex-row justify-between items-center mb-2`}
+                style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}
               >
                 <Text
                   style={[
@@ -198,10 +198,10 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
             ))}
             <View style={tw`flex-1 justify-center items-center`}>
               <TouchableOpacity
-                style={[tw`p-4 rounded`, { backgroundColor: COLORS.blue }]}
+                style={[tw`p-${getScaledSize(4)} rounded`, { backgroundColor: COLORS.blue }]}
                 onPress={handleUploadQcImage}
               >
-                <Text style={[tw``,{fontFamily: "CustomFont-Regular", fontSize: getScaledSize(14),}]}>
+                <Text style={[{fontFamily: "CustomFont-Regular", fontSize: getScaledSize(14),}]}>
                   New Upload
                 </Text>
               </TouchableOpacity>

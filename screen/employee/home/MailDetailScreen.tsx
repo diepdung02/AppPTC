@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Dimensions } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, TouchableOpacity, SafeAreaView, FlatList, Modal, Dimensions } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigator/navigation';
@@ -9,25 +9,26 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-const getScaledSize = (size: number) => {
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
+
+
+const getScaledSize = (size: number, isWidth = true) => {
   const minWidth = 320;  
-  const maxWidth = 1024; 
+  const maxWidth = 1024;
 
-  const width = Dimensions.get('window').width;
+  const width = Dimensions.get('window').width; 
 
-
-  const scaleWidth = initialWidth / 375; 
-  const scaleHeight = initialHeight / 667; 
-
-  const scale = Math.min(scaleWidth, scaleHeight);
 
   if (width < minWidth) {
     return size * 0.5; 
-  } else if (width > maxWidth) {
+  } 
+  else if (width > maxWidth) {
     return size * 1.2; 
-  } else {
-    return size * scale;
   }
+
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
 };
 
 type MailDetailScreenNavigationProp = StackNavigationProp<
@@ -44,85 +45,80 @@ type Props = {
 
 const MailDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { emailItem } = route.params;
+  const [modalVisible, setModalVisible] = useState(false);
+
+  // Hàm để hiển thị modal khi nhấn vào ảnh
+  const handleImagePress = () => {
+    setModalVisible(true);
+  };
+
+  // Hàm đóng modal
+  const handleCloseModal = () => {
+    setModalVisible(false);
+  };
 
   const renderDetailItem = ({ item }: { item: { label: string; value: string } }) => (
-    <View style={[tw`mb-4 p-4 rounded-lg shadow-md`, { backgroundColor: COLORS.white }]}>
-      <Text style={[tw`text-lg`, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
+    <View style={[tw`mb-${getScaledSize(4)} p-${getScaledSize(4)} rounded-lg shadow-md`, { backgroundColor: COLORS.white }]}>
+      <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize:getScaledSize(16) }]}>
         {item.label}
       </Text>
-      <Text style={[tw`text-base mt-2`, { color: COLORS.black, fontFamily: 'CustomFont-Regular' }]}>
+      <Text style={[tw` mt-${getScaledSize(4)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize:getScaledSize(16) }]}>
         {item.value}
       </Text>
     </View>
   );
+
   return (
-    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`flex-row items-center p-4 shadow-md mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={tw`w-10 h-10 items-center justify-center`}
-        >
-           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
+      <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-${getScaledSize(10)} h-${getScaledSize(10)} items-center justify-center`}>
+          <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
         <Text
-          style={[
-            tw`text-xl ml-4`,
-            {
-              color: COLORS.black,
-              fontFamily: 'CustomFont-Regular',
-              fontSize: getScaledSize(18),
-              textAlign: 'center', flex:1
-            },
-          ]}
+          style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(18), textAlign: 'center', flex: 1 }]}
         >
           Chi tiết Email
         </Text>
       </View>
-      <View style={tw`flex-1 p-4`}>
-        {/* Display the image */}
+      <View style={tw`flex-1 p-${getScaledSize(5)}`}>
+        {/* Display the image with TouchableOpacity */}
         {emailItem.image ? (
-          <Image
-            source={{ uri: emailItem.image }}
-            style={tw`w-full h-48 rounded-lg mb-4`}
-          />
+          <TouchableOpacity onPress={handleImagePress}>
+            <Image source={{ uri: emailItem.image }} style={tw`w-full h-${getScaledSize(48)} rounded-lg mb-${getScaledSize(4)}`} />
+          </TouchableOpacity>
         ) : null}
-        {/* Display the email title */}
         <Text
-          style={[
-            tw`text-2xl font-bold mb-2 text-center`,
-            { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) },
-          ]}
+          style={[tw`mb-${getScaledSize(5)} text-center`, { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(24) }]}
         >
           {emailItem.subject}
         </Text>
-        {/* Display the email sender and date */}
-        <View style={tw`flex-row justify-between mb-4`}>
-          <Text
-            style={[
-              tw`text-base`,
-              { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) },
-            ]}
-          >
+        <View style={tw`flex-row justify-between mb-${getScaledSize(5)}`}>
+          <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
             {emailItem.timestamp}
           </Text>
-          <Text
-            style={[
-              tw`text-base`,
-              { color: COLORS.black, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(16) },
-            ]}
-          >
+          <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Italic', fontSize: getScaledSize(16) }]}>
             By: {emailItem.to}
           </Text>
         </View>
         <FlatList
-          data={[
-            { label: 'Nội dung:', value: emailItem.message },
-          ]}
+          data={[{ label: 'Nội dung:', value: emailItem.message }]}
           renderItem={renderDetailItem}
           keyExtractor={(item) => item.label}
-          contentContainerStyle={tw`pb-4`}
+          contentContainerStyle={tw`pb-${getScaledSize(4)}`}
         />
       </View>
+
+      {/* Modal for displaying image */}
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleCloseModal}
+      >
+        <TouchableOpacity style={[tw`flex-1 justify-center items-center`, { backgroundColor: 'rgba(0, 0, 0, 0.5 )' }]} onPress={handleCloseModal}>
+          <Image source={{ uri: emailItem.image }} style={tw`w-${getScaledSize(80)}  h-${getScaledSize(80)} rounded-lg`} />
+        </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
 };

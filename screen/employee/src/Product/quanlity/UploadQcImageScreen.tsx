@@ -167,7 +167,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[tw`flex-1`, {backgroundColor:COLORS.colorMain}]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, {backgroundColor:COLORS.colorMain}]}>
      <View  style={[
           tw`flex-row items-center mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white, padding: getScaledSize(10) },
@@ -180,7 +180,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
               <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
             </TouchableOpacity>
             <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
-            Upload QC Image
+            Tải thông tin sản phẩm
             </Text>
           </View>
       <ScrollView contentContainerStyle={tw`p-5`}>

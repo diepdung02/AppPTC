@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView,
-  Modal
+  Modal,
+  Alert
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons"; // Sử dụng icon
@@ -16,6 +17,7 @@ import COLORS from "../../../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../../navigator/navigation";
 import { Video, ResizeMode } from "expo-av";
+import { color } from "@rneui/themed/dist/config";
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "CheckGoodsDetailScreen">;
@@ -42,7 +44,9 @@ const getScaledSize = (size: number, isWidth = true) => {
 };
 
 const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
-  const [images, setImages] = useState<{ [key: string]: string | null }>({
+  const [images, setImages] = useState<{
+    [key: string]: string[] | null;
+  }>({
     moistureCheck: null,
     machineForce: null,
     glueType: null,
@@ -166,13 +170,19 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   const pickImage = async (key: string) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
+      allowsMultipleSelection: true, // Cho phép chọn nhiều ảnh
+      allowsEditing: false,
       quality: 1,
     });
 
     if (!result.canceled) {
-      setImages((prev) => ({ ...prev, [key]: result.assets[0].uri }));
+      const selectedImages = result.assets.map((asset) => asset.uri);
+      setImages((prev) => ({
+        ...prev,
+        [key]: selectedImages, // Lưu nhiều ảnh vào state
+      }));
+    } else {
+      Alert.alert('Chưa chọn ảnh', 'Vui lòng chọn ít nhất một ảnh để đính kèm.');
     }
   };
 
@@ -190,9 +200,15 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
     setImages((prev) => {
       const updatedImages = { ...prev };
       for (const key in updatedImages) {
-        if (updatedImages[key] === uri) {
-          updatedImages[key] = null;
-          break;
+        if (updatedImages[key] && Array.isArray(updatedImages[key])) {
+          const index = updatedImages[key].indexOf(uri);
+          if (index !== -1) {
+            updatedImages[key].splice(index, 1);
+            if (updatedImages[key].length === 0) {
+              updatedImages[key] = null;
+            }
+            break;
+          }
         }
       }
       return updatedImages;
@@ -204,53 +220,62 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const renderImageSection = (title: string, key: string) => (
-    <View style={{ marginVertical: 10 }} key={key}>
+    <View style={{ marginVertical: getScaledSize(10) }} key={key}>
       <TouchableOpacity
         onPress={() => setSelectedKey(selectedKey === key ? null : key)}
         style={[
-          tw`p-4 bg-gray-200 rounded-md`,
+          tw`p-${getScaledSize(4)} bg-gray-200 rounded-md`,
           { flexDirection: "row", justifyContent: "space-between" },
         ]}
       >
-        <Text style={[tw`w-80`]}>{title}</Text>
+        <Text style={tw`w-${getScaledSize(80)}`}>{title}</Text>
         <MaterialCommunityIcons
           name={selectedKey === key ? "chevron-up" : "chevron-down"}
           size={24}
           color="black"
         />
       </TouchableOpacity>
-
+  
       {selectedKey === key && (
-        <View style={{ marginTop: 10 }}>
-          {images[key] && (
-            <TouchableOpacity onPress={() => handleOpenModal(images[key]!, "image")}>
-              <Image
-                source={{ uri: images[key] }}
-                style={{ width: 200, height: 200, marginBottom: 10 }}
-              />
-            </TouchableOpacity>
+        <View style={{ marginTop: getScaledSize(10) }}>
+          {images[key] && Array.isArray(images[key]) && (
+            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+              {images[key].map((uri, index) => (
+                <TouchableOpacity
+                  key={index}
+                  onPress={() => handleOpenModal(uri, "image")}
+                  style={tw`mr-${getScaledSize(2)}`}
+                >
+                  <Image
+                    source={{ uri }}
+                    style={tw`w-${getScaledSize(40)} h-${getScaledSize(40)} rounded-md`}
+                  />
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
           )}
-
+  
           <TouchableOpacity
             onPress={() => pickImage(key)}
             style={{
               flexDirection: "row",
               alignItems: "center",
               backgroundColor: "#007BFF",
-              padding: 10,
-              borderRadius: 5,
+              padding: getScaledSize(10),
+              borderRadius: getScaledSize(5),
+              marginTop: getScaledSize(10),
             }}
           >
-            <MaterialCommunityIcons name="image" size={24} color="white" />
-            <Text style={{ color: "white", marginLeft: 10 }}>Chọn hình ảnh</Text>
+            <Text style={[{color:COLORS.white}]}>Chọn ảnh</Text>
           </TouchableOpacity>
         </View>
       )}
     </View>
   );
+  
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-white p-4`}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, {backgroundColor:COLORS.colorMain}]}>
       <View
         style={[
           tw`flex-row items-center mt-${getScaledSize(5)}`,
@@ -259,7 +284,7 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[tw`p-2`, { borderRadius: 50 }]}
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -270,11 +295,11 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
+            tw`flex-1 text-center`,
             {
               color: COLORS.black,
               fontFamily: "CustomFont-Bold",
-              fontSize: getScaledSize(20),
+              fontSize: getScaledSize(18),
             },
           ]}
         >
@@ -282,31 +307,32 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
       </View>
       <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-  <View style={tw`flex-row m-4 h-10 w-full`}>
+  <View style={tw`flex-row m-${getScaledSize(4)} h-${getScaledSize(10)} w-full`}>
     <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw`py-2 px-4 rounded flex-row items-center`, {backgroundColor:"#00acc1"}]}
+      <TouchableOpacity style={[tw`py-${getScaledSize(2)} px-${getScaledSize(4)} rounded flex-row items-center`, {backgroundColor:"#00acc1"}]}
       onPress={() => navigation.navigate("UploadQcImageScreen")}>
         <MaterialCommunityIcons
           name="plus"
           size={24}
           color={COLORS.white}
         />
-        <Text style={tw`text-white text-center ml-2`}>Tạo mới</Text>
+        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.white}]}>Tạo mới</Text>
       </TouchableOpacity>
     </View>
     <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw` py-2 px-4 ml-3 rounded flex-row items-center`, {backgroundColor: COLORS.primary}]}>
+      <TouchableOpacity style={[tw` py-${getScaledSize(2)} px-${getScaledSize(4)} ml-${getScaledSize(3)} rounded flex-row items-center`, {backgroundColor: COLORS.primary}]}
+      onPress={() => navigation.navigate("UpLoadImageProduct")}>
         <MaterialCommunityIcons
           name="format-list-bulleted"
           size={24}
           color={COLORS.white}
         />
-        <Text style={tw`text-white text-center ml-2`}>Xem danh sách</Text>
+        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.white}]}>Xem danh sách</Text>
       </TouchableOpacity>
     </View>
     <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw` py-2 px-4 ml-3 rounded flex-row items-center`, {backgroundColor:"#9ccc65"}]}>
-        <Text style={[tw` text-center ml-2`, {color:COLORS.black}]}>
+      <TouchableOpacity style={[tw` py-${getScaledSize(2)} px-${getScaledSize(4)} ml-${getScaledSize(3)} rounded flex-row items-center`, {backgroundColor:"#9ccc65"}]}>
+        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.black}]}>
           Xem thông tin liên quan đến router
         </Text>
       </TouchableOpacity>
@@ -314,13 +340,13 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   </View>
 </ScrollView>
       <ScrollView>
-      <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>GV811551.GVZ.00 - Zig Zag Console Table, Macassar - WO-06-2024-00015_31</Text>
+      <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(20), }]}>GV811551.GVZ.00 - Zig Zag Console Table, Macassar - WO-06-2024-00015_31</Text>
         </View>
         {paginatedSections.map(({ title, key }) => renderImageSection(title, key))}
 
         {/* Pagination controls */}
-        <View style={tw`flex-row justify-between mt-4`}>
+        <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
           <TouchableOpacity
             onPress={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             disabled={currentPage === 1}
@@ -346,35 +372,35 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
           onRequestClose={handleCloseModal}
         >
           <View
-            style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}
+            style={[tw`flex-1 justify-center items-center `, { backgroundColor: 'rgba(0, 0, 0, 0.5 )' }]}
           >
-            <View style={tw`bg-white p-4 rounded`}>
+            <View style={[tw` p-${getScaledSize(4)} rounded`, {backgroundColor:COLORS.white}]}>
               {selectedAttachment.type === "image" ? (
                 <Image
                   source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-80 h-80`}
+                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
                 />
               ) : (
                 <Video
                   source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-80 h-80`}
+                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
                   useNativeControls
                   resizeMode={ResizeMode.CONTAIN}
                   shouldPlay={false}
                 />
               )}
-              <View style={tw`flex-row justify-between mt-4`}>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
                 <TouchableOpacity
-                  style={tw`p-2 bg-red-500 rounded`}
+                  style={tw`p-${getScaledSize(2)} bg-red-500 rounded`}
                   onPress={() => handleDeleteAttachment(selectedAttachment.uri)}
                 >
-                  <Text style={tw`text-white text-center`}>Xóa</Text>
+                  <Text style={[tw`text-center`, {color:COLORS.white}]}>Xóa</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={tw`p-2 bg-blue-500 rounded`}
+                  style={tw`p-${getScaledSize(2)} bg-blue-500 rounded`}
                   onPress={handleCloseModal}
                 >
-                  <Text style={tw`text-white text-center`}>Đóng</Text>
+                  <Text style={[tw`text-center`, {color:COLORS.white}]}>Đóng</Text>
                 </TouchableOpacity>
               </View>
             </View>

@@ -201,7 +201,7 @@ const DetailRow = ({
 }) => (
   <View
     style={[
-      tw`flex-row justify-between items-center mb-2`,
+      tw`flex-row justify-between items-center mb-${getScaledSize(2)}`,
       { backgroundColor },
     ]}
   >
@@ -210,7 +210,7 @@ const DetailRow = ({
         {
           fontFamily: "CustomFont-Bold",
           fontSize: getScaledSize(14),
-          color: "#444",
+          color: COLORS.black,
         },
       ]}
     >
@@ -269,13 +269,13 @@ const ErrorScreen = ({ navigation }: any) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`p-2`}
+          style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -286,15 +286,15 @@ const ErrorScreen = ({ navigation }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
           ]}
         >
           Danh sách báo lỗi
         </Text>
         <TouchableOpacity
           onPress={() => navigation.navigate("LeaveRequest")}
-          style={tw`p-2`}
+          style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -305,7 +305,7 @@ const ErrorScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
 
-      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={handleSearch}
@@ -318,7 +318,7 @@ const ErrorScreen = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-4`}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}>
         {reports
           .filter((report) => report.reportNo.includes(search))
           .map((report) => {
@@ -329,14 +329,14 @@ const ErrorScreen = ({ navigation }: any) => {
             return (
               <TouchableOpacity
                 style={[
-                  tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                  tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
                   { backgroundColor: COLORS.white },
                 ]}
                 key={report.stt}
                 onPress={() => handleReportPress(report)}
               >
                 <View>
-                  <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                  <Text style={[tw`mb-${getScaledSize(4)}`, {fontFamily: "CustomFont-Bold", fontSize:getScaledSize(16), color:COLORS.darkGray}]}>
                     Report No: {report.reportNo}
                   </Text>
                   <DetailRow label="Stt" value={report.stt.toString()} />

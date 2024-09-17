@@ -154,7 +154,6 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
         <SearchBar
           placeholder={t("search")}
           inputContainerStyle={[
-            tw`bg-white`,
             { backgroundColor: COLORS.white },
           ]}
           containerStyle={[
@@ -177,7 +176,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[
-              tw`flex-row items-center p-2 mb-2`,
+              tw`flex-row items-center p-${getScaledSize(2)} mb-${getScaledSize(2)}`,
               { backgroundColor: COLORS.white },
             ]}
             onPress={() => handleItemPress(item)}
@@ -194,7 +193,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
             <View style={tw`flex-1 pl-2`}>
               <Text
                 style={[
-                  tw`text-lg text-center`,
+                  tw` text-center`,
                   {
                     color: COLORS.black,
                     fontFamily: "CustomFont-Bold",
@@ -206,7 +205,6 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
               </Text>
               <Text
                 style={[
-                  tw`text-base`,
                   {
                     color: COLORS.black,
                     fontFamily: "CustomFont-Regular",
@@ -216,10 +214,9 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
               >
                 Nội dung: {truncateText(item.message, 50)}
               </Text>
-              <View style={tw`flex-row justify-between mt-2`}>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
                 <Text
                   style={[
-                    tw`text-sm`,
                     {
                       color: COLORS.date,
                       fontFamily: "CustomFont-Regular",
@@ -231,7 +228,6 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
                 <Text
                   style={[
-                    tw`text-sm`,
                     {
                       color: COLORS.date,
                       fontFamily: "CustomFont-Italic",
@@ -249,7 +245,7 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
 
 <TouchableOpacity
   style={[
-    tw`absolute bottom-2 right-2 rounded-full p-2 shadow-md`,
+    tw`absolute bottom-${getScaledSize(2)} right-${getScaledSize(2)} rounded-full p-${getScaledSize(4)} shadow-md`,
     {
       backgroundColor: COLORS.primary,
       width: 70,

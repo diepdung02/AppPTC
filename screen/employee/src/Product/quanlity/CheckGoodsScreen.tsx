@@ -210,7 +210,7 @@ const DetailRow = ({
 }) => (
   <View
     style={[
-      tw`flex-row justify-between items-center mb-2`,
+      tw`flex-row justify-between items-center mb-${getScaledSize(2)}`,
       { backgroundColor },
     ]}
   >
@@ -290,10 +290,10 @@ const CheckGoodsScreen = ({ navigation }: any) => {
   };
 
   return (
-    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
@@ -310,15 +310,15 @@ const CheckGoodsScreen = ({ navigation }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw`flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(16) },
           ]}
         >
           Báo cáo kiểm hàng
         </Text>
       </View>
 
-      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={handleSearch}
@@ -326,7 +326,7 @@ const CheckGoodsScreen = ({ navigation }: any) => {
           lightTheme
           round
           containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
-          inputContainerStyle={{ height: 40, backgroundColor: COLORS.white }}
+          inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
           inputStyle={{ fontSize: 16 }}
         />
       </View>
@@ -341,13 +341,13 @@ const CheckGoodsScreen = ({ navigation }: any) => {
             <TouchableOpacity
               key={report.stt}
               style={[
-                tw`p-2.5 m-1.25 rounded-md shadow-md`,
+                tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
                 { backgroundColor: COLORS.white },
               ]}
               onPress={() => handleReportPress(report)}
             >
               <View>
-                <Text style={tw`text-lg font-bold mb-4 text-gray-800`}>
+                <Text style={[tw` mb-${getScaledSize(4)} text-gray-800`, {fontSize:getScaledSize(16),fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
                   Report No: {report.reportNo}
                 </Text>
                 <DetailRow label="Stt" value={report.stt.toString()} />

@@ -196,10 +196,10 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
           }}
         />
       )}
-      <View style={tw`ml-3 flex-1`}>
+      <View style={tw`ml-${getScaledSize(3)} flex-1`}>
         <Text
           style={[
-            tw`text-lg text-center`,
+            tw` text-center`,
             {
               color: COLORS.black,
               fontFamily: "CustomFont-Bold",
@@ -211,7 +211,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
         <Text
           style={[
-            tw`text-base my-1`,
+            tw` ml-${getScaledSize(1)}`,
             {
               color: COLORS.black,
               fontFamily: "CustomFont-Regular",
@@ -221,10 +221,9 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         >
           {truncateText(item.summary, 60)}
         </Text>
-        <View style={tw`flex-row justify-between mt-1`}>
+        <View style={tw`flex-row justify-between mt-${getScaledSize(1)}`}>
           <Text
             style={[
-              tw`text-sm`,
               {
                 color: COLORS.date,
                 fontFamily: "CustomFont-Regular",
@@ -236,7 +235,6 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
           </Text>
           <Text
             style={[
-              tw`text-sm`,
               {
                 color: COLORS.date,
                 fontFamily: "CustomFont-Italic",
@@ -257,7 +255,6 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         <View style={tw`flex-1 justify-center items-center`}>
           <Text
             style={[
-              tw`text-lg`,
               { color: COLORS.black, fontSize: getScaledSize(16) },
             ]}
           >
@@ -274,7 +271,6 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         <SearchBar
           placeholder={t("search")}
           inputContainerStyle={[
-            tw`bg-white`,
             { backgroundColor: COLORS.white },
           ]}
           containerStyle={[
@@ -299,7 +295,7 @@ const NotificationScreen: React.FC<Props> = ({ navigation }) => {
         ListEmptyComponent={
           <Text
             style={[
-              tw`text-center mt-5`,
+              tw`text-center mt-${getScaledSize(5)}`,
               {
                 color: COLORS.darkGray,
                 fontSize: getScaledSize(16),

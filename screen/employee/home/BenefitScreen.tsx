@@ -72,10 +72,10 @@ const BenefitScreen: React.FC<Props> = ({ navigation }) => {
     <View style={tw`m-${getScaledSize(2)} p-${getScaledSize(2)} bg-white rounded-lg shadow w-full flex-row items-center`}>
       <MaterialCommunityIcons name={item.icon} size={getScaledSize(20)} color={COLORS.primary} style={tw`mr-${getScaledSize(4)}`} />
       <View>
-        <Text style={[tw`text-xl`, { color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(14) }]}>
+        <Text style={[{ color: COLORS.primary, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(14) }]}>
           {item.label}
         </Text>
-        <Text style={[tw`text-lg text-gray-700`, { fontSize: getScaledSize(14) }]}>
+        <Text style={[ { fontSize: getScaledSize(14), color:COLORS.darkGray }]}>
           {item.value}
         </Text>
       </View>
@@ -83,16 +83,16 @@ const BenefitScreen: React.FC<Props> = ({ navigation }) => {
   );
 
   return (
-    <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)} `,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`p-2`}
+          style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons

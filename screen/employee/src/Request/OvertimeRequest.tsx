@@ -220,7 +220,7 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <SafeAreaView style={[tw`flex-1 `, {backgroundColor:COLORS.colorMain}]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, {backgroundColor:COLORS.colorMain}]}>
       <TouchableWithoutFeedback onPress={dismissKeyboard}>
         <View style={tw`flex-1`}>
         <View  style={[

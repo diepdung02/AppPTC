@@ -156,7 +156,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <View style={tw`p-${getScaledSize(4)}`}>
           <SearchBar
             placeholder="Tìm kiếm"
-            inputContainerStyle={tw`bg-white`}
+            inputContainerStyle={{backgroundColor:COLORS.white}}
             containerStyle={[
               tw`bg-transparent border-t-0 mt-${getScaledSize(5)}`,
               {
@@ -216,7 +216,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           ))}
         </View>
       </ScrollView>
-
       <Modal
   visible={modalVisible}
   transparent={true}
@@ -300,14 +299,14 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           { aspectRatio: 1 },
         ]}
       />
-      <Text style={tw`mt-2 text-lg w-30 text-center`}>{t("uploadImage")}</Text>
+      <Text style={[tw`text-center mt-${getScaledSize(2)} w-${getScaledSize(30)} `, {fontSize:getScaledSize(16)}]}>{t("uploadImage")}</Text>
     </TouchableOpacity>
 
     <TouchableOpacity
       style={tw`items-center`}
       onPress={() => {
         setModalVisible(false);
-        navigation.navigate("UpLoadImageProduct");
+        navigation.navigate("ReportImageScreen");
       }}
     >
       <Image
@@ -318,7 +317,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           { aspectRatio: 1 },
         ]}
       />
-      <Text style={tw`mt-2 text-lg w-30 text-center`}>{t("reportImage")}</Text>
+      <Text style={[tw`text-center mt-${getScaledSize(2)} w-${getScaledSize(30)} `, {fontSize:getScaledSize(16)}]}>{t("reportImage")}</Text>
     </TouchableOpacity>
   </View>
 </TouchableOpacity>

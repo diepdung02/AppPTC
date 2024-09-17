@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "MyApp",
-    "slug": "MyApp",
-    "version": "1.0.1",
-
+    "name": "PTC App",
+    "slug": "PTC-App",
+    "version": "1.0.0",
+    "icon": "https://img.upanh.tv/2024/09/17/logo864d13eedac01b24.png",
     "orientation": "portrait",
-    "userInterfaceStyle": "automatic", 
+    "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true
     },
@@ -13,7 +13,7 @@
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "versionCode": 2,
+      "versionCode": 1,
       "package": "com.minhdung02.MyApp"
     },
     "web": {
@@ -26,7 +26,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ba68338a-5307-4691-b9b2-e424667f1de4"
+        "projectId": "e5a9668e-e072-4e51-8598-53b68ba60ef0"
       }
     }
   }

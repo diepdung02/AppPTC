@@ -142,10 +142,10 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
     };
 
     return (
-      <View style={tw`mb-4`}>
+      <View style={tw`mb-${getScaledSize(4)}`}>
         <TouchableOpacity
           style={[
-            tw`border border-gray-300 p-2 rounded`,
+            tw`border border-gray-300 p-${getScaledSize(2)} rounded`,
             { backgroundColor: COLORS.white },
           ]}
           onPress={() => handleDropdownToggle(title, content)}
@@ -157,14 +157,14 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             {title}
           </Text>
-          <Text style={tw`text-gray-500`}>{getSelectedOptionsText()}</Text>
+          <Text style={[{color:COLORS.darkGray}]}>{getSelectedOptionsText()}</Text>
         </TouchableOpacity>
         {openDropdown === title && (
-          <View style={tw`border border-gray-300 mt-2 p-2 rounded bg-white`}>
+          <View style={[tw`border border-gray-300 mt-${getScaledSize(2)} p-${getScaledSize(2)} rounded `, {backgroundColor:COLORS.white}]}>
             {dropdownContent.map((option, index) => (
               <TouchableOpacity
                 key={index}
-                style={tw`flex-row items-center my-2`}
+                style={tw`flex-row items-center my-${getScaledSize(2)}`}
                 onPress={() => handleSelect(option)}
               >
                 <CheckBox
@@ -173,7 +173,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                 />
                 <Text
                   style={[
-                    tw`ml-2`,
+                    tw`ml-${getScaledSize(2)}`,
                     {
                       fontFamily: "CustomFont-Regular",
                       fontSize: getScaledSize(14),
@@ -202,7 +202,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
@@ -219,19 +219,19 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw`flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
           ]}
         >
           Chi tiết báo lỗi
         </Text>
       </View>
 
-      <ScrollView style={tw`p-4`}>
-      <View style={tw`bg-white p-4 rounded-lg shadow-md mb-6`}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+      <View style={[tw` p-${getScaledSize(4)} rounded-lg shadow-md mb-${getScaledSize(6)}`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[
-              tw`text-center mb-4`,
+              tw`text-center mb-${getScaledSize(4)}`,
               {
                 fontFamily: "CustomFont-Bold",
                 fontSize: getScaledSize(18),
@@ -242,7 +242,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
             Thông tin báo lỗi
           </Text>
 
-          <View style={tw`border-t border-gray-200 pt-4`}>
+          <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
             {[
               { label: "Report No", value: report.reportNo },
               { label: "Confirm Date", value: report.confirmDate },
@@ -254,7 +254,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
             ].map((item, index) => (
               <View
                 key={index}
-                style={tw`flex-row justify-between items-center mb-2`}
+                style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}
               >
                 <Text
                   style={[
@@ -282,10 +282,10 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
             ))}
            
 
-            <View style={tw`border-t border-gray-200 pt-4`}>
+            <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
               <Text
                 style={[
-                  tw`text-center mb-4`,
+                  tw`text-center mb-${getScaledSize(4)}`,
                   {
                     fontFamily: "CustomFont-Bold",
                     fontSize: getScaledSize(18),
@@ -329,9 +329,9 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
             
           </View>
         </View>
-        <View style={tw`flex-row justify-around mt-5`}>
+        <View style={tw`flex-row justify-around mt-${getScaledSize(5)}`}>
               <View
-                style={tw`border border-gray-300 p-2 rounded bg-white w-40`}
+                style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}
               >
                 <Text
                   style={[
@@ -345,7 +345,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                   Số lượng thực kiểm
                 </Text>
                 <TextInput
-                  style={tw`border border-black p-2 rounded text-black`}
+                  style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
                   keyboardType="numeric"
                   value={actualCheckedQuantity.toString()}
                   onChangeText={(text) =>
@@ -355,7 +355,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
               </View>
 
               <View
-                style={tw`border border-gray-300 p-2 rounded bg-white w-40`}
+                style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}
               >
                 <Text
                   style={[
@@ -369,7 +369,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                   Số lượng bị từ chối
                 </Text>
                 <TextInput
-                  style={tw`border border-black p-2 rounded text-black`}
+                  style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
                   keyboardType="numeric"
                   value={rejectedQuantity.toString()}
                   onChangeText={(text) => setRejectedQuantity(Number(text))}
@@ -377,13 +377,12 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
               </View>
             </View>
 
-            <View style={tw`flex-1 justify-center items-center mt-4`}>
+            <View style={tw`flex-1 justify-center items-center mt-${getScaledSize(2)}`}>
               <View
-                style={tw`border border-gray-300 p-2 rounded bg-white  w-40 justify-center items-center`}
+                style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded   w-${getScaledSize(40)} justify-center items-center`, {backgroundColor:COLORS.white}]}
               >
                 <Text
                   style={[
-                    tw``,
                     {
                       fontFamily: "CustomFont-Bold",
                       fontSize: getScaledSize(16),
@@ -422,7 +421,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                 />
               </View>
             </View>
-        <View style={tw`mt-4`}>
+        <View style={tw`mt-${getScaledSize(4)}`}>
           {renderDropdown("Overall", report.detail.overall)}
           {renderDropdown("Material", report.detail.material)}
           {renderDropdown("Lamination", report.detail.lamination)}
@@ -439,25 +438,25 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
       </ScrollView>
 
       <View
-        style={tw`flex-row justify-around bg-white p-2 border-t border-gray-300`}
+        style={tw`flex-row justify-around bg-white p-${getScaledSize(2)} border-t border-gray-300`}
       >
         <TouchableOpacity
           style={[
-            tw`flex-1 m-4 p-2 rounded`,
+            tw`flex-1 m-${getScaledSize(4)} p-${getScaledSize(2)} rounded`,
             { backgroundColor: COLORS.primary },
           ]}
           onPress={handleStartCheck}
         >
-          <Text style={tw`text-white text-center`}>Bắt đầu kiểm tra</Text>
+          <Text style={[tw`text-center`, {color:COLORS.white}]}>Bắt đầu kiểm tra</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
-            tw`flex-1 m-4 p-2 rounded`,
+            tw`flex-1 m-${getScaledSize(4)} p-${getScaledSize(2)} rounded`,
             { backgroundColor: COLORS.green },
           ]}
           onPress={handleComplete}
         >
-          <Text style={tw`text-white text-center`}>Hoàn thành</Text>
+          <Text style={[tw` text-center`, {color:COLORS.white}]}>Hoàn thành</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -83,7 +83,7 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   const tasksToShow = selectedDate ? tasksByDate[selectedDate] || [] : [];
 
   return (
-    <SafeAreaView style={[tw`flex-1 `, { backgroundColor: COLORS.colorMain }]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View style={tw`flex-row bg-white items-center mt-${getScaledSize(5)}`}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 

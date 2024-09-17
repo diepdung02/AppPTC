@@ -42,6 +42,7 @@ import CheckGoodsDetailScreen from './employee/src/Product/quanlity/CheckGoodsDe
 import UploadQcImageScreen from './employee/src/Product/quanlity/UploadQcImageScreen';
 import UploadCarCassScreen from './employee/src/Product/quanlity/UpLoadCheckCarCass';
 import UpLoadImageProduct from './employee/src/Product/quanlity/UpLoadImageProduct';
+import ReportImageScreen from './employee/src/Product/quanlity/ReportImageScreen';
 
 export{
     LoginScreen,
@@ -87,5 +88,6 @@ export{
     CheckGoodsDetailScreen,
     UploadQcImageScreen,
     UploadCarCassScreen,
-    UpLoadImageProduct
+    UpLoadImageProduct,
+    ReportImageScreen
 }

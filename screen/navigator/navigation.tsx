@@ -162,6 +162,7 @@ export type RootStackParamList = {
   UploadCarCassScreen: undefined;
   UpLoadImageProduct: undefined;
   ManagerEvaluteScreen: undefined;
+  ReportImageScreen: undefined;
   Output: undefined;
   OutputScreen: {
     product: Product;

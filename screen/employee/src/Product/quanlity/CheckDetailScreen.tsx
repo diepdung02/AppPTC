@@ -77,7 +77,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   const [reason, setReason] = useState("");
   const [action, setAction] = useState("");
   const [itemDetails, setItemDetails] = useState<Record<string, { reason: string; action: string; isCompleted?: boolean; qtyCheck?: number; qtyReject?: number; solution?: string }>>({});
-  const [showDetails, setShowDetails] = useState<Record<string, boolean>>({});
+
 
 
   if (!report) {
@@ -230,13 +230,13 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
     <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
     <View
         style={[
-          tw`flex-row items-center py-2.7 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.7)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`p-2`}
+          style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -247,18 +247,18 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
         </TouchableOpacity>
         <Text
           style={[
-            tw`text-xl flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+            tw` flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
           ]}
         >
           Chi tiết báo lỗi
         </Text>
       </View>
-      <ScrollView contentContainerStyle={tw`p-4`}>
-        <View style={tw`bg-white p-4 rounded-lg shadow-md mb-6`}>
+      <ScrollView contentContainerStyle={tw`p-${getScaledSize(4)}`}>
+        <View style={[tw`p-${getScaledSize(4)} rounded-lg shadow-md mb-${getScaledSize(6)}`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[
-              tw`text-center mb-4`,
+              tw`text-center mb-${getScaledSize(4)}`,
               {
                 fontFamily: "CustomFont-Bold",
                 fontSize: getScaledSize(18),
@@ -268,8 +268,8 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             Thông tin báo lỗi
           </Text>
-          <View style={tw`border-t border-gray-200 pt-4`}>
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+          <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -294,7 +294,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -319,7 +319,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -344,7 +344,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -369,7 +369,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -394,7 +394,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -419,7 +419,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </View>
 
-            <View style={tw`flex-row justify-between items-center mb-2`}>
+            <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
                   {
@@ -519,7 +519,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           </View>
         </View>
         <View style={tw`flex-row justify-around `}>
-          <View style={tw`border border-gray-300 p-2 rounded bg-white w-40`}>
+          <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
             <Text
               style={[
                 tw`text-center`,
@@ -532,14 +532,14 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               Số lượng thực kiểm
             </Text>
             <TextInput
-              style={tw`border border-black p-2 rounded text-black`}
+              style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
               keyboardType="numeric"
               value={actualCheckedQuantity.toString()}
               onChangeText={(text) => setActualCheckedQuantity(Number(text))}
             />
           </View>
 
-          <View style={tw`border border-gray-300 p-2 rounded bg-white w-40`}>
+          <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
             <Text
               style={[
                 tw`text-center`,
@@ -552,7 +552,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               Số lượng bị từ chối
             </Text>
             <TextInput
-              style={tw`border border-black p-2 rounded text-black`}
+              style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
               keyboardType="numeric"
               value={rejectedQuantity.toString()}
               onChangeText={(text) => setRejectedQuantity(Number(text))}
@@ -560,9 +560,9 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           </View>
         </View>
         <View style={tw`flex-row justify-around `}>
-          <View style={tw`flex-1 justify-center items-center mt-4`}>
+          <View style={tw`flex-1 justify-center items-center mt-${getScaledSize(4)}`}>
             <View
-              style={tw`border border-gray-300 p-2 rounded bg-white  w-40 justify-center items-center`}
+              style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded   w-${getScaledSize(40)} justify-center items-center`, {backgroundColor:COLORS.white}]}
             >
               <Text
                 style={[
@@ -605,9 +605,9 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               />
             </View>
           </View>
-          <View style={tw`flex-1 justify-center items-center mt-4`}>
-            <View
-              style={tw`border border-gray-300 p-2 rounded bg-white  w-40 justify-center items-center`}
+          <View style={tw`flex-1 justify-center items-center mt-${getScaledSize(4)}`}>
+          <View
+              style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded   w-${getScaledSize(40)} justify-center items-center`, {backgroundColor:COLORS.white}]}
             >
               <Text
                 style={[
@@ -662,10 +662,10 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
             </View>
           </View>
         </View>
-        <View style={tw`pt-4 mb-4 px-4`}>
+        <View style={tw`pt-${getScaledSize(4)} mb-${getScaledSize(4)} px-${getScaledSize(4)}`}>
     {selectedItems.length > 0 ? (
       Array.from(selectedItems).map((item, index) => (
-        <View key={index} style={tw`mb-4`}>
+        <View key={index} style={tw`mb-${getScaledSize(4)}`}>
           <TouchableOpacity
             onPress={() => setSelectedItem(selectedItem === item ? null : item)} // Nếu item đã được chọn thì bỏ chọn, ngược lại chọn item mới
             style={[
@@ -676,7 +676,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             <Text
               style={[
-                tw`mr-2`,
+                tw`mr-${getScaledSize(2)}`,
                 { fontSize: getScaledSize(16), color: COLORS.blue },
               ]}
             >
@@ -684,7 +684,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
             </Text>
             <Text
               style={[
-                tw`mr-10`,
+                tw`mr-${getScaledSize(10)}`,
                 { fontSize: getScaledSize(16), color: COLORS.red },
               ]}
             >
@@ -694,13 +694,13 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
 
           {/* Hiển thị lý do và hành động nếu phần tử này được chọn và chưa hoàn thành */}
           {selectedItem === item && !itemDetails[item]?.isCompleted && (
-            <View style={tw`pt-4`}>
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+            <View style={tw`pt-${getScaledSize(4)}`}>
+              <View style={tw`mb-${getScaledSize(4)}`}>
+                <Text style={[tw`mb-${getScaledSize(2)}`,{fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
                   Lý Do:
                 </Text>
                 <TextInput
-                  style={tw`border border-gray-300 p-2 rounded-lg h-24`}
+                  style={tw`border border-gray-300 p-${getScaledSize(2)} rounded-lg h-${getScaledSize(24)}`}
                   placeholder="Nhập lý do"
                   value={itemDetails[item]?.reason || ''}
                   onChangeText={(text) => handleReasonChange(item, text)}
@@ -708,12 +708,12 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 />
               </View>
 
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+              <View style={tw`mb-${getScaledSize(4)}`}>
+                <Text style={[tw` mb-${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
                   Hành Động:
                 </Text>
                 <TextInput
-                  style={tw`border border-gray-300 p-2 rounded-lg h-24`}
+                  style={tw`border border-gray-300 p-${getScaledSize(2)} rounded-lg h-${getScaledSize(24)}`}
                   placeholder="Nhập hành động"
                   value={itemDetails[item]?.action || ''}
                   onChangeText={(text) => handleActionChange(item, text)}
@@ -722,8 +722,8 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </View>
 
               {/* Thêm các trường nhập liệu cho số lượng */}
-              <View style={tw`flex-row justify-around mb-4`}>
-                <View style={tw`border border-gray-300 p-2 rounded bg-white w-40`}>
+              <View style={tw`flex-row justify-around mb-${getScaledSize(4)}`}>
+                <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
                   <Text
                     style={[
                       tw`text-center`,
@@ -736,7 +736,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                     Số lượng thực kiểm
                   </Text>
                   <TextInput
-                    style={tw`border border-black p-2 rounded text-black`}
+                    style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
                     keyboardType="numeric"
                     value={itemDetails[item]?.qtyCheck?.toString() || actualCheckedQuantity.toString()}
                     onChangeText={(text) => {
@@ -753,7 +753,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   />
                 </View>
 
-                <View style={tw`border border-gray-300 p-2 rounded bg-white w-40`}>
+                <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
                   <Text
                     style={[
                       tw`text-center`,
@@ -766,7 +766,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                     Số lượng bị từ chối
                   </Text>
                   <TextInput
-                    style={tw`border border-black p-2 rounded text-black`}
+                     style={[tw`border border-black p-${getScaledSize(2)} rounded `, {color:COLORS.black}]}
                     keyboardType="numeric"
                     value={itemDetails[item]?.qtyReject?.toString() || rejectedQuantity.toString()}
                     onChangeText={(text) => {
@@ -788,12 +788,12 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               <TouchableOpacity
                 onPress={() => handleComplete(item)} // Thực hiện hành động hoàn thành cho item
                 style={[
-                  tw`bg-blue-500 p-3 rounded-lg`,
+                  tw`bg-blue-500 p-${getScaledSize(3)} rounded-lg`,
                   itemDetails[item]?.isCompleted && tw`bg-gray-500` // Thay đổi màu sắc nút nếu item đã hoàn thành
                 ]}
                 disabled={itemDetails[item]?.isCompleted} // Vô hiệu hóa nút nếu item đã hoàn thành
               >
-                <Text style={tw`text-white text-center font-bold`}>
+                <Text style={[tw`text-center `, {color:COLORS.white,fontFamily: "CustomFont-Bold", }]}>
                   Hoàn thành
                 </Text>
               </TouchableOpacity>
@@ -803,38 +803,38 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           {/* Hiển thị thông tin sau khi hoàn thành */}
           {itemDetails[item]?.isCompleted && (
             <View>
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+              <View style={tw`mb-${getScaledSize(4)} `}>
+                <Text style={[tw`  mb${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Số lượng thực kiểm:
                 </Text>
-                <Text style={tw`text-lg`}>
+                <Text style={[{fontSize:getScaledSize(16)}]}>
                   {itemDetails[item]?.qtyCheck || 0}
                 </Text>
               </View>
 
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+              <View style={tw`mb-${getScaledSize(4)} `}>
+              <Text style={[tw`  mb${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Số lượng bị từ chối:
                 </Text>
-                <Text style={tw`text-lg`}>
+                <Text style={[{fontSize:getScaledSize(16)}]}>
                   {itemDetails[item]?.qtyReject || 0}
                 </Text>
               </View>
 
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+              <View style={tw`mb-${getScaledSize(4)} `}>
+              <Text style={[tw`  mb${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Nguyên nhân:
                 </Text>
-                <Text style={tw`text-lg`}>
+                <Text style={[{fontSize:getScaledSize(16)}]}>
                   {itemDetails[item]?.reason || 'Chưa có nguyên nhân'}
                 </Text>
               </View>
 
-              <View style={tw`mb-4`}>
-                <Text style={tw`text-lg font-bold text-gray-700 mb-2`}>
+              <View style={tw`mb-${getScaledSize(4)} `}>
+              <Text style={[tw`  mb-${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Giải pháp:
                 </Text>
-                <Text style={tw`text-lg`}>
+                <Text style={[{fontSize:getScaledSize(16)}]}>
                   {itemDetails[item]?.solution || 'Chưa có giải pháp'}
                 </Text>
               </View>
@@ -844,7 +844,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 onPress={() => handleDelete(item)} // Thực hiện hành động xóa cho item
                 style={tw`bg-red-500 p-3 rounded-lg`}
               >
-                <Text style={tw`text-white text-center font-bold`}>
+                <Text style={[tw`text-center`, {color:COLORS.white, fontFamily: "CustomFont-Bold"}]}>
                   Xóa
                 </Text>
               </TouchableOpacity>
@@ -865,10 +865,10 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   </View>
 
 
-        <View style={tw`border-t border-gray-300 pt-4 px-4 mb-6`}>
+        <View style={tw`border-t border-gray-300 pt-${getScaledSize(4)} px-${getScaledSize(4)} mb-${getScaledSize(6)}`}>
           <Text
             style={[
-              tw`text-center mb-4`,
+              tw`text-center mb-${getScaledSize(4)}`,
               {
                 fontFamily: "CustomFont-Bold",
                 fontSize: 16,
@@ -878,10 +878,10 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             Đính kèm
           </Text>
-          <View style={tw`flex-row justify-center items-center mb-4`}>
+          <View style={tw`flex-row justify-center items-center mb-${getScaledSize(4)}`}>
             <TouchableOpacity
               onPress={handleCapture}
-              style={tw`bg-blue-500 p-2 rounded-lg m-2 flex-row items-center`}
+              style={tw`bg-blue-500 p-2 rounded-lg m-${getScaledSize(2)} flex-row items-center`}
             >
               <MaterialCommunityIcons
                 name="camera"
@@ -889,13 +889,13 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 color="#fff"
                 style={tw`mr-2`}
               />
-              <Text style={tw`text-white text-center w-40`}>
+              <Text style={[tw`text-center w-${getScaledSize(40)}`, {color:COLORS.white}]}>
                 Chụp ảnh / Quay video
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handleMediaPick}
-              style={tw`bg-green-500 p-2 rounded-lg m-2 flex-row items-center `}
+              style={tw`bg-green-500 p-${getScaledSize(2)} rounded-lg m-${getScaledSize(2)} flex-row items-center `}
             >
               <MaterialCommunityIcons
                 name="image"
@@ -903,29 +903,29 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 color="#fff"
                 style={tw`mr-2`}
               />
-              <Text style={tw`text-white text-center w-40`}>
+              <Text style={[tw`text-center w-${getScaledSize(40)}`, {color:COLORS.white}]}>
                 Chọn từ thư viện
               </Text>
             </TouchableOpacity>
           </View>
 
-          <ScrollView style={tw`mt-4`} horizontal>
+          <ScrollView style={tw`mt-${getScaledSize(4)}`} horizontal>
             {attachments.map((attachment, index) => (
               <TouchableOpacity
                 key={index}
                 onPress={() => handleAttachmentPress(attachment)}
-                style={tw`mr-4`}
+                style={tw`mr-${getScaledSize(4)}`}
               >
                 {attachment.type === "image" ? (
                   <Image
                     source={{ uri: attachment.uri }}
-                    style={tw`w-40 h-40 rounded-lg`}
+                    style={tw`w-${getScaledSize(40)} h-${getScaledSize(40)} rounded-lg`}
                     resizeMode="cover"
                   />
                 ) : (
                   <Video
                     source={{ uri: attachment.uri }}
-                    style={tw`w-40 h-40 rounded-lg`}
+                    style={tw`w-${getScaledSize(40)} h-${getScaledSize(40)} rounded-lg`}
                     useNativeControls
                     resizeMode={ResizeMode.CONTAIN}
                   />
@@ -936,16 +936,16 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
         </View>
       </ScrollView>
       <View
-        style={tw`flex-row justify-around bg-white p-2 border-t border-gray-300`}
+        style={[tw`flex-row justify-around  p-${getScaledSize(2)} border-t border-gray-300`, {backgroundColor:COLORS.white}]}
       >
         <TouchableOpacity
           style={[
-            tw`flex-1 m-4 p-2 rounded`,
+            tw`flex-1 m-${getScaledSize(4)} p-${getScaledSize(2)} rounded`,
             { backgroundColor: COLORS.green },
           ]}
           onPress={handleSubmit}
         >
-          <Text style={tw`text-white text-center`}>Hoàn thành</Text>
+          <Text style={[tw` text-center`, {color:COLORS.white}]}>Hoàn thành</Text>
         </TouchableOpacity>
       </View>
       {/* Modal */}
@@ -957,35 +957,35 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           onRequestClose={handleCloseModal}
         >
           <View
-            style={tw`flex-1 justify-center items-center bg-black bg-opacity-50`}
+            style={[tw`flex-1 justify-center items-center `, { backgroundColor: 'rgba(0, 0, 0, 0.5 )' }]}
           >
-            <View style={tw`bg-white p-4 rounded`}>
+            <View style={[tw` p-${getScaledSize(4)} rounded`, {backgroundColor:COLORS.white}]}>
               {selectedAttachment.type === "image" ? (
                 <Image
                   source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-80 h-80`}
+                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
                 />
               ) : (
                 <Video
                   source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-80 h-80`}
+                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
                   useNativeControls
                   resizeMode={ResizeMode.CONTAIN}
                   shouldPlay={false}
                 />
               )}
-              <View style={tw`flex-row justify-between mt-4`}>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
                 <TouchableOpacity
-                  style={tw`p-2 bg-red-500 rounded`}
+                  style={tw`p-${getScaledSize(2)} bg-red-500 rounded`}
                   onPress={() => handleDeleteAttachment(selectedAttachment.uri)}
                 >
-                  <Text style={tw`text-white text-center`}>Xóa</Text>
+                  <Text style={[tw` text-center`, {color:COLORS.white}]}>Xóa</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={tw`p-2 bg-blue-500 rounded`}
+                  style={tw`p-${getScaledSize(2)} bg-blue-500 rounded`}
                   onPress={handleCloseModal}
                 >
-                  <Text style={tw`text-white text-center`}>Đóng</Text>
+                  <Text style={[tw`text-center`, {color:COLORS.white}]}>Đóng</Text>
                 </TouchableOpacity>
               </View>
             </View>

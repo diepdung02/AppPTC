@@ -50,7 +50,8 @@ import {
   CheckGoodsDetailScreen,
   UploadQcImageScreen,
   UploadCarCassScreen,
-  UpLoadImageProduct
+  UpLoadImageProduct,
+  ReportImageScreen
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
 
@@ -398,6 +399,11 @@ const App: React.FC = () => (
         <Stack.Screen
           name="UpLoadImageProduct"
           component={UpLoadImageProduct}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ReportImageScreen"
+          component={ReportImageScreen}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

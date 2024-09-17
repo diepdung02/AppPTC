@@ -262,7 +262,6 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
         <SearchBar
           placeholder= {t("search")}
           inputContainerStyle={[
-            tw`bg-white`,
             { backgroundColor: COLORS.white },
           ]}
           containerStyle={[
@@ -308,7 +307,7 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
             <View style={[tw`flex-1`, { paddingLeft: getScaledSize(8) }]}>
               <Text
                 style={[
-                  tw`text-lg text-center`,
+                  tw` text-center`,
                   {
                     color: COLORS.black,
                     fontFamily: "CustomFont-Bold",
@@ -338,7 +337,6 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
               >
                 <Text
                   style={[
-                    tw`text-sm`,
                     {
                       color: COLORS.date,
                       fontFamily: "CustomFont-Regular",
@@ -350,7 +348,6 @@ const NewsScreen: React.FC<Props> = ({ navigation }) => {
                 </Text>
                 <Text
                   style={[
-                    tw`text-sm`,
                     {
                       color: COLORS.date,
                       fontFamily: "CustomFont-Italic",

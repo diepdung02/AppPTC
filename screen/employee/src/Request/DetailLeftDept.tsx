@@ -63,7 +63,7 @@ const DetailLeftDept: React.FC<Props> = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={[tw`flex-1`, {backgroundColor: COLORS.colorMain}]}>
+    <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, {backgroundColor: COLORS.colorMain}]}>
    <View  style={[
           tw`flex-row items-center mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white, padding: getScaledSize(10), },
