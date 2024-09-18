@@ -231,7 +231,7 @@ const DetailRow = ({
   </View>
 );
 
-const ErrorScreen = ({ navigation }: any) => {
+const ErrorScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
 
   const handleSearch = (text: string) => {

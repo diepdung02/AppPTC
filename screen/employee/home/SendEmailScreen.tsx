@@ -3,37 +3,45 @@ import {
   View,
   Text,
   TextInput,
-  StyleSheet,
   TouchableOpacity,
   Alert,
   SafeAreaView,
   Keyboard,
   TouchableWithoutFeedback,
-  Dimensions
+  Dimensions,
 } from "react-native";
-import COLORS from "../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../navigator/navigation";
 import { useDispatch } from "react-redux";
 import { addEmail } from "../../../redux/Slice/mailSlice";
-import { addEmailNotification } from "../../../redux/managerSlice/managerNotificationSlice"; 
+import { addEmailNotification } from "../../../redux/managerSlice/managerNotificationSlice";
 import { v4 as uuidv4 } from "uuid";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import tw from "twrnc";
+import COLORS from '../../../constants/Color';
 
-// Base dimensions for scaling
-const BASE_WIDTH = 375;
-const BASE_HEIGHT = 667;
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-// Get screen dimensions
-const { width, height } = Dimensions.get("window");
+const getScaledSize = (size: number) => {
+  const minWidth = 320;  
+  const maxWidth = 1024; 
 
-// Calculate scale
-const scaleWidth = width / BASE_WIDTH;
-const scaleHeight = height / BASE_HEIGHT;
-const scale = Math.min(scaleWidth, scaleHeight);
+  const width = Dimensions.get('window').width;
 
-// Function to get scaled size
-const getScaledSize = (size: number) => Math.round(size * scale);
+
+  const scaleWidth = initialWidth / 375; 
+  const scaleHeight = initialHeight / 667; 
+
+  const scale = Math.min(scaleWidth, scaleHeight);
+
+  if (width < minWidth) {
+    return size * 0.5; 
+  } else if (width > maxWidth) {
+    return size * 1.2; 
+  } else {
+    return size * scale;
+  }
+};
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "SendMail">;
@@ -68,9 +76,9 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
       code: "",
       summary: `Email gửi tới ${managerEmail} với chủ đề: ${subject}`,
       date: new Date().toLocaleString(),
-      icon: "", 
-      image: "", 
-      startDate: new Date().toISOString(), 
+      icon: "",
+      image: "",
+      startDate: new Date().toISOString(),
     };
 
     dispatch(addEmailNotification(notificationPayload));
@@ -84,96 +92,45 @@ const SendEmailScreen: React.FC<Props> = ({ navigation }) => {
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
-
   return (
     <TouchableWithoutFeedback onPress={dismissKeyboard}>
-      <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+      <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
+      <View style={[tw`flex-row items-center p-${getScaledSize(4)} shadow-md mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={tw`w-${getScaledSize(10)} h-${getScaledSize(10)} items-center justify-center`}>
           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
-          </TouchableOpacity>
-          <Text style={styles.headerTitle}>Gửi Email</Text>
-        </View>
-        <View style={styles.inputContainer}>
+        </TouchableOpacity>
+        <Text style={[tw` ml-${getScaledSize(4)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(18), textAlign: 'center', flex: 1 }]}>
+          Gửi mail
+        </Text>
+      </View>
+        <View style={tw`p-5`}>
           <Text>To:</Text>
           <TextInput
-            style={styles.inputEmail}
+            style={tw`h-10 border border-gray-300 rounded-md p-2 bg-white mb-4`}
             value={managerEmail}
             editable={false}
           />
           <TextInput
-            style={styles.input}
+            style={tw`h-10 border border-gray-300 rounded-md p-2 bg-white mb-4`}
             placeholder="Chủ đề"
             value={subject}
             onChangeText={setSubject}
           />
           <TextInput
-            style={[styles.input, styles.textArea]}
+            style={tw`border border-gray-300 rounded-md p-2 bg-white mb-4`}
             placeholder="Nội dung"
             value={message}
             onChangeText={setMessage}
             multiline={true}
-            numberOfLines={4}
+            numberOfLines={20}
           />
-          <TouchableOpacity style={styles.button} onPress={handleSendEmail}>
-            <Text style={styles.buttonText}>Gửi</Text>
+          <TouchableOpacity style={tw`bg-blue-500 p-4 rounded-md`} onPress={handleSendEmail}>
+            <Text style={tw`text-white text-center text-base`}>Gửi</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: COLORS.colorMain,
-  },
-  header: {
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 15,
-    backgroundColor: "white",
-  },
-  headerTitle: {
-    fontSize: 18,
-    marginLeft: 10,
-    fontWeight: "bold",
-  },
-  inputContainer: {
-    padding: 20,
-  },
-  inputEmail: {
-    height: 40,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingLeft: 10,
-    backgroundColor: "#fff",
-  },
-  input: {
-    height: 100,
-    borderColor: "gray",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingLeft: 10,
-    backgroundColor: "#fff",
-  },
-  textArea: {
-    height: "50%",
-  },
-  button: {
-    backgroundColor: COLORS.blue,
-    padding: 15,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#fff",
-    fontSize: 16,
-  },
-});
 
 export default SendEmailScreen;

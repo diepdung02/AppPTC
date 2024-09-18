@@ -3,11 +3,15 @@
     "name": "PTC App",
     "slug": "PTC-App",
     "version": "1.0.0",
-    "icon": "https://img.upanh.tv/2024/09/17/logo864d13eedac01b24.png",
+    "icon": "https://img.upanh.tv/2024/09/18/LogoPTC.png",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIStatusBarHidden": false,
+        "UIViewControllerBasedStatusBarAppearance": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -22,12 +26,17 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#ccc"
     },
     "extra": {
       "eas": {
         "projectId": "e5a9668e-e072-4e51-8598-53b68ba60ef0"
       }
+    },
+    "androidStatusBar": {
+      "barStyle": "dark-content",
+      "backgroundColor": "#ecf0f1",
+      "hidden": false
     }
   }
 }

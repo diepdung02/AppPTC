@@ -160,7 +160,7 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
     switch (selectedTab) {
       case "Detail":
         return (
-          <View style={tw`p-2 m-2 border border-gray-300 rounded-lg`}>
+          <View style={tw`p-${getScaledSize(2)} m-${getScaledSize(2)} border border-gray-300 rounded-lg`}>
             <View style={tw`items-center`}>
               <TouchableOpacity
                 onPress={() => setModalVisible(true)}
@@ -183,7 +183,7 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
               </TouchableOpacity>
             </View>
             <View style={tw`flex-row`}>
-              <View style={tw`flex-1 my-1 ml-3`}>
+              <View style={tw`flex-1 my-${getScaledSize(1)} ml-${getScaledSize(3)}`}>
                 {[
                   { label: "PTC Code:", value: item.PTCcode },
                   { label: "Description:", value: item.description },
@@ -206,10 +206,9 @@ Length: ${dim.length} cm  `
                     style={tw` bg-transparent border-b border-gray-300`}
                   >
                     <View style={tw`flex-row`}>
-                      <View style={tw`w-25`}>
+                      <View style={tw`w-${getScaledSize(25)}`}>
                         <Text
                           style={[
-                            tw``,
                             {
                               fontFamily: "CustomFont-Regular",
                               fontSize: getScaledSize(14),
@@ -263,7 +262,7 @@ Length: ${dim.length} cm  `
             }
             renderItem={({ item }) => (
               <TouchableOpacity
-                style={tw`p-3 border border-gray-300 rounded-lg mb-2`}
+                style={tw`p-${getScaledSize(3)} border border-gray-300 rounded-lg mb-2`}
                 onPress={() => {
                   if (item.pdfUri) {
                     setSelectedPdfUri(item.pdfUri); 
@@ -300,13 +299,13 @@ Length: ${dim.length} cm  `
      <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[tw`p-2`, { borderRadius: 50 }]}
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -360,7 +359,7 @@ Length: ${dim.length} cm  `
               key={tab}
               onPress={() => setSelectedTab(tab as keyof DataObject)}
               style={[
-                tw`p-3 m-2 rounded-full`,
+                tw`p-${getScaledSize(3)} m-${getScaledSize(2)} rounded-full`,
                 getButtonStyle(tab as keyof DataObject, selectedTab),
               ]}
               accessible={true}
@@ -380,7 +379,7 @@ Length: ${dim.length} cm  `
           )}
         />
       </View>
-      <View style={tw`flex-1 bg-transparent px-3`}>{renderTabContent()}</View>
+      <View style={tw`flex-1 bg-transparent px-${getScaledSize(3)}`}>{renderTabContent()}</View>
 
       <Modal
         visible={modalVisible}
@@ -417,10 +416,10 @@ Length: ${dim.length} cm  `
         animationType="slide"
         onRequestClose={() => setPdfModalVisible(false)}
       >
-        <View style={tw`flex-1 bg-white`}>
+        <View style={[tw`flex-1`,{backgroundColor:COLORS.white}]}>
           <TouchableOpacity
             onPress={() => setPdfModalVisible(false)}
-            style={tw`absolute top-10 left-10 z-10 `}
+            style={tw`absolute top-${getScaledSize(10)} left-${getScaledSize(10)} z-${getScaledSize(10)} `}
           >
             <MaterialCommunityIcons
               name="close-circle"

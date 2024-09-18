@@ -229,12 +229,12 @@ const OverTimeRequest: React.FC<Props> = ({ navigation }) => {
         ]}>
           <TouchableOpacity
           onPress={() => navigation.goBack()} 
-          style={[tw`p-2`, { borderRadius: 50 }]} 
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]} 
           activeOpacity={0.7} 
         >
           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-           <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+           <Text style={[tw` flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>
           Xin tăng ca
         </Text>
           </View>

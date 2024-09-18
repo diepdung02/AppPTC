@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TouchableOpacity, Modal, StyleSheet } from 'react-native';
 
-const VoteScreen = () => {
+const VoteScreen:React.FC = () => {
   const [modalVisible, setModalVisible] = useState(false);
 
   return (

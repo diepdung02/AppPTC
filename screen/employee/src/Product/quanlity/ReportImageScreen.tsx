@@ -762,8 +762,8 @@ const DetailRow = ({
   label,
   value,
   customValueStyle = {},
-  valueColor = COLORS.black, // Mặc định màu chữ của giá trị
-  backgroundColor = COLORS.white, // Mặc định màu nền
+  valueColor = COLORS.black, 
+  backgroundColor = COLORS.white, 
 }: {
   label: string;
   value: string;

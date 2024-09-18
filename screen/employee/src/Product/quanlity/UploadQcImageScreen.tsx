@@ -50,6 +50,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
   const [inspectionLocation, setInspectionLocation] = useState('');
   const [typeOfInspection, setTypeOfInspection] = useState('');
   const [status, setStatus] = useState('');
+  const [isFullCodeSet, setIsFullCodeSet] = useState(false);
 
   type Option = {
     label: string;
@@ -124,37 +125,97 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     hideDatePicker();
   }, [hideDatePicker]);
 
+  const codeMapping: { [key: string]: string } = {
+    'GV8115': 'GV811551.GVZ.00',
+    'GV8116': 'GV811652.GVZ.01',
+    'GV8117': 'GV811753.GVZ.02',
+  };
+  
+
   const handleItemCodeChange = useCallback((code: string) => {
+    const normalizedCode = code.toLowerCase(); // Chuyển đổi mã nhập vào thành chữ thường
     setItemCode(code);
 
-    // Cập nhật các giá trị dropdown dựa trên mã sản phẩm
-    if (code === 'GV811551.GVZ.00') {
-      setRouteCode('WO-05-2021-00031_17');
-      setClientPo('WO-05-2021-00031_17');
-      setDrawingCodeCarCass('DRA 23964');
-      setDrawingCodeHardware('DRA 23964');
-      setColorCode('P-4531/GZ1.GV');
-    } else if (code === 'GV811552.GVZ.01') {
-      setRouteCode('WO-06-2022-00045_22');
-      setClientPo('WO-06-2022-00045_22');
-      setDrawingCodeCarCass('DRA 34027');
-      setDrawingCodeHardware('DRA 34027');
-      setColorCode('P-4532/GZ2.GV');
-    } else if (code === 'GV811553.GVZ.02') {
-      setRouteCode('WO-07-2023-00056_23');
-      setClientPo('WO-07-2023-00056_23');
-      setDrawingCodeCarCass('DRA 45218');
-      setDrawingCodeHardware('DRA 45218');
-      setColorCode('P-4533/GZ3.GV');
-    } else {
-      // Reset giá trị nếu không khớp mã sản phẩm
-      setRouteCode('');
-      setClientPo('');
-      setDrawingCodeCarCass('');
-      setDrawingCodeHardware('');
-      setColorCode('');
+    const fullCode = Object.keys(codeMapping).find(key => normalizedCode.startsWith(key.toLowerCase())); // Chuyển đổi key trong codeMapping thành chữ thường
+    const completeCode = fullCode ? codeMapping[fullCode] : '';
+    if (code.length === 0) {
+        setIsFullCodeSet(false);
     }
-  }, []);
+
+    if (completeCode) {
+        if (code.length >= 15 && completeCode.toLowerCase() === normalizedCode) { // Chuyển đổi completeCode thành chữ thường
+            if (itemCode.length > 15) {
+                setItemCode(prevCode => prevCode.slice(0, -1));
+            } else if (itemCode.length === 15) {
+                setRouteCode('');
+                setClientPo('');
+                setDrawingCodeCarCass('');
+                setDrawingCodeHardware('');
+                setColorCode('');
+                setIsFullCodeSet(false); 
+            }
+        } else if (code.length < 15) {
+            if (!isFullCodeSet) {
+                setItemCode(completeCode);
+                const codeDetails = {
+                    'gv811551.gvz.00': { // Chuyển đổi tất cả các key trong codeDetails thành chữ thường
+                        routeCode: 'WO-05-2021-00031_17',
+                        clientPo: 'WO-05-2021-00031_17',
+                        drawingCodeCarCass: 'DRA 23964',
+                        drawingCodeHardware: 'DRA 23964',
+                        colorCode: 'P-4531/GZ1.GV'
+                    },
+                    'gv811652.gvz.01': {
+                        routeCode: 'WO-06-2022-00045_22',
+                        clientPo: 'WO-06-2022-00045_22',
+                        drawingCodeCarCass: 'DRA 34027',
+                        drawingCodeHardware: 'DRA 34027',
+                        colorCode: 'P-4532/GZ2.GV'
+                    },
+                    'gv811753.gvz.02': {
+                        routeCode: 'WO-07-2023-00056_23',
+                        clientPo: 'WO-07-2023-00056_23',
+                        drawingCodeCarCass: 'DRA 45218',
+                        drawingCodeHardware: 'DRA 45218',
+                        colorCode: 'P-4533/GZ3.GV'
+                    }
+                };
+                let isMatchFound = false;
+                for (const [codeKey, details] of Object.entries(codeDetails)) {
+                    if (normalizedCode.startsWith(codeKey)) { // So sánh mã chuẩn hóa
+                        setRouteCode(details.routeCode);
+                        setClientPo(details.clientPo);
+                        setDrawingCodeCarCass(details.drawingCodeCarCass);
+                        setDrawingCodeHardware(details.drawingCodeHardware);
+                        setColorCode(details.colorCode);
+                        isMatchFound = true;
+                        break;
+                    }
+                }
+                if (!isMatchFound) {
+                    setRouteCode('');
+                    setClientPo('');
+                    setDrawingCodeCarCass('');
+                    setDrawingCodeHardware('');
+                    setColorCode('');
+                }
+                setIsFullCodeSet(true); 
+            }
+        }
+    } else {
+        if (code.length >= 15) {
+            setItemCode('');
+            setRouteCode('');
+            setClientPo('');
+            setDrawingCodeCarCass('');
+            setDrawingCodeHardware('');
+            setColorCode('');
+            setIsFullCodeSet(false); 
+        }
+    }
+}, [codeMapping, itemCode, isFullCodeSet]);
+
+
 
   // Lọc các giá trị cho dropdown chỉ hiển thị các giá trị khớp
   const filteredOptions = {
@@ -179,14 +240,13 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             >
               <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
             </TouchableOpacity>
-            <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+            <Text style={[tw` flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>
             Tải thông tin sản phẩm
             </Text>
           </View>
-      <ScrollView contentContainerStyle={tw`p-5`}>
-      
-      <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Kiểu kiểm hàng:</Text>
+      <ScrollView contentContainerStyle={tw`p-${getScaledSize(5)}`}>
+      <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Kiểu kiểm hàng:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Kiểu kiểm hàng--", value: "" }}
             items={options.typeOfInspection}
@@ -195,59 +255,60 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã sản phẩm:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+  <Text style={[tw`mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Mã sản phẩm:</Text>
+  <TextInput
+    style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+    value={itemCode}
+    onChangeText={handleItemCodeChange}
+    placeholder="--Nhập tìm ItemCode ít nhất 6 kí tự--"
+    maxLength={15} // Set a maxLength for input if needed
+  />
+</View>
+
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Item Code:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
-            value={itemCode}
-            onChangeText={handleItemCodeChange}
-            placeholder="--Nhập tìm ItemCode ít nhất 6 kí tự--"
-            
-          />
-        </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Item Code:</Text>
-          <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={itemCode}
             onChangeText={handleItemCodeChange}
             editable={false}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Status:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Status:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={status}
             onChangeText={setStatus}
             placeholder="--Tình trạng--"
             keyboardType="numeric"
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Số lượng kiểm:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Số lượng kiểm:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={quantity}
             onChangeText={setQuantity}
             placeholder="--Số lượng kiểm--"
             keyboardType="numeric"
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Số lượng WO/PO:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Số lượng WO/PO:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={woPoQuantity}
             onChangeText={setWoPoQuantity}
             placeholder="--Số lượng WO/PO--"
             keyboardType="numeric"
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Ghi chú:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Ghi chú:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={notes}
             onChangeText={setNotes}
             placeholder="--Ghi chú--"
@@ -255,17 +316,17 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             numberOfLines={4}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Color Code:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Color Code:</Text>
           <TextInput
-            style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
             value={colorCode}
             onChangeText={setColorCode}
             placeholder="--Color Code--"
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã Route:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Mã Route:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Chọn Router Code--", value: "" }}
             items={filteredOptions.routeCode}
@@ -274,8 +335,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Client PO:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Client PO:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Chọn PO--", value: "" }}
             items={filteredOptions.clientPo}
@@ -284,8 +345,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã bản vẽ CarCass:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Mã bản vẽ CarCass:</Text>
           <RNPickerSelect
             placeholder={{ label: "-- Chọn mã bản vẽ CarCass--", value: "" }}
             items={filteredOptions.drawingCodeCarCass}
@@ -294,8 +355,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Mã bản vẽ HardWare:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Mã bản vẽ HardWare:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Chọn mã bản vẽ HardWare--", value: "" }}
             items={filteredOptions.drawingCodeHardware}
@@ -304,8 +365,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Người kiểm hàng:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Người kiểm hàng:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Chọn người kiểm hàng--", value: "" }}
             items={options.inspector}
@@ -314,8 +375,8 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Nơi kiểm hàng:</Text>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Nơi kiểm hàng:</Text>
           <RNPickerSelect
             placeholder={{ label: "--Chọn nơi kiểm hàng", value: "" }}
             items={options.inspectionLocation}
@@ -324,9 +385,9 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             style={pickerSelectStyles}
           />
         </View>
-        <View style={tw`mb-4`}>
-          <Text style={[tw`text-lg font-semibold mb-2`, { color: COLORS.black }]}>Ngày kiểm hàng:</Text>
-          <TouchableOpacity onPress={showDatePicker} style={[tw`border rounded-lg p-2`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Ngày kiểm hàng:</Text>
+          <TouchableOpacity onPress={showDatePicker} style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}>
             <Text>{inspectionDate.toDateString()}</Text>
           </TouchableOpacity>
           <DateTimePickerModal
@@ -338,10 +399,10 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
           />
         </View>
         <TouchableOpacity
-          style={[tw` p-3 rounded-lg`, { alignItems: 'center', backgroundColor:COLORS.blue }]}
+          style={[tw` p-${getScaledSize(3)} rounded-lg`, { alignItems: 'center', backgroundColor:COLORS.blue }]}
           onPress={() => navigation.navigate("UploadCarCassScreen")}
         >
-          <Text style={[tw`text-white text-lg`]} >Lưu lại và tải hình ảnh</Text>
+          <Text style={[{color:COLORS.white, fontSize:getScaledSize(16), fontFamily: 'CustomFont-Regular'}]} >Lưu lại và tải hình ảnh</Text>
         </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>

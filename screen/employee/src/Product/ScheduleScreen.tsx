@@ -63,12 +63,12 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const renderTask = ({ item }: { item: Task }) => (
-    <View style={tw`p-4 border-b border-gray-300`}>
+    <View style={tw`p-${getScaledSize(4)} border-b border-gray-300`}>
       <TouchableOpacity onPress={() => navigation.navigate('Product')} accessibilityLabel={`Đi đến chi tiết sản phẩm ${item.name}`} accessibilityHint={`Xem chi tiết của ${item.name}`}>
-        <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Mã Hàng: {item.code}</Text>
-        <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Mã Route: {item.route}</Text>
-        <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Tên Hàng: {item.name}</Text>
-        <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Số Lượng: {item.quantity}</Text>
+        <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Mã Hàng: {item.code}</Text>
+        <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Mã Route: {item.route}</Text>
+        <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Tên Hàng: {item.name}</Text>
+        <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Số Lượng: {item.quantity}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -84,32 +84,32 @@ const ScheduleScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={tw`flex-row bg-white items-center mt-${getScaledSize(5)}`}>
+      <View style={[tw`flex-row items-center mt-${getScaledSize(5)}`, {backgroundColor:COLORS.white}]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 
-        style={[tw`pl-5`, { borderRadius: 50 }]} 
+        style={[tw`pl-${getScaledSize(5)}`, { borderRadius: 50 }]} 
         activeOpacity={0.7} 
       >
     <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
   </TouchableOpacity>
-  <Text style={[tw`text-lg mr-10 p-5`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18), flex: 1, textAlign: 'center' }]}>
+  <Text style={[tw` mr-${getScaledSize(10)} p-${getScaledSize(5)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18), flex: 1, textAlign: 'center' }]}>
     Lịch sản xuất
   </Text>
 </View>
       <Calendar
         onDayPress={(day: Day) => setSelectedDate(day.dateString)}
         markedDates={getMarkedDates()}
-        style={tw`mb-2`}
+        style={tw`mb-${getScaledSize(2)}`}
       />
-      <Text style={[tw`text-center`, { fontSize: getScaledSize(16), marginVertical: 8, color: COLORS.black, fontFamily: 'CustomFont-Bold' }]}>
+      <Text style={[tw`text-center`, { fontSize: getScaledSize(16), marginVertical: getScaledSize(8), color: COLORS.black, fontFamily: 'CustomFont-Bold' }]}>
         {selectedDate ? new Date(selectedDate).toDateString() : 'Chọn ngày'}
       </Text>
-      <Text style={[tw`text-center`, { fontSize: getScaledSize(16), fontWeight: 'bold', marginBottom: 8, color: COLORS.black, fontFamily: 'CustomFont-Bold' }]}>Chi tiết công việc:</Text>
+      <Text style={[tw`text-center`, { fontSize: getScaledSize(16), fontFamily: 'CustomFont-Bold', marginBottom: getScaledSize(8), color: COLORS.black }]}>Chi tiết công việc:</Text>
       <FlatList
         data={tasksToShow}
         renderItem={renderTask}
         keyExtractor={(item) => item.id}
-        contentContainerStyle={tw`px-4`}
+        contentContainerStyle={tw`px-${getScaledSize(4)}`}
       />
     </SafeAreaView>
   );

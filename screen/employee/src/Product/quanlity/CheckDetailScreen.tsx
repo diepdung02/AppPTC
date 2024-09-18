@@ -878,7 +878,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             Đính kèm
           </Text>
-          <View style={tw`flex-row justify-center items-center mb-${getScaledSize(4)}`}>
+          <View style={tw`flex-row justify-center items-center mb-${getScaledSize(4)} `}>
             <TouchableOpacity
               onPress={handleCapture}
               style={tw`bg-blue-500 p-2 rounded-lg m-${getScaledSize(2)} flex-row items-center`}
@@ -889,7 +889,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 color="#fff"
                 style={tw`mr-2`}
               />
-              <Text style={[tw`text-center w-${getScaledSize(40)}`, {color:COLORS.white}]}>
+              <Text style={[tw`text-center w-${getScaledSize(20)}`, {color:COLORS.white, fontSize:getScaledSize(16)}]}>
                 Chụp ảnh / Quay video
               </Text>
             </TouchableOpacity>
@@ -903,7 +903,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 color="#fff"
                 style={tw`mr-2`}
               />
-              <Text style={[tw`text-center w-${getScaledSize(40)}`, {color:COLORS.white}]}>
+              <Text style={[tw`text-center w-${getScaledSize(20)}`, {color:COLORS.white, fontSize:getScaledSize(16)}]}>
                 Chọn từ thư viện
               </Text>
             </TouchableOpacity>
@@ -945,7 +945,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           ]}
           onPress={handleSubmit}
         >
-          <Text style={[tw` text-center`, {color:COLORS.white}]}>Hoàn thành</Text>
+          <Text style={[tw` text-center`, {color:COLORS.white, fontSize:getScaledSize(16)}]}>Hoàn thành</Text>
         </TouchableOpacity>
       </View>
       {/* Modal */}

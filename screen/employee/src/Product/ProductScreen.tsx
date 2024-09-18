@@ -452,7 +452,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   );
 
   const renderItem = ({ item }: { item: Product }) => (
-    <View key={item.id} style={tw`p-2 m-1 border border-gray-300 rounded-lg`}>
+    <View key={item.id} style={tw`p-${getScaledSize(2)} m-${getScaledSize(1)} border border-gray-300 rounded-lg`}>
       <TouchableOpacity
         onPress={() => navigation.navigate("ProductDetail", { item })}
       >
@@ -472,7 +472,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             />
             <Text
               style={[
-                tw`flex-1 mr-5`,
+                tw`flex-1 mr-${getScaledSize(5)}`,
                 {
                   fontFamily: "CustomFont-Regular",
                   fontSize: getScaledSize(14),
@@ -484,13 +484,13 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
               {item.PTCcode}
             </Text>
           </View>
-          <View style={tw`ml-3 flex-1`}>
+          <View style={tw`ml-${getScaledSize(3)} flex-1`}>
             <View
-              style={tw`flex-row items-center bg-transparent border-b border-gray-300 border-t-0 mt-3`}
+              style={tw`flex-row items-center bg-transparent border-b border-gray-300 border-t-0 mt-${getScaledSize(3)}`}
             >
               <Text
                 style={[
-                  tw`flex-1 mr-5`,
+                  tw`flex-1 mr-${getScaledSize(5)}`,
                   {
                     fontFamily: "CustomFont-Regular",
                     fontSize: getScaledSize(14),
@@ -513,12 +513,12 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
             ].map((info, index) => (
               <View
                 key={index}
-                style={tw`bg-transparent border-b border-gray-300 border-t-0 mt-2`}
+                style={tw`bg-transparent border-b border-gray-300 border-t-0 mt-${getScaledSize(2)}`}
               >
                 <View style={tw`flex-row `}>
                   <Text
                     style={[
-                      tw`flex-1 mr-5`,
+                      tw`flex-1 mr-${getScaledSize(5)}`,
                       {
                         fontFamily: "CustomFont-Regular",
                         fontSize: getScaledSize(14),
@@ -535,7 +535,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        style={tw`p-1 absolute right-2`}
+        style={tw`p-${getScaledSize(1)} absolute right-${getScaledSize(2)}`}
         onPress={() => toggleOutputMenu(item.id)}
       >
         <FontAwesome name="bars" size={20} color="black" />
@@ -544,7 +544,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       {selectedProductId === item.id && (
         <Animated.View
           style={[
-            tw`bg-white rounded mt-2`,
+            [tw`rounded mt-${getScaledSize(2)}`, {backgroundColor:COLORS.white}],
             {
               transform: [
                 {
@@ -558,7 +558,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           ]}
         >
           <TouchableOpacity
-            style={tw`bg-blue-500 p-2 rounded`}
+            style={tw`bg-blue-500 p-${getScaledSize(2)} rounded`}
             onPress={() => {
               // handleOutputPress(item);
             }}
@@ -581,7 +581,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   const renderTabs = ({ item }: { item: Category }) => (
     <TouchableOpacity
       style={[
-        tw`p-3 ml-2 rounded-full`,
+        tw`p-${getScaledSize(3)} ml-${getScaledSize(2)} rounded-full`,
         { backgroundColor: getButtonStyle(item.key).backgroundColor},
       ]}
       onPress={() => handleCategoryChange(item.value)}
@@ -604,13 +604,13 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
         style={[
-          tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={[tw`p-2`, { borderRadius: 50 }]}
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -644,7 +644,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           }}
           inputStyle={{ fontSize: getScaledSize(16) }}
         />
-<View style={tw`flex-row mt-2`}>
+<View style={tw`flex-row mt-${getScaledSize(2)}`}>
   <FlatList
     data={categories}
     horizontal
@@ -657,7 +657,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           data={filteredProducts}
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
-          contentContainerStyle={tw`p-3`}
+          contentContainerStyle={tw`p-${getScaledSize(3)}`}
         />
       </>
     </SafeAreaView>

@@ -73,13 +73,13 @@ const ManagerEvaluateScreen: React.FC<Props> = ({ navigation }) => {
       <SafeAreaView style={[tw`flex-1`, { backgroundColor: COLORS.colorMain }]}>
         <View
           style={[
-            tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`,
+            tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
             { backgroundColor: COLORS.white },
           ]}
         >
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={tw`p-2`}
+            style={tw`p-${getScaledSize(2)}`}
             activeOpacity={0.7}
           >
             <MaterialCommunityIcons
@@ -90,14 +90,14 @@ const ManagerEvaluateScreen: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
           <Text
             style={[
-              tw`text-xl flex-1 text-center`,
-              { color: COLORS.black, fontFamily: "CustomFont-Bold" },
+              tw`flex-1 text-center`,
+              { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
             ]}
           >
             Đánh giá nhân viên
           </Text>
         </View>
-        <View style={[tw`p-5`, { backgroundColor: COLORS.colorMain, flex: 1 }]}>
+        <View style={[tw`p-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain, flex: 1 }]}>
           <RNPickerSelect
             placeholder={{ label: "Chọn tên nhân viên", value: null }}
             value={employeeName}
@@ -154,10 +154,10 @@ const ManagerEvaluateScreen: React.FC<Props> = ({ navigation }) => {
             onChangeText={setReviewComment}
             multiline
             numberOfLines={4}
-            style={[tw`p-3 mb-6 border rounded`, { borderColor: COLORS.darkGray, fontSize: getScaledSize(16) }]}
+            style={[tw`p-${getScaledSize(3)} mb-${getScaledSize(6)} border rounded`, { borderColor: COLORS.darkGray, fontSize: getScaledSize(16) }]}
           />
 
-          <Text style={[tw`text-xl mb-4`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18) }]}>
+          <Text style={[tw`mb-${getScaledSize(4)}`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18) }]}>
             Đánh giá sao
           </Text>
           <StarRating
@@ -171,11 +171,11 @@ const ManagerEvaluateScreen: React.FC<Props> = ({ navigation }) => {
           <TouchableOpacity
             onPress={handleSubmit}
             style={[
-              tw`mt-6 p-4 bg-blue-600 rounded`,
+              tw`mt-${getScaledSize(6)} p-${getScaledSize(4)} bg-blue-600 rounded`,
               { backgroundColor: COLORS.blue, alignItems: 'center' }
             ]}
           >
-            <Text style={[tw`text-white text-lg`, { fontFamily: "CustomFont-Bold" }]}>
+            <Text style={[{ fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18), backgroundColor:COLORS.white }]}>
               Gửi Đánh Giá
             </Text>
           </TouchableOpacity>

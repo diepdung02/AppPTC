@@ -175,7 +175,6 @@ export type RootStackParamList = {
     productPDF: string;
     remainingComponents: Component[];
   };
- 
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };

@@ -240,7 +240,7 @@ const DetailRow = ({
   </View>
 );
 
-const CheckGoodsScreen = ({ navigation }: any) => {
+const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
 
   const handleSearch = (text: string) => {

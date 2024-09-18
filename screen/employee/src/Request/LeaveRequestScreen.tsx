@@ -211,13 +211,13 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
             >
               <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
             </TouchableOpacity>
-            <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+            <Text style={[tw` flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>
               Xin nghỉ phép
             </Text>
           </View>
           <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(5)}`}>
-            <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày bắt đầu:</Text>
-            <TouchableOpacity style={tw`flex-row justify-between items-center h-14 rounded px-3 bg-white`} onPress={() => showDatePicker('start')}>
+            <Text style={[tw`text-base mb-${getScaledSize(1)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày bắt đầu:</Text>
+            <TouchableOpacity style={[tw`flex-row justify-between items-center h-${getScaledSize(14)} rounded px-${getScaledSize(3)}`,{backgroundColor:COLORS.white}]} onPress={() => showDatePicker('start')}>
               <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
                 {startDate ? startDate.toDateString() : 'Chọn ngày bắt đầu'}
               </Text>
@@ -225,16 +225,16 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
             </TouchableOpacity>
           </View>
           <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
-            <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày kết thúc:</Text>
-            <TouchableOpacity style={tw`flex-row justify-between items-center h-14 rounded px-3 bg-white`} onPress={() => showDatePicker('end')}>
-              <Text style={[tw`text-base`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
+            <Text style={[tw`text-base mb-${getScaledSize(1)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Ngày kết thúc:</Text>
+            <TouchableOpacity style={[tw`flex-row justify-between items-center h-${getScaledSize(14)} rounded px-${getScaledSize(3)}`,{backgroundColor:COLORS.white}]} onPress={() => showDatePicker('end')}>
+              <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>
                 {endDate ? endDate.toDateString() : 'Chọn ngày kết thúc'}
               </Text>
               <FontAwesome name="calendar" size={getScaledSize(20)} color={COLORS.black} />
             </TouchableOpacity>
           </View>
           <View style={tw`mx-${getScaledSize(5)} mt-${getScaledSize(3)}`}>
-  <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Loại nghỉ phép:</Text>
+  <Text style={[tw`mb-${getScaledSize(1)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Loại nghỉ phép:</Text>
   <RNPickerSelect
     onValueChange={value => setLeaveType(value)}
     items={leaveTypes.map(type => ({ label: type, value: type }))}
@@ -255,7 +255,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
 </View>
 
           <View style={tw`mx-${getScaledSize(5)} my-${getScaledSize(3)}`}>
-            <Text style={[tw`text-base mb-1`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Lý do:</Text>
+            <Text style={[tw`mb-${getScaledSize(1)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize: getScaledSize(16) }]}>Lý do:</Text>
             <TextInput
               value={reason}
               onChangeText={handleReasonChange}
@@ -263,7 +263,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               numberOfLines={4}
               placeholder="Nhập lý do..."
               placeholderTextColor={COLORS.darkGray}
-              style={[tw` p-3 rounded `, { fontSize: getScaledSize(16), color: COLORS.black, fontFamily: 'CustomFont-Regular', backgroundColor:COLORS.white, height:getScaledSize(100) }]}
+              style={[tw` p-${getScaledSize(3)} rounded `, { fontSize: getScaledSize(16), color: COLORS.black, fontFamily: 'CustomFont-Regular', backgroundColor:COLORS.white, height:getScaledSize(100) }]}
             />
           </View>
           <View style={tw`flex-row justify-center mt-${getScaledSize(5)}`}>
@@ -271,7 +271,7 @@ const LeaveRequestScreen: React.FC<Props> = ({ navigation }) => {
               style={[tw` py-${getScaledSize(3)} px-${getScaledSize(20)} rounded-full`, {backgroundColor:COLORS.primary}]}
               onPress={handleSubmit}
             >
-              <Text style={[tw``, {fontFamily: 'CustomFont-Regular', color:COLORS.white, fontSize:getScaledSize(20)}]}>Gửi</Text>
+              <Text style={[{fontFamily: 'CustomFont-Regular', color:COLORS.white, fontSize:getScaledSize(20)}]}>Gửi</Text>
             </TouchableOpacity>
           </View>
           <DateTimePickerModal

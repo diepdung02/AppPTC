@@ -42,26 +42,22 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const [showWebView, setShowWebView] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedAttachment, setSelectedAttachment] = useState({ type: '', uri: '' });
-
   const heightAnim = useRef(new Animated.Value(getScaledSize(200))).current;
 
   const handleImagePress = (imageUri: string) => {
     setSelectedAttachment({ type: 'image', uri: imageUri });
     setModalVisible(true);
   };
-
   const handleCloseModal = () => {
     setModalVisible(false);
     setSelectedAttachment({ type: '', uri: '' });
   };
-
   const renderDetailItem = ({ item }: { item: { label: string; value: string } }) => (
     <View style={[tw`mb-${getScaledSize(4)} p-${getScaledSize(4)} rounded-lg shadow-md`, { backgroundColor: COLORS.white }]}>
       <Text style={[ { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize:getScaledSize(16) }]}>{item.label}</Text>
       <Text style={[tw` mt-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Regular', fontSize:getScaledSize(16) }]}>{item.value}</Text>
     </View>
   );
-
   if (showWebView) {
     return (
       <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
@@ -77,7 +73,6 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
       </SafeAreaView>
     );
   }
-
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View style={[tw`flex-row items-center p-${getScaledSize(4)} shadow-md mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
@@ -106,7 +101,6 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
             By: {notification.sender}
           </Text>
         </View>
-    
         <FlatList
           data={[
             { label: 'Nội dung:', value: notification.summary },
@@ -116,12 +110,10 @@ const NotificationDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           contentContainerStyle={tw`pb-${getScaledSize(4)}`}
         />
       </View>
-
       {/* Modal hiển thị ảnh */}
       <Modal visible={modalVisible} transparent={true} animationType="slide" onRequestClose={handleCloseModal}>
       <TouchableOpacity style={[tw`flex-1 justify-center items-center`, { backgroundColor: 'rgba(0, 0, 0, 0.5 )' }]} activeOpacity={1} onPress={handleCloseModal}>
     <View style={tw`p-${getScaledSize(4)} rounded`}>
-
       {selectedAttachment.type === 'image' && (
         <TouchableOpacity activeOpacity={1}>
           <Image source={{ uri: selectedAttachment.uri }} style={tw` w-${getScaledSize(80)}  h-${getScaledSize(80)} rounded-lg`} />

@@ -248,8 +248,8 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
     tw`absolute bottom-${getScaledSize(2)} right-${getScaledSize(2)} rounded-full p-${getScaledSize(4)} shadow-md`,
     {
       backgroundColor: COLORS.primary,
-      width: 70,
-      height: 70,
+      width: getScaledSize(60),
+      height: getScaledSize(60),
       justifyContent: 'center', 
       alignItems: 'center',    
     },
@@ -258,11 +258,10 @@ const MailScreen: React.FC<Props> = ({ navigation }) => {
 >
   <FontAwesome
     name="plus-circle"
-    size={getScaledSize(50)}
+    size={getScaledSize(30)}
     color={COLORS.white}
   />
 </TouchableOpacity>
-
     </SafeAreaView>
   );
 };

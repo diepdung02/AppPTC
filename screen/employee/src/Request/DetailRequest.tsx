@@ -76,35 +76,35 @@ const DetailRequest: React.FC<Props> = ({ route }) => {
         </TouchableOpacity>
         <Text style={[tw`ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18), textAlign: 'center', flex:1}]}>Chi tiết yêu cầu nghỉ</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Mã code:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.code}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Ngày bắt đầu nghỉ:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.startDate}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Ngày kết thúc nghỉ:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.endDate}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày nghỉ:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.dayOffs}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày phép còn lại:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.remainingDaysOff}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Số ngày phép đã sử dụng:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.usedDaysOff}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Lí do:</Text>
         <Text style={[tw`flex-1`, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16)}]}>{item.reason}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(200)}px]`, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16)}]}>Trạng thái:</Text>
         <Text
           style={[tw`px-[${getScaledSize(8)}px] py-[${getScaledSize(4)}px] rounded`, { backgroundColor: statusColor, color: textColor, fontFamily: 'CustomFont-Bold' }]}

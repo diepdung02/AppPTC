@@ -135,50 +135,50 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
+        style={[tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} mx-${getScaledSize(5)} rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailRequest", { item })}
       >
         <View >
-          <Text style={[tw` mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
+          <Text style={[tw` mb-${getScaledSize(1.25)} ml-${getScaledSize(2.5)}`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin nghỉ phép:</Text>
           <View style={tw`absolute`}>
       <View style={[tw`flex-col items-start`, { position: 'absolute', left: getScaledSize(310), top: getScaledSize(30) }]}>
         {item.code.split("").map((char: string, index: number) => (
-          <Text key={index} style={[tw``, { fontSize: getScaledSize(12) }]}>{char}</Text>
+          <Text key={index} style={[{ fontSize: getScaledSize(12) }]}>{char}</Text>
         ))}
       </View>
     </View>
     <View style={[ {height:getScaledSize(220)}]}>
           <View style={[tw`flex-row`]}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày bắt đầu:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Ngày kết thúc:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endDate}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endDate}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Loại nghỉ phép:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.leaveType}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.leaveType}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Lí do:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.dayOffs}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.dayOffs}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ còn lại:</Text>
-            <Text style={[tw` ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.remainingDaysOff}</Text>
+            <Text style={[tw` ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.remainingDaysOff}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Số ngày nghỉ đã sử dụng:</Text>
-            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.usedDaysOff}</Text>
+            <Text style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.usedDaysOff}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}>Trạng thái:</Text>
-            <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
+            <Text style={[tw`px-${getScaledSize(2)} py-${getScaledSize(1)} rounded-md text-center ml-${getScaledSize(5)}`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
           </View>
         </View>
         </View>
@@ -188,16 +188,16 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
+      <View style={[tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
       <TouchableOpacity
         onPress={() => navigation.goBack()} 
-        style={[tw`p-2`, { borderRadius: 50 }]} 
+        style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]} 
         activeOpacity={0.7} 
       >
         <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
       </TouchableOpacity>
 
-      <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+      <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>
         Danh sách đơn nghỉ phép
       </Text>
 
@@ -209,7 +209,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
       </TouchableOpacity>
     </View>
-      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={handleSearch}
@@ -225,7 +225,7 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={tw`pb-5`}
+        contentContainerStyle={tw`pb-${getScaledSize(5)}`}
       />
       {/* <TouchableOpacity
         style={[

@@ -11,7 +11,6 @@ import {
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SearchBar } from "@rneui/themed";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc"; 
 import COLORS from "../../../../constants/Color";
 import { RootStackParamList } from "../../../navigator/navigation";
@@ -129,43 +128,43 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
 
     return (
       <TouchableOpacity
-        style={[tw`p-2.5 m-1.25 mx-5 rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
+        style={[tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} mx-${getScaledSize(5)} rounded-md shadow-md `, { backgroundColor: COLORS.white }]}
         onPress={() => navigation.navigate("DetailLeftDept", { item })}
       >
         <View style={tw`flex-1`}>
-          <Text style={[tw`text-lg mb-1.25 ml-2.5`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin ra vào cổng:</Text>
+          <Text style={[tw`mb-${getScaledSize(1.25)} ml-${getScaledSize(2.5)}`, { fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(16) }]}>Thông tin ra vào cổng:</Text>
           <View style={tw`absolute`}>
             <View style={[tw`flex-col items-end`, { position: 'absolute', left: getScaledSize(310), top: getScaledSize(30) }]}>
               {item.code.split("").map((char: string, index: number) => (
-                <Text key={index} style={[tw`text-xs`, { fontSize: getScaledSize(12) }]}>{char}</Text>
+                <Text key={index} style={[{ fontSize: getScaledSize(12) }]}>{char}</Text>
               ))}
             </View>
             </View>
-            <View style={[tw``, {height:getScaledSize(150)}]}>
+            <View style={[{height:getScaledSize(160)}]}>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}
 >Ngày:</Text>
-            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
+            <Text style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}
 >Giờ bắt đầu:</Text>
-            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
+            <Text style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}
 >Giờ kết thúc:</Text>
-            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
+            <Text style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}
 >Lí do:</Text>
-            <Text style={[tw`ml-5`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{truncateText(item.reason, 15)}</Text>
+            <Text style={[tw`ml-${getScaledSize(5)}`, { color: COLORS.black, fontSize: getScaledSize(16) }]}>{truncateText(item.reason, 15)}</Text>
           </View>
           <View style={tw`flex-row`}>
             <Text style={[{ fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(12), width: getScaledSize(140) }]}
 >Trạng thái:</Text>
-            <Text style={[tw`px-2 py-1 rounded-md text-center ml-5`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
+            <Text style={[tw`px-${getScaledSize(2)} py-${getScaledSize(1)} rounded-md text-center ml-${getScaledSize(5)}`, { backgroundColor: statusColor, color: textColor, textAlign: 'center', fontSize: getScaledSize(16) }]}>{item.status}</Text>
           </View> 
         </View>
         </View>
@@ -175,29 +174,29 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
-      <View style={[tw`flex-row items-center py-2.5 px-5 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
+      <View style={[tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}>
         <TouchableOpacity
           onPress={() => navigation.goBack()} 
-          style={[tw`p-2`, { borderRadius: 50 }]} 
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]} 
           activeOpacity={0.7} 
         >
           <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
 
-        <Text style={[tw`text-xl flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(20) }]}>
+        <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18) }]}>
           Danh sách đơn ra vào cổng
         </Text>
         
 
         <TouchableOpacity
           onPress={() => navigation.navigate("CreateLeftDept")}
-          style={[tw`p-2`, { borderRadius: 50 }]} 
+          style={[tw`p-${getScaledSize(2)}`, { borderRadius: 50 }]} 
           activeOpacity={0.7} 
         >
           <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
       </View>
-      <View style={tw`flex-row items-center justify-center mt-2.5 px-5`}>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
           onChangeText={handleSearch}
@@ -214,7 +213,7 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
         data={filteredData}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
-        contentContainerStyle={tw`pb-5`} 
+        contentContainerStyle={tw`pb-${getScaledSize(5)}`} 
         style={tw`flex-1`}
       />
     </SafeAreaView>

@@ -229,11 +229,19 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
         ]}
       >
         <Text style={tw`w-${getScaledSize(80)}`}>{title}</Text>
-        <MaterialCommunityIcons
-          name={selectedKey === key ? "chevron-up" : "chevron-down"}
-          size={24}
-          color="black"
-        />
+        {images[key] && Array.isArray(images[key]) && images[key].length > 0 ? (
+          <MaterialCommunityIcons
+            name="check-circle"
+            size={24}
+            color="green"
+          />
+        ) : (
+          <MaterialCommunityIcons
+            name={selectedKey === key ? "chevron-up" : "chevron-down"}
+            size={24}
+            color="black"
+          />
+        )}
       </TouchableOpacity>
   
       {selectedKey === key && (
@@ -266,12 +274,13 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
               marginTop: getScaledSize(10),
             }}
           >
-            <Text style={[{color:COLORS.white}]}>Chọn ảnh</Text>
+            <Text style={[{ color: COLORS.white }]}>Chọn ảnh</Text>
           </TouchableOpacity>
         </View>
       )}
     </View>
   );
+  
   
 
   return (
@@ -306,108 +315,121 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
           Upload Check CarCass
         </Text>
       </View>
-      <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-  <View style={tw`flex-row m-${getScaledSize(4)} h-${getScaledSize(10)} w-full`}>
-    <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw`py-${getScaledSize(2)} px-${getScaledSize(4)} rounded flex-row items-center`, {backgroundColor:"#00acc1"}]}
-      onPress={() => navigation.navigate("UploadQcImageScreen")}>
-        <MaterialCommunityIcons
-          name="plus"
-          size={24}
-          color={COLORS.white}
-        />
-        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.white}]}>Tạo mới</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw` py-${getScaledSize(2)} px-${getScaledSize(4)} ml-${getScaledSize(3)} rounded flex-row items-center`, {backgroundColor: COLORS.primary}]}
-      onPress={() => navigation.navigate("UpLoadImageProduct")}>
-        <MaterialCommunityIcons
-          name="format-list-bulleted"
-          size={24}
-          color={COLORS.white}
-        />
-        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.white}]}>Xem danh sách</Text>
-      </TouchableOpacity>
-    </View>
-    <View style={tw`flex-row`}>
-      <TouchableOpacity style={[tw` py-${getScaledSize(2)} px-${getScaledSize(4)} ml-${getScaledSize(3)} rounded flex-row items-center`, {backgroundColor:"#9ccc65"}]}>
-        <Text style={[tw` text-center ml-${getScaledSize(2)}`, {color:COLORS.black}]}>
-          Xem thông tin liên quan đến router
-        </Text>
-      </TouchableOpacity>
-    </View>
-  </View>
-</ScrollView>
-      <ScrollView>
-      <View style={tw`mb-${getScaledSize(4)}`}>
-          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(20), }]}>GV811551.GVZ.00 - Zig Zag Console Table, Macassar - WO-06-2024-00015_31</Text>
-        </View>
-        {paginatedSections.map(({ title, key }) => renderImageSection(title, key))}
+      <View style={tw`flex-row justify-between items-center m-${getScaledSize(4)} h-${getScaledSize(10)}`}>
+  {/* Nút Tạo mới bên trái */}
+  <TouchableOpacity
+    style={[
+      tw`py-${getScaledSize(2)} px-${getScaledSize(4)} rounded flex-row items-center w-${getScaledSize(35)}`,
+      { backgroundColor: "#00acc1" },
+    ]}
+    onPress={() => navigation.navigate("UploadQcImageScreen")}
+  >
+    <MaterialCommunityIcons name="plus" size={24} color={COLORS.white} />
+    <Text style={[tw`text-center ml-${getScaledSize(2)}`, { color: COLORS.white }]}>
+      Tạo mới
+    </Text>
+  </TouchableOpacity>
+  
+  {/* Nút Xem danh sách bên phải */}
+  <TouchableOpacity
+    style={[
+      tw`py-${getScaledSize(2)} px-${getScaledSize(4)} rounded flex-row items-center w-${getScaledSize(35)}`,
+      { backgroundColor: COLORS.primary },
+    ]}
+    onPress={() => navigation.navigate("UpLoadImageProduct")}
+  >
+    <MaterialCommunityIcons name="format-list-bulleted" size={24} color={COLORS.white} />
+    <Text style={[tw`text-center ml-${getScaledSize(2)} `, { color: COLORS.white }]}>
+      Xem danh sách
+    </Text>
+  </TouchableOpacity>
+</View>
 
-        {/* Pagination controls */}
-        <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
-          <TouchableOpacity
-            onPress={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            disabled={currentPage === 1}
-          >
-            <Text style={tw`text-blue-500`}>Trang trước</Text>
-          </TouchableOpacity>
-          <Text>
-            Trang {currentPage} của {totalPages}
-          </Text>
-          <TouchableOpacity
-            onPress={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-            disabled={currentPage === totalPages}
-          >
-            <Text style={tw`text-blue-500`}>Trang sau</Text>
-          </TouchableOpacity>
-        </View>
+<ScrollView contentContainerStyle={tw`flex-grow`}>
+<View style={tw`m-${getScaledSize(4)}`}>
+  <Text
+    style={[
+      tw`mb-${getScaledSize(2)} px-${getScaledSize(4)} py-${getScaledSize(2)} bg-gray-100 rounded-lg shadow-md`,
+      { 
+        color: COLORS.black, 
+        fontFamily: "CustomFont-Bold", 
+        fontSize: getScaledSize(20),
+        textAlign: 'center',
+        borderWidth: 1,
+        borderColor: COLORS.darkGray,
+      },
+    ]}
+  >
+    GV811551.GVZ.00 - Zig Zag Console Table, Macassar - WO-06-2024-00015_31
+  </Text>
+</View>
 
-        {selectedAttachment && (
-        <Modal
-          visible={modalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={handleCloseModal}
+  {paginatedSections.map(({ title, key }) => renderImageSection(title, key))}
+
+  {/* Pagination controls */}
+  <View style={tw`flex-row justify-between p-4`}>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === 1}
         >
-          <View
-            style={[tw`flex-1 justify-center items-center `, { backgroundColor: 'rgba(0, 0, 0, 0.5 )' }]}
-          >
-            <View style={[tw` p-${getScaledSize(4)} rounded`, {backgroundColor:COLORS.white}]}>
-              {selectedAttachment.type === "image" ? (
-                <Image
-                  source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
-                />
-              ) : (
-                <Video
-                  source={{ uri: selectedAttachment.uri }}
-                  style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
-                  useNativeControls
-                  resizeMode={ResizeMode.CONTAIN}
-                  shouldPlay={false}
-                />
-              )}
-              <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
-                <TouchableOpacity
-                  style={tw`p-${getScaledSize(2)} bg-red-500 rounded`}
-                  onPress={() => handleDeleteAttachment(selectedAttachment.uri)}
-                >
-                  <Text style={[tw`text-center`, {color:COLORS.white}]}>Xóa</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={tw`p-${getScaledSize(2)} bg-blue-500 rounded`}
-                  onPress={handleCloseModal}
-                >
-                  <Text style={[tw`text-center`, {color:COLORS.white}]}>Đóng</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+          <Text style={[tw`w-${getScaledSize(15)} text-center`,{color:COLORS.white, fontFamily: "CustomFont-Regular", fontSize:getScaledSize(14), }]}>Previous</Text>
+        </TouchableOpacity>
+        <Text>{`${currentPage} / ${totalPages}`}</Text>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.min(page + 1, totalPages))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === totalPages}
+        >
+          <Text style={[tw`w-${getScaledSize(15)} text-center`,{color:COLORS.white, fontFamily: "CustomFont-Regular", fontSize:getScaledSize(14)}]}>Next</Text>
+        </TouchableOpacity>
+      </View>
+
+  {selectedAttachment && (
+    <Modal
+      visible={modalVisible}
+      transparent={true}
+      animationType="slide"
+      onRequestClose={handleCloseModal}
+    >
+      <View
+        style={[tw`flex-1 justify-center items-center`, { backgroundColor: 'rgba(0, 0, 0, 0.5)' }]}
+      >
+        <View style={[tw`p-${getScaledSize(4)} rounded`, { backgroundColor: COLORS.white }]}>
+          {selectedAttachment.type === "image" ? (
+            <Image
+              source={{ uri: selectedAttachment.uri }}
+              style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
+            />
+          ) : (
+            <Video
+              source={{ uri: selectedAttachment.uri }}
+              style={tw`w-${getScaledSize(80)} h-${getScaledSize(80)}`}
+              useNativeControls
+              resizeMode={ResizeMode.CONTAIN}
+              shouldPlay={false}
+            />
+          )}
+          <View style={tw`flex-row justify-between mt-${getScaledSize(4)}`}>
+            <TouchableOpacity
+              style={tw`p-${getScaledSize(2)} bg-red-500 rounded`}
+              onPress={() => handleDeleteAttachment(selectedAttachment.uri)}
+            >
+              <Text style={[tw`text-center`, { color: COLORS.white }]}>Xóa</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={tw`p-${getScaledSize(2)} bg-blue-500 rounded`}
+              onPress={handleCloseModal}
+            >
+              <Text style={[tw`text-center`, { color: COLORS.white }]}>Đóng</Text>
+            </TouchableOpacity>
           </View>
-        </Modal>
-      )}
-      </ScrollView>
+        </View>
+      </View>
+    </Modal>
+  )}
+</ScrollView>
+
     </SafeAreaView>
   );
 };

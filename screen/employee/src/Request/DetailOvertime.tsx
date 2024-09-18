@@ -74,29 +74,29 @@ const DetailOvertime: React.FC<Props> = ({ route }) => {
         >
         <MaterialCommunityIcons name="arrow-left" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
-        <Text style={[tw`  ml-2`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18),  textAlign: 'center', flex:1}]}>Chi tiết tăng ca</Text>
+        <Text style={[tw`ml-${getScaledSize(2)}`, {fontFamily: 'CustomFont-Bold', fontSize: getScaledSize(18),  textAlign: 'center', flex:1}]}>Chi tiết tăng ca</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Mã code:</Text>
         <Text style={[tw`flex-1  `, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.code}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Ngày tăng ca:</Text>
         <Text style={[tw`flex-1  `, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startDate}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Thời gian bắt đầu:</Text>
         <Text style={[tw`flex-1  `, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.startTime}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Thời gian kết thúc:</Text>
         <Text style={[tw`flex-1  `, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.endTime}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Lí do:</Text>
         <Text style={[tw`flex-1  `, {fontFamily: 'CustomFont-Regular', color: COLORS.black, fontSize: getScaledSize(16) }]}>{item.reason}</Text>
       </View>
-      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-5 border-b border-black pb-2`}>
+      <View style={tw`flex-row items-center my-[${getScaledSize(8)}px] mx-${getScaledSize(5)} border-b border-black pb-${getScaledSize(2)}`}>
         <Text style={[tw`w-[${getScaledSize(150)}px] `, {fontFamily: 'CustomFont-Bold', color: COLORS.black, fontSize: getScaledSize(16) }]}>Trạng thái:</Text>
         <Text
           style={[tw`px-[${getScaledSize(8)}px] py-[${getScaledSize(4)}px] rounded`, { backgroundColor: statusColor, color: textColor, fontFamily: 'CustomFont-Bold' }]}
