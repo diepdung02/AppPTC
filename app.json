@@ -3,7 +3,6 @@
     "name": "PTC App",
     "slug": "PTC-App",
     "version": "1.0.0",
-    "icon": "https://img.upanh.tv/2024/09/18/LogoPTC.png",
     "orientation": "portrait",
     "userInterfaceStyle": "automatic",
     "ios": {

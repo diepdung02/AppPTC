@@ -262,7 +262,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     value={itemCode}
     onChangeText={handleItemCodeChange}
     placeholder="--Nhập tìm ItemCode ít nhất 6 kí tự--"
-    maxLength={15} // Set a maxLength for input if needed
+    maxLength={15}
   />
 </View>
 

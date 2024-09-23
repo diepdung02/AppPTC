@@ -10,10 +10,10 @@ import {
   Modal,
 } from "react-native";
 import { RouteProp } from "@react-navigation/native";
+import { RootStackParamList } from "../../../navigator/navigation";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import tw from "twrnc";
-import { RootStackParamList } from "../../../navigator/navigation";
 import COLORS from "../../../../constants/Color";
 import { SearchBar } from "@rneui/themed";
 import { WebView } from "react-native-webview"; 

@@ -819,12 +819,8 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
     const searchTerm = search.trim().toLowerCase();
     return (
       report.reportNo.toLowerCase().includes(searchTerm) ||
-      report.ponoOrRoute.toLowerCase().includes(searchTerm) ||
       report.itemCode.toLowerCase().includes(searchTerm) ||
-      report.itemMaterial.toLowerCase().includes(searchTerm) ||
-      report.locationOrTeam.toLowerCase().includes(searchTerm) ||
-      report.status.toLowerCase().includes(searchTerm) ||
-      report.noted.toLowerCase().includes(searchTerm)
+      report.itemMaterial.toLowerCase().includes(searchTerm) 
     );
   });
 
@@ -864,15 +860,15 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
-      <View
+       <View
         style={[
-          tw`flex-row items-center py-mb-${getScaledSize(2.5)} px-mb-${getScaledSize(5)} mt-${getScaledSize(5)}`,
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
           { backgroundColor: COLORS.white },
         ]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={tw`p-mb-${getScaledSize(2)}`}
+          style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
           <MaterialCommunityIcons
@@ -889,13 +885,7 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
         >
           Báo cáo hình ảnh sản phẩm
         </Text>
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("UploadQcImageScreen")}
-          style={[tw`p-2`, { borderRadius: 50 }]} 
-          activeOpacity={0.7} 
-        >
-          <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
-        </TouchableOpacity> */}
+        
       </View>
 
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
@@ -919,47 +909,32 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
 
           return (
             <TouchableOpacity
-              key={report.stt}
-              style={[
-                tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
-                { backgroundColor: COLORS.white },
-              ]}
-              onPress={() => handleReportPress(report)}
-            >
-              <View>
-                <Text style={[tw` mb-${getScaledSize(4)} `, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
-                  Report No: {report.reportNo}
-                </Text>
+            key={report.stt}
+            style={[tw`p-4 m-2 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
+            onPress={() => handleReportPress(report)}
+          >
+            <View>
+              <Text style={[tw`text-lg font-bold text-gray-800`]}>
+                Report No: {report.reportNo}
+              </Text>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
                 <DetailRow label="Stt" value={report.stt.toString()} />
                 <DetailRow label="Item Code" value={report.itemCode} />
-                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
-                <DetailRow label="Item Name" value={report.itemName} />
-                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
-                <DetailRow
-                  label="Location/Team"
-                  value={report.locationOrTeam}
-                />
-                <DetailRow label="Qty" value={report.qty.toString()} />
-                <DetailRow
-                  label="Qty Real Check"
-                  value={report.qtyRealCheck.toString()}
-                />
-                <DetailRow label="Request Date" value={report.requestDate} />
-                <DetailRow label="Confirm Date" value={report.confirmDate} />
-                <DetailRow
-                  label="Check & Verify by"
-                  value={report.checkAndVerifyBy}
-                />
-                <DetailRow
-                  label="Status"
-                  value={report.status}
-                  valueColor={textColor}
-                  backgroundColor={statusColor}
-                />
-                <DetailRow label="Created" value={report.created} />
-                <DetailRow label="Noted" value={report.noted} />
               </View>
-            </TouchableOpacity>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Qty" value={report.qty.toString()} />
+                <DetailRow label="Qty Real" value={report.qtyRealCheck.toString()} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Request Date" value={report.requestDate} />
+                <DetailRow label="Status" value={report.status} valueColor={textColor} backgroundColor={statusColor} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Created" value={report.created} />
+              </View>
+                <DetailRow label="Noted" value={report.noted} />
+            </View>
+          </TouchableOpacity>
           );
         })}
       </ScrollView>

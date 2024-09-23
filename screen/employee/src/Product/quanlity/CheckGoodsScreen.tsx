@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -93,7 +93,7 @@ const reports: Report[] = [
     qtyRealCheck: 6,
     requestDate: "17-03-2022",
     confirmDate: "16-03-2022",
-    checkAndVerifyBy: "\nCheck by: qctest\nVerify by: hongbt",
+    checkAndVerifyBy: "Check by: qctest\nVerify by: hongbt",
     status: "Đã đạt",
     created: "08:31 17-03-2022",
     noted: "",
@@ -149,7 +149,7 @@ const reports: Report[] = [
     qtyRealCheck: 0,
     requestDate: "13-07-2024",
     confirmDate: "31-08-2024",
-    checkAndVerifyBy: "\nCheck by: qctest\nVerify by: uyennd",
+    checkAndVerifyBy: "Check by: qctest\nVerify by: uyennd",
     status: "Không đạt",
     created: "07:34 13-07-2024",
     noted: "hoa tessting",
@@ -242,6 +242,10 @@ const DetailRow = ({
 
 const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5
+
+  
 
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
@@ -253,14 +257,16 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
     const searchTerm = search.trim().toLowerCase();
     return (
       report.reportNo.toLowerCase().includes(searchTerm) ||
-      report.ponoOrRoute.toLowerCase().includes(searchTerm) ||
       report.itemCode.toLowerCase().includes(searchTerm) ||
-      report.itemMaterial.toLowerCase().includes(searchTerm) ||
-      report.locationOrTeam.toLowerCase().includes(searchTerm) ||
-      report.status.toLowerCase().includes(searchTerm) ||
-      report.noted.toLowerCase().includes(searchTerm)
+      report.itemMaterial.toLowerCase().includes(searchTerm) 
     );
   });
+  const paginatedReports = filteredReports.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
 
   const handleReportPress = (report: Report) => {
     navigation.navigate("CheckGoodsDetailScreen", { report });
@@ -332,56 +338,59 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
       </View>
 
       <ScrollView style={tw`p-4`}>
-        {filteredReports.map((report) => {
+      {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status
           );
 
           return (
             <TouchableOpacity
-              key={report.stt}
-              style={[
-                tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
-                { backgroundColor: COLORS.white },
-              ]}
-              onPress={() => handleReportPress(report)}
-            >
-              <View>
-                <Text style={[tw` mb-${getScaledSize(4)} text-gray-800`, {fontSize:getScaledSize(16),fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
-                  Report No: {report.reportNo}
-                </Text>
+            key={report.stt}
+            style={[tw`p-4 m-2 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
+            onPress={() => handleReportPress(report)}
+          >
+            <View>
+              <Text style={[tw`text-lg font-bold text-gray-800`]}>
+                Report No: {report.reportNo}
+              </Text>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
                 <DetailRow label="Stt" value={report.stt.toString()} />
-                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
                 <DetailRow label="Item Code" value={report.itemCode} />
-                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
-                <DetailRow
-                  label="Location/Team"
-                  value={report.locationOrTeam}
-                />
-                <DetailRow label="Qty" value={report.qty.toString()} />
-                <DetailRow
-                  label="Qty Real Check"
-                  value={report.qtyRealCheck.toString()}
-                />
-                <DetailRow label="Request Date" value={report.requestDate} />
-                <DetailRow label="Confirm Date" value={report.confirmDate} />
-                <DetailRow
-                  label="Check & Verify by"
-                  value={report.checkAndVerifyBy}
-                />
-                <DetailRow
-                  label="Status"
-                  value={report.status}
-                  valueColor={textColor}
-                  backgroundColor={statusColor}
-                />
-                <DetailRow label="Created" value={report.created} />
-                <DetailRow label="Noted" value={report.noted} />
               </View>
-            </TouchableOpacity>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Qty" value={report.qty.toString()} />
+                <DetailRow label="Qty Real" value={report.qtyRealCheck.toString()} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Request Date" value={report.requestDate} />
+                <DetailRow label="Status" value={report.status} valueColor={textColor} backgroundColor={statusColor} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Created" value={report.created} />
+              </View>
+                <DetailRow label="Noted" value={report.noted} />
+            </View>
+          </TouchableOpacity>
           );
         })}
       </ScrollView>
+      <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === 1}
+        >
+          <Text style={[{color:COLORS.white}]}>Previous</Text>
+        </TouchableOpacity>
+        <Text>{`${currentPage} / ${totalPages}`}</Text>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.min(page + 1, totalPages))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === totalPages}
+        >
+          <Text style={[{color:COLORS.white}]}>Next</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

@@ -772,7 +772,7 @@ const DetailRow = ({
 }) => (
   <View
     style={[
-      tw`flex-row justify-between items-center mb${getScaledSize(2)}`,
+      tw`flex-row justify-between items-center mb-${getScaledSize(2)}`,
       { backgroundColor },
     ]}
   >
@@ -802,8 +802,8 @@ const DetailRow = ({
   </View>
 );
 
-const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
-  const [search, setSearch] = React.useState<string>("");
+const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
+  const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
 
@@ -811,21 +811,10 @@ const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
     setSearch(text.toLowerCase());
   };
 
-  
-
   // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
   const filteredReports = reports.filter((report) => {
-    // Chuyển đổi tất cả các trường thành chữ thường để tìm kiếm không phân biệt chữ hoa chữ thường
     const searchTerm = search.trim().toLowerCase();
-    return (
-      report.reportNo.toLowerCase().includes(searchTerm) ||
-      report.ponoOrRoute.toLowerCase().includes(searchTerm) ||
-      report.itemCode.toLowerCase().includes(searchTerm) ||
-      report.itemMaterial.toLowerCase().includes(searchTerm) ||
-      report.locationOrTeam.toLowerCase().includes(searchTerm) ||
-      report.status.toLowerCase().includes(searchTerm) ||
-      report.noted.toLowerCase().includes(searchTerm)
-    );
+    return report.itemCode.toLowerCase().includes(searchTerm);
   });
 
   const paginatedReports = filteredReports.slice(
@@ -834,6 +823,15 @@ const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
   );
 
   const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
+
+  // Nếu không có báo cáo nào được tìm thấy, không hiển thị gì
+  if (filteredReports.length === 0 && search) {
+    return (
+      <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
+        <Text style={tw`text-center mt-10`}>Không tìm thấy sản phẩm nào.</Text>
+      </SafeAreaView>
+    );
+  }
 
   const handleReportPress = (report: Report) => {
     navigation.navigate("CheckGoodsDetailScreen", { report });
@@ -865,28 +863,16 @@ const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
-        style={[
-          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
-          { backgroundColor: COLORS.white },
-        ]}
+        style={[tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`, { backgroundColor: COLORS.white }]}
       >
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={tw`p-${getScaledSize(2)}`}
           activeOpacity={0.7}
         >
-          <MaterialCommunityIcons
-            name="arrow-left"
-            size={24}
-            color={COLORS.black}
-          />
+          <MaterialCommunityIcons name="arrow-left" size={24} color={COLORS.black} />
         </TouchableOpacity>
-        <Text
-          style={[
-            tw` flex-1 text-center`,
-            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
-          ]}
-        >
+        <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18) }]}>
           Tải hình ảnh sản phẩm
         </Text>
         <TouchableOpacity
@@ -911,63 +897,46 @@ const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-4`}>
-         {paginatedReports.map((report) => {
-          const { statusColor, textColor } = getStatusColorAndTextColor(
-            report.status
-          );
+      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+        {paginatedReports.map((report) => {
+          const { statusColor, textColor } = getStatusColorAndTextColor(report.status);
           return (
             <TouchableOpacity
               key={report.stt}
-              style={[
-                tw`p-${getScaledSize(2.5)} m-${getScaledSize(1.25)} rounded-md shadow-md`,
-                { backgroundColor: COLORS.white },
-              ]}
+              style={[tw`p-4 m-2 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
               onPress={() => handleReportPress(report)}
             >
               <View>
-              <Text style={[tw` mb-${getScaledSize(4)} `, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray}]}>
-                  Report No: {report.reportNo}
-                </Text>
-                <DetailRow label="Stt" value={report.stt.toString()} />
-                <DetailRow label="PONO/Route" value={report.ponoOrRoute} />
-                <DetailRow label="Item Code" value={report.itemCode} />
-                <DetailRow label="Item Vật Tư" value={report.itemMaterial} />
-                <DetailRow
-                  label="Location/Team"
-                  value={report.locationOrTeam}
-                />
-                <DetailRow label="Qty" value={report.qty.toString()} />
-                <DetailRow
-                  label="Qty Real Check"
-                  value={report.qtyRealCheck.toString()}
-                />
-                <DetailRow label="Request Date" value={report.requestDate} />
-                <DetailRow label="Confirm Date" value={report.confirmDate} />
-                <DetailRow
-                  label="Check & Verify by"
-                  value={report.checkAndVerifyBy}
-                />
-                <DetailRow
-                  label="Status"
-                  value={report.status}
-                  valueColor={textColor}
-                  backgroundColor={statusColor}
-                />
-                <DetailRow label="Created" value={report.created} />
+                <Text style={[tw`text-lg font-bold text-gray-800`]}>Report No: {report.reportNo}</Text>
+                <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                  <DetailRow label="Stt" value={report.stt.toString()} />
+                  <DetailRow label="Item Code" value={report.itemCode} />
+                </View>
+                <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                  <DetailRow label="Qty" value={report.qty.toString()} />
+                  <DetailRow label="Qty Real" value={report.qtyRealCheck.toString()} />
+                </View>
+                <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                  <DetailRow label="Request Date" value={report.requestDate} />
+                  <DetailRow label="Status" value={report.status} valueColor={textColor} backgroundColor={statusColor} />
+                </View>
+                <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                  <DetailRow label="Created" value={report.created} />
+                </View>
                 <DetailRow label="Noted" value={report.noted} />
               </View>
             </TouchableOpacity>
           );
         })}
       </ScrollView>
-      <View style={tw`flex-row justify-between p-4`}>
+
+      <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
         <TouchableOpacity
           onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
           style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
           disabled={currentPage === 1}
         >
-          <Text style={[{color:COLORS.white}]}>Previous</Text>
+          <Text style={[{color: COLORS.white}]}>Previous</Text>
         </TouchableOpacity>
         <Text>{`${currentPage} / ${totalPages}`}</Text>
         <TouchableOpacity
@@ -975,7 +944,7 @@ const UpLoadImageProduct:React.FC = ({ navigation }: any) => {
           style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
           disabled={currentPage === totalPages}
         >
-          <Text style={[{color:COLORS.white}]}>Next</Text>
+          <Text style={[{color: COLORS.white}]}>Next</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
