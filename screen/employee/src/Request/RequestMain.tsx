@@ -5,7 +5,8 @@ import {
   TouchableOpacity,
   SafeAreaView,
   FlatList,
-  Dimensions
+  Dimensions,
+  RefreshControl
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -86,10 +87,18 @@ type RequestMainProps = {
 const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(leaveRequests);
+  const [refreshing, setRefreshing] = useState(false); 
 
   useEffect(() => {
     setFilteredData(leaveRequests);
   }, []);
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -97,6 +106,9 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
       setFilteredData([]);
       return;
     }
+
+    
+
     const filtered = leaveRequests.filter((item) => {
       const dateMatch = item.startDate
         .toLowerCase()
@@ -226,6 +238,9 @@ const RequestMain: React.FC<RequestMainProps> = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={tw`pb-${getScaledSize(5)}`}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
       {/* <TouchableOpacity
         style={[

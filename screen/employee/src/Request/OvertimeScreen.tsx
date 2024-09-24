@@ -4,9 +4,9 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar,
   FlatList,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -76,6 +76,7 @@ type OvertimeScreenProps = {
 const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeOvertimeRequests);
+  const [refreshing, setRefreshing] = useState(false); 
   
 
   useEffect(() => {
@@ -84,6 +85,14 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
 
   const truncateText = (text: string, maxLength: number) => {
     return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const handleSearch = (text: string) => {
@@ -201,6 +210,9 @@ const OvertimeScreen: React.FC<OvertimeScreenProps> = ({ navigation }) => {
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         contentContainerStyle={tw`pb-${getScaledSize(5)}`} 
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );

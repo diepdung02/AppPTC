@@ -225,7 +225,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   <TouchableOpacity
     style={tw`w-full h-full`}
     activeOpacity={1}
-    onPress={() => setModalVisible(false)} // Đóng modal khi nhấn vào bất kỳ đâu ngoài modal
+    onPress={() => setModalVisible(false)} 
   >
     <View
   style={[tw`absolute w-full h-full`, { backgroundColor: 'rgba(255, 255, 255, 0.85)' }]}
@@ -240,8 +240,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     tw`w-80 p-5 justify-center items-center rounded-lg`,
     { backgroundColor: "rgba(0, 0, 0, 0.12)" },
   ]}
-  activeOpacity={1} // Vô hiệu hóa sự kiện nhấn vào modal
-  onPress={() => {}} // Để modal không bị đóng khi nhấn vào modal
+  activeOpacity={1} 
+  onPress={() => {}} 
 >
   <View style={tw`flex-row justify-around w-full`}>
     <TouchableOpacity

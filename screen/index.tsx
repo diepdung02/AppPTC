@@ -17,8 +17,6 @@ import MailDetailScreen from './employee/home/MailDetailScreen';
 import SendEmailScreen from './employee/home/SendEmailScreen';
 import NotificationDetailScreen from './employee/home/NotificationDetailScreen';
 import OvertimeRequest from '../screen/employee/src/Request/OvertimeRequest';
-import OutputScreen from '../screen/employee/src/Product/OutputScreen';
-import OutputList from '../screen/employee/src/Product/OutputList';
 import LeftDeptScreen from '../screen/employee/src/Request/LeftDeptScreen';
 import CreateLeftDept from '../screen/employee/src/Request/CreateLeftDept';
 import DetailLeftDept from '../screen/employee/src/Request/DetailLeftDept';
@@ -43,6 +41,7 @@ import UploadQcImageScreen from './employee/src/Product/quanlity/UploadQcImageSc
 import UploadCarCassScreen from './employee/src/Product/quanlity/UpLoadCheckCarCass';
 import UpLoadImageProduct from './employee/src/Product/quanlity/UpLoadImageProduct';
 import ReportImageScreen from './employee/src/Product/quanlity/ReportImageScreen';
+import CreateOutPut from './employee/src/Product/CreateOutPut';
 
 export{
     LoginScreen,
@@ -64,8 +63,6 @@ export{
     SendEmailScreen,
     NotificationDetailScreen,
     OvertimeRequest,
-    OutputScreen,
-    OutputList,
     LeftDeptScreen,
     CreateLeftDept,
     DetailLeftDept,
@@ -89,5 +86,6 @@ export{
     UploadQcImageScreen,
     UploadCarCassScreen,
     UpLoadImageProduct,
-    ReportImageScreen
+    ReportImageScreen,
+    CreateOutPut
 }

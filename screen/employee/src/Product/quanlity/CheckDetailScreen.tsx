@@ -11,6 +11,7 @@ import {
   TouchableOpacity,
   Modal,
   Keyboard,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import RNPickerSelect from "react-native-picker-select";
@@ -77,7 +78,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   const [reason, setReason] = useState("");
   const [action, setAction] = useState("");
   const [itemDetails, setItemDetails] = useState<Record<string, { reason: string; action: string; isCompleted?: boolean; qtyCheck?: number; qtyReject?: number; solution?: string }>>({});
-
+  const [refreshing, setRefreshing] = useState(false); 
 
 
   if (!report) {
@@ -87,6 +88,14 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       </SafeAreaView>
     );
   }
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
   const handleCapture = async () => {
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -254,7 +263,10 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           Chi tiết báo lỗi
         </Text>
       </View>
-      <ScrollView contentContainerStyle={tw`p-${getScaledSize(4)}`}>
+      <ScrollView contentContainerStyle={tw`p-${getScaledSize(4)}`}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
         <View style={[tw`p-${getScaledSize(4)} rounded-lg shadow-md mb-${getScaledSize(6)}`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[

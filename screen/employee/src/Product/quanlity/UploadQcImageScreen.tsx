@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TextInput, ScrollView, Dimensions, SafeAreaView, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ScrollView, Dimensions, SafeAreaView, TouchableOpacity, RefreshControl } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import tw from 'twrnc';
@@ -40,6 +40,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
   const [colorCode, setColorCode] = useState('');
   const [inspectionDate, setInspectionDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [refreshing, setRefreshing] = useState(false); 
 
   // Các giá trị dropdown
   const [routeCode, setRouteCode] = useState('');
@@ -124,6 +125,13 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     setInspectionDate(date);
     hideDatePicker();
   }, [hideDatePicker]);
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
 
   const codeMapping: { [key: string]: string } = {
     'GV8115': 'GV811551.GVZ.00',
@@ -244,7 +252,10 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             Tải thông tin sản phẩm
             </Text>
           </View>
-      <ScrollView contentContainerStyle={tw`p-${getScaledSize(5)}`}>
+      <ScrollView contentContainerStyle={tw`p-${getScaledSize(5)}`}
+       refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={tw`mb-${getScaledSize(4)}`}>
           <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Kiểu kiểm hàng:</Text>
           <RNPickerSelect

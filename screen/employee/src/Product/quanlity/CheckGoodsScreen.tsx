@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -229,7 +230,7 @@ const DetailRow = ({
       style={[
         {
           fontFamily: "CustomFont-Regular",
-          fontSize: getScaledSize(14),
+          fontSize: getScaledSize(12),
           color: valueColor,
         },
         customValueStyle,
@@ -244,16 +245,22 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5
+  const [refreshing, setRefreshing] = useState(false); 
 
   
-
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
   };
 
-  // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
+
   const filteredReports = reports.filter((report) => {
-    // Chuyển đổi tất cả các trường thành chữ thường để tìm kiếm không phân biệt chữ hoa chữ thường
     const searchTerm = search.trim().toLowerCase();
     return (
       report.reportNo.toLowerCase().includes(searchTerm) ||
@@ -322,6 +329,13 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
         >
           Báo cáo kiểm hàng
         </Text>
+        <TouchableOpacity 
+  onPress={() => navigation.navigate("CheckGoodsDetailScreen", { reports })} 
+  style={tw`p-${getScaledSize(2)}`} 
+  activeOpacity={0.7}
+>
+          <MaterialCommunityIcons name="plus-circle-outline" size={24} color={COLORS.black} />
+        </TouchableOpacity>
       </View>
 
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
@@ -337,7 +351,10 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-4`}>
+      <ScrollView style={tw`p-4`}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status
@@ -354,18 +371,15 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
                 Report No: {report.reportNo}
               </Text>
               <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
-                <DetailRow label="Stt" value={report.stt.toString()} />
                 <DetailRow label="Item Code" value={report.itemCode} />
               </View>
               <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
                 <DetailRow label="Qty" value={report.qty.toString()} />
                 <DetailRow label="Qty Real" value={report.qtyRealCheck.toString()} />
-              </View>
-              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
-                <DetailRow label="Request Date" value={report.requestDate} />
                 <DetailRow label="Status" value={report.status} valueColor={textColor} backgroundColor={statusColor} />
               </View>
               <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Request Date" value={report.requestDate} />
                 <DetailRow label="Created" value={report.created} />
               </View>
                 <DetailRow label="Noted" value={report.noted} />

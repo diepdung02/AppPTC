@@ -1,225 +1,297 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, Alert, TextInput, SafeAreaView } from 'react-native';
-import tw from 'twrnc';
-import * as ImagePicker from 'expo-image-picker';
-import { Video, ResizeMode } from 'expo-av';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  SafeAreaView,
+  Dimensions,
+  RefreshControl,
+} from "react-native";
+import tw from "twrnc";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { SearchBar } from "@rneui/themed";
+import CheckBox from "react-native-check-box"; // Import CheckBox
+import COLORS from "../../../../constants/Color";
 
-const Output: React.FC = () => {
-  const productCode = 'P12345';
-  const productName = 'Sản phẩm A';
-  const quantityCompleted = 100;
-  const completionDate = '04/09/2024';
-  const qcStatus = 'Đã kiểm tra';
-  const qcInspector = 'Nguyễn Văn B';
-  const qcDate = '03/09/2024';
-  const inspectionResults = [
-    'Bước 1: Hoàn thành',
-    'Bước 2: Hoàn thành',
-    'Bước 3: Có lỗi, đã sửa chữa',
-  ];
-  const initialNotes = 'Sản phẩm đã đạt yêu cầu.';
-  const [editing, setEditing] = useState(false);
-  const [editedNotes, setEditedNotes] = useState(initialNotes);
-  const [attachments, setAttachments] = useState<{ uri: string; type: 'image' | 'video' }[]>([]);
+const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
-  const handleConfirm = () => {
-    Alert.alert('Xác nhận', 'Báo cáo sản phẩm đã được xác nhận.');
+// Hàm tính kích thước responsive
+const scaleWidth = initialWidth / 375; 
+const scaleHeight = initialHeight / 667; 
+
+const getScaledSize = (size: number, isWidth = true) => {
+  const minWidth = 320;
+  const maxWidth = 1024;
+  const width = Dimensions.get('window').width;
+
+  if (width < minWidth) {
+    return size * 0.5;
+  } else if (width > maxWidth) {
+    return size * 1.2;
+  }
+  
+  return isWidth ? size * scaleWidth : size * scaleHeight;
+};
+
+type Report = {
+  orderID: number;
+  createDate: string;
+  type: string;
+  stage: string;
+  employee: string;
+  approved: boolean;
+  close: boolean;
+  note: string;
+  ref: string;
+};
+
+const reports: Report[] = [
+  {
+    orderID: 1,
+    createDate: "23/09/2024",
+    type: "CAR",
+    stage: "SAM",
+    employee: "SAM Nguyễn Văn A",
+    approved: true,
+    close: false,
+    note: "123",
+    ref: "123",
+  },
+  {
+    orderID: 2,
+    createDate: "24/09/2024",
+    type: "CAR",
+    stage: "VEN",
+    employee: "PRO Diệp Minh Dũng",
+    approved: false,
+    close: true,
+    note: "123",
+    ref: "123",
+  },
+];
+
+const DetailRow = ({
+  label,
+  value,
+  isCheckbox = false,
+  customValueStyle = {},
+  valueColor = "#666",
+  backgroundColor = "#fff",
+}: {
+  label: string;
+  value: string | boolean;
+  isCheckbox?: boolean;
+  customValueStyle?: object;
+  valueColor?: string;
+  backgroundColor?: string;
+}) => (
+  <View
+    style={[
+      tw`flex-row justify-between items-center mb-${getScaledSize(2)}`,
+      { backgroundColor },
+    ]}
+  >
+    <Text
+      style={[
+        {
+          fontFamily: "CustomFont-Bold",
+          fontSize: getScaledSize(14),
+          color: "#444",
+        },
+      ]}
+    >
+      {label}:
+    </Text>
+    {isCheckbox ? (
+      <CheckBox
+        isChecked={value as boolean}
+        disabled={true} // Disable checkbox
+        onClick={() => {}} // Add a no-op function for onClick
+        checkedImage={
+          <MaterialCommunityIcons
+            name="checkbox-marked"
+            size={20}
+            color={COLORS.green}
+          />
+        }
+        unCheckedImage={
+          <MaterialCommunityIcons
+            name="checkbox-blank-outline"
+            size={20}
+            color={COLORS.red}
+          />
+        }
+      />
+    ) : (
+      <Text
+        style={[
+          {
+            fontFamily: "CustomFont-Regular",
+            fontSize: getScaledSize(12),
+            color: valueColor,
+          },
+          customValueStyle,
+        ]}
+      >
+        {value}
+      </Text>
+    )}
+  </View>
+);
+
+const Output: React.FC = ({ navigation }: any) => {
+  const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5;
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
-  const handleEdit = () => {
-    setEditing(true);
+  const handleSearch = (text: string) => {
+    setSearch(text.toLowerCase());
   };
 
-  const handleSave = () => {
-    Alert.alert('Chỉnh sửa', 'Ghi chú đã được cập nhật.');
-    setEditing(false);
-  };
+  const filteredReports = reports.filter((report) => {
+    const searchTerm = search.trim().toLowerCase();
+    return (
+      report.employee.toLowerCase().includes(searchTerm) ||
+      String(report.orderID).toLowerCase().includes(searchTerm) ||
+      report.stage.toLowerCase().includes(searchTerm)
+    );
+  });
 
-  const handleCapture = async () => {
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
+  const paginatedReports = filteredReports.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-    if (!result.canceled) {
-      const { uri, type } = result.assets[0];
-      setAttachments([
-        ...attachments,
-        { uri, type: type === 'image' ? 'image' : 'video' },
-      ]);
-    } else {
-      Alert.alert(
-        'Chưa chụp ảnh hoặc quay video',
-        'Vui lòng chụp ảnh hoặc quay video để đính kèm.'
-      );
-    }
-  };
+  const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
 
-  const handleMediaPick = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-    });
-    
-    if (!result.canceled) {
-      const { uri, type } = result.assets[0];
-      setAttachments([
-        ...attachments,
-        { uri, type: type === 'image' ? 'image' : 'video' },
-      ]);
-    } else {
-      Alert.alert(
-        'Chưa chọn tài liệu',
-        'Vui lòng chọn một tài liệu để đính kèm.'
-      );
-    }
+  const handleReportPress = (report: Report) => {
+    navigation.navigate("CheckGoodsDetailScreen", { report });
   };
 
   return (
-    <SafeAreaView style={tw`flex-1 bg-gray-100`}>
-      <ScrollView style={tw`flex-1`}>
-        {/* Header */}
-        <View style={tw`bg-white p-4 border-b border-gray-200`}>
-          <Text style={tw`text-xl font-bold text-center`}>
-            Báo cáo sản phẩm hoàn thành
-          </Text>
-        </View>
+    <SafeAreaView
+      style={[
+        tw`flex-1 mt-${getScaledSize(5)}`,
+        { backgroundColor: COLORS.colorMain },
+      ]}
+    >
+      <View
+        style={[
+          tw`flex-row items-center py-${getScaledSize(2.5)} px-${getScaledSize(5)} mt-${getScaledSize(5)}`,
+          { backgroundColor: COLORS.white },
+        ]}
+      >
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}
+          style={tw`p-2`}
+          activeOpacity={0.7}
+        >
+          <MaterialCommunityIcons
+            name="arrow-left"
+            size={24}
+            color={COLORS.black}
+          />
+        </TouchableOpacity>
 
-        {/* Product Information */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <View style={tw`flex-row items-center justify-between mb-2`}>
-            <Text style={tw`text-gray-500`}>Mã sản phẩm:</Text>
-            <Text style={tw`text-black font-semibold`}>{productCode}</Text>
-          </View>
-          <View style={tw`flex-row items-center justify-between mb-2`}>
-            <Text style={tw`text-gray-500`}>Tên sản phẩm:</Text>
-            <Text style={tw`text-black font-semibold`}>{productName}</Text>
-          </View>
-          <View style={tw`flex-row items-center justify-between mb-2`}>
-            <Text style={tw`text-gray-500`}>Số lượng hoàn thành:</Text>
-            <Text style={tw`text-black font-semibold`}>{quantityCompleted}</Text>
-          </View>
-          <View style={tw`flex-row items-center justify-between`}>
-            <Text style={tw`text-gray-500`}>Ngày hoàn thành:</Text>
-            <Text style={tw`text-black font-semibold`}>{completionDate}</Text>
-          </View>
-        </View>
+        <Text
+          style={[
+            tw`flex-1 text-center`,
+            { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(16) },
+          ]}
+        >
+          Output
+        </Text>
 
-        {/* QC Status */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <View style={tw`flex-row items-center justify-between mb-2`}>
-            <Text style={tw`text-gray-500`}>Trạng thái QC:</Text>
-            <Text style={tw`text-green-500 font-semibold`}>{qcStatus}</Text>
-          </View>
-          <View style={tw`flex-row items-center justify-between mb-2`}>
-            <Text style={tw`text-gray-500`}>Người kiểm tra:</Text>
-            <Text style={tw`text-black font-semibold`}>{qcInspector}</Text>
-          </View>
-          <View style={tw`flex-row items-center justify-between`}>
-            <Text style={tw`text-gray-500`}>Ngày kiểm tra:</Text>
-            <Text style={tw`text-black font-semibold`}>{qcDate}</Text>
-          </View>
-        </View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("CreateOutPut")}
+          style={tw`p-${getScaledSize(2)}`}
+          activeOpacity={0.7}
+        >
+          <MaterialCommunityIcons name="plus-circle-outline" size={24} color={COLORS.black} />
+        </TouchableOpacity>
+      </View>
 
-        {/* Completion Details */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <Text style={tw`text-gray-500 mb-2`}>Kết quả kiểm tra:</Text>
-          <View style={tw`ml-4`}>
-            {inspectionResults.map((result, index) => (
-              <Text key={index} style={tw`text-black`}>
-                - {result}
-              </Text>
-            ))}
-          </View>
-        </View>
+      <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
+        <SearchBar
+          placeholder="Tìm kiếm"
+          onChangeText={handleSearch}
+          value={search}
+          lightTheme
+          round
+          containerStyle={tw`flex-1 bg-transparent border-b border-gray-300 border-t-0`}
+          inputContainerStyle={{ height: getScaledSize(40), backgroundColor: COLORS.white }}
+          inputStyle={{ fontSize: 16 }}
+        />
+      </View>
 
-        {/* Notes */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <Text style={tw`text-gray-500 mb-2`}>Ghi chú:</Text>
-          {editing ? (
-            <>
-              <TextInput
-                style={tw`border border-gray-300 p-2 rounded`}
-                value={editedNotes}
-                onChangeText={setEditedNotes}
-              />
-              <TouchableOpacity
-                style={tw`bg-blue-500 py-2 px-6 rounded-full mt-2`}
-                onPress={handleSave}
-              >
-                <Text style={tw`text-white font-semibold`}>Lưu</Text>
-              </TouchableOpacity>
-            </>
-          ) : (
-            <>
-              <Text style={tw`text-black`}>{editedNotes}</Text>
-              <TouchableOpacity
-                style={tw`bg-gray-400 py-2 px-6 rounded-full mt-2`}
-                onPress={handleEdit}
-              >
-                <Text style={tw`text-white font-semibold`}>Chỉnh sửa</Text>
-              </TouchableOpacity>
-            </>
-          )}
-        </View>
-
-        {/* Media Evidence */}
-        <View style={tw`bg-white p-4 mt-2`}>
-          <Text style={tw`text-gray-500 mb-2`}>Hình ảnh/Video minh chứng:</Text>
+      <ScrollView
+        style={tw`p-4`}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      >
+        {paginatedReports.map((report, index) => (
           <TouchableOpacity
-            style={tw`bg-green-500 py-2 px-6 rounded-full mb-2`}
-            onPress={handleCapture}
+            key={report.orderID}
+            style={[tw`p-4 m-2 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
+            // onPress={() => handleReportPress(report)}
           >
-            <Text style={tw`text-white font-semibold`}>Chụp Ảnh/Quay Video</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={tw`bg-red-500 py-2 px-6 rounded-full mb-2`}
-            onPress={handleMediaPick}
-          >
-            <Text style={tw`text-white font-semibold`}>Chọn Hình Ảnh/Video</Text>
-          </TouchableOpacity>
-          {attachments.map((attachment, index) => (
-            <View key={index} style={tw`border border-gray-300 p-4 mb-2`}>
-              {attachment.type === 'image' ? (
-                <Image
-                  source={{ uri: attachment.uri }}
-                  style={tw`w-full h-40 bg-gray-200`}
+            <View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="OrderID" value={String(report.orderID)} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Ngày tạo" value={report.createDate} />
+                <DetailRow label="Loại" value={report.type} />
+                <DetailRow label="Công đoạn" value={report.stage} />
+              </View>
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow label="Tên người tạo" value={report.employee} />
+              </View>
+              <DetailRow label="Note" value={report.note} />
+              <DetailRow label="Ref" value={report.ref} />
+              <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
+                <DetailRow
+                  label="Approved"
+                  value={report.approved}
+                  isCheckbox
                 />
-              ) : (
-                <Video
-                  source={{ uri: attachment.uri }}
-                  style={tw`w-full h-40`}
-                  resizeMode={ResizeMode.COVER}
-                  useNativeControls
+                <DetailRow
+                  label="Close"
+                  value={report.close}
+                  isCheckbox
                 />
-              )}
+              </View>
             </View>
-          ))}
-          {attachments.length === 0 && (
-            <Text style={tw`text-gray-500`}>Chưa có hình ảnh hoặc video minh chứng</Text>
-          )}
-        </View>
-
-        {/* Action Buttons */}
-        <View style={tw`flex-row justify-around p-4 mt-4`}>
-          <TouchableOpacity
-            style={tw`bg-blue-500 py-2 px-6 rounded-full`}
-            onPress={handleConfirm}
-          >
-            <Text style={tw`text-white font-semibold`}>Xác nhận</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={tw`bg-gray-400 py-2 px-6 rounded-full`}
-            onPress={handleEdit}
-          >
-            <Text style={tw`text-white font-semibold`}>Chỉnh sửa</Text>
-          </TouchableOpacity>
-        </View>
+        ))}
+       
       </ScrollView>
+      <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === 1}
+        >
+          <Text style={[{color:COLORS.white}]}>Previous</Text>
+        </TouchableOpacity>
+        <Text>{`${currentPage} / ${totalPages}`}</Text>
+        <TouchableOpacity
+          onPress={() => setCurrentPage(page => Math.min(page + 1, totalPages))}
+          style={[tw`p-${getScaledSize(2)}`, { backgroundColor: COLORS.primary }]}
+          disabled={currentPage === totalPages}
+        >
+          <Text style={[{color:COLORS.white}]}>Next</Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };

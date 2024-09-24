@@ -9,6 +9,7 @@ import {
   Animated,
   Easing,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import { SearchBar } from "@rneui/themed";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -370,6 +371,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
   const [selectedCollectionName, setSelectedCollectionName] = useState<string>("");
   const animatedValue = useRef(new Animated.Value(0)).current;
   const [searchKeyword, setSearchKeyword] = useState<string>("");
+  const [refreshing, setRefreshing] = useState(false); 
 
   useCustomFonts();
   const handleCategoryChange = (collectionName: string | null) => {
@@ -438,6 +440,14 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
 
   const handleSearch = (text: string) => {
     setSearchKeyword(text);
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const filteredProducts = products.filter(
@@ -658,6 +668,9 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id.toString()}
           contentContainerStyle={tw`p-${getScaledSize(3)}`}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         />
       </>
     </SafeAreaView>

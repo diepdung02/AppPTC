@@ -6,11 +6,13 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { SearchBar } from "@rneui/themed";
 import COLORS from "../../../../../constants/Color";
+
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
 
@@ -807,11 +809,20 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
   const [search, setSearch] = React.useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
-
+  const [refreshing, setRefreshing] = useState(false); 
 
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
   };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
+  
 
   // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
   const filteredReports = reports.filter((report) => {
@@ -901,7 +912,10 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}
+       refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
         {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status

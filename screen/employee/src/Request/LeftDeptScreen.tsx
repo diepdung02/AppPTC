@@ -4,9 +4,9 @@ import {
   Text,
   TouchableOpacity,
   SafeAreaView,
-  StatusBar,
   FlatList,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -77,6 +77,7 @@ const fakeData = [
 const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeData);
+  const [refreshing, setRefreshing] = useState(false); 
 
   useEffect(() => {
     setFilteredData(fakeData || []);
@@ -95,6 +96,8 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
       setFilteredData([]);
       return;
     }
+    
+
     const filtered = fakeData.filter((item) => {
       const dateMatch = item.startDate.toLowerCase().includes(text.toLowerCase());
       const timeMatch = item.startTime.toLowerCase().includes(text.toLowerCase());
@@ -104,7 +107,13 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
     });
     setFilteredData(filtered);
   };
-
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
+  };
   const renderItem = ({ item }: { item: any }) => {
     let statusColor, textColor;
     switch (item.status) {
@@ -215,6 +224,9 @@ const LeftDeptScreen: React.FC<LeftDeptScreenProps> = ({ navigation }) => {
         renderItem={renderItem}
         contentContainerStyle={tw`pb-${getScaledSize(5)}`} 
         style={tw`flex-1`}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );

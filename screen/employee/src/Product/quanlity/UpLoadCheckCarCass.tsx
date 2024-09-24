@@ -8,7 +8,8 @@ import {
   Dimensions,
   SafeAreaView,
   Modal,
-  Alert
+  Alert,
+  RefreshControl
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { MaterialCommunityIcons } from "@expo/vector-icons"; // Sử dụng icon
@@ -17,7 +18,7 @@ import COLORS from "../../../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../../../navigator/navigation";
 import { Video, ResizeMode } from "expo-av";
-import { color } from "@rneui/themed/dist/config";
+
 
 type Props = {
   navigation: StackNavigationProp<RootStackParamList, "CheckGoodsDetailScreen">;
@@ -73,6 +74,7 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   });
 
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
+  const [refreshing, setRefreshing] = useState(false); 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 10;
   const [selectedAttachment, setSelectedAttachment] = useState<{
@@ -194,6 +196,13 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   const handleCloseModal = () => {
     setModalVisible(false);
     setSelectedAttachment(null);
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const handleDeleteAttachment = (uri: string) => {
@@ -345,7 +354,10 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   </TouchableOpacity>
 </View>
 
-<ScrollView contentContainerStyle={tw`flex-grow`}>
+<ScrollView contentContainerStyle={tw`flex-grow`}
+refreshControl={
+  <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+}>
 <View style={tw`m-${getScaledSize(4)}`}>
   <Text
     style={[

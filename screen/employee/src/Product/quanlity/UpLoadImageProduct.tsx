@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -806,6 +807,7 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
+  const [refreshing, setRefreshing] = useState(false); 
 
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
@@ -834,7 +836,15 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
   }
 
   const handleReportPress = (report: Report) => {
-    navigation.navigate("CheckGoodsDetailScreen", { report });
+    navigation.navigate("UploadCarCassScreen", { report });
+  };
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const getStatusColorAndTextColor = (status: string) => {
@@ -897,7 +907,10 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
         />
       </View>
 
-      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}
+       refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
         {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(report.status);
           return (

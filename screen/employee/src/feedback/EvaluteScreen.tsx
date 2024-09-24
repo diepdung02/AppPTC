@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Dimensions } from "react-native";
+import { View, Text, FlatList, SafeAreaView, TouchableOpacity, Dimensions, RefreshControl } from "react-native";
 import tw from "twrnc";
 import COLORS from "../../../../constants/Color";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -81,6 +81,7 @@ const EvaluateScreen: React.FC<Props> = ({ navigation }) => {
   const [search, setSearch] = useState("");
   const [filteredData, setFilteredData] = useState(fakeReviews);
   const [expandedMonths, setExpandedMonths] = useState<string[]>([]);
+  const [refreshing, setRefreshing] = useState(false); 
 
   const fontsLoaded = useCustomFonts();
 
@@ -88,6 +89,13 @@ const EvaluateScreen: React.FC<Props> = ({ navigation }) => {
     setExpandedMonths((prev) =>
       prev.includes(month) ? prev.filter((m) => m !== month) : [...prev, month]
     );
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const renderItem = ({ item }: { item: typeof fakeReviews[0] }) => (
@@ -187,6 +195,9 @@ const EvaluateScreen: React.FC<Props> = ({ navigation }) => {
         </Text>
       </View>
       <FlatList
+       refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
         data={filteredData}
         renderItem={renderItem}
         keyExtractor={(item) => item.month}

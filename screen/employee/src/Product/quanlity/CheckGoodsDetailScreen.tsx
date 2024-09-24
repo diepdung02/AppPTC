@@ -154,7 +154,7 @@ const CheckGoodsDetailScreen: React.FC = ({ navigation, route }: any) => {
               { label: "Location/Team", value: report.locationOrTeam },
               { label: "Qty", value: report.qty },
               { label: "Material: ", value: "follow PTC's standard/ Drawing" },
-              { label: "Được kiểm bởi: ", value: " QC Nguyễn Trọng An" },
+              { label: "Được kiểm bởi: ", value: report.detail.booker },
               { label: "Trạng Thái:", value: "Hoàn thành" },
               { label: "Hoàn thành lúc:", value: "08:27 07-08-2023" },
               { label: "Qty Check", value: String(report.qty) },

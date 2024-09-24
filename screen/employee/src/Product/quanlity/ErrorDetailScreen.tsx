@@ -8,6 +8,7 @@ import {
   Alert,
   Dimensions,
   TextInput,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -81,6 +82,7 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
   const [actualCheckedQuantity, setActualCheckedQuantity] = useState<number>(0);
   const [rejectedQuantity, setRejectedQuantity] = useState<number>(0);
   const [status, setStatus] = useState<string>("");
+  const [refreshing, setRefreshing] = useState(false); 
 
   const handleStartCheck = () => {
     if (selectedItems.size === 0) {
@@ -98,6 +100,13 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
 
   const handleComplete = () => {
     Alert.alert("Hoàn thành", "Báo lỗi đã được hoàn thành.");
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const handleSelect = (option: string) => {
@@ -227,7 +236,10 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
         </Text>
       </View>
 
-      <ScrollView style={tw`p-${getScaledSize(4)}`}>
+      <ScrollView style={tw`p-${getScaledSize(4)}`}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }>
       <View style={[tw` p-${getScaledSize(4)} rounded-lg shadow-md mb-${getScaledSize(6)}`, {backgroundColor:COLORS.white}]}>
           <Text
             style={[

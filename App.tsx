@@ -26,8 +26,6 @@ import {
   SendEmailScreen,
   NotificationDetailScreen,
   OvertimeRequest,
-  OutputScreen,
-  OutputList,
   LeftDeptScreen,
   CreateLeftDept,
   DetailLeftDept,
@@ -51,10 +49,10 @@ import {
   UploadQcImageScreen,
   UploadCarCassScreen,
   UpLoadImageProduct,
-  ReportImageScreen
+  ReportImageScreen,
+  CreateOutPut
 } from "./screen/index";
 import { RootStackParamList } from "./screen/navigator/navigation";
-
 import store, { persistor } from './redux/Slice/store';
 
 
@@ -287,16 +285,6 @@ const App: React.FC = () => (
           options={{ headerShown: false }}
         />
         <Stack.Screen
-          name="OutputScreen"
-          component={OutputScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="OutputList"
-          component={OutputList}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
           name="LeftDeptScreen"
           component={LeftDeptScreen}
           options={{ headerShown: false }}
@@ -406,9 +394,13 @@ const App: React.FC = () => (
           component={ReportImageScreen}
           options={{ headerShown: false }}
         />
+        <Stack.Screen
+          name="CreateOutPut"
+          component={CreateOutPut}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-
     </PersistGate>
   </Provider>
 );

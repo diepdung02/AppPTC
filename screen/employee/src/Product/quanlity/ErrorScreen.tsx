@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Dimensions,
+  RefreshControl
 } from "react-native";
 import tw from "twrnc";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -235,6 +236,7 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
   const itemsPerPage = 5;
+  const [refreshing, setRefreshing] = useState(false); 
 
   const handleSearch = (text: string) => {
     setSearch(text);
@@ -263,6 +265,13 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
 
   const handleReportPress = (report: Report) => {
     navigation.navigate("ErrorDetailScreen", { report });
+  };
+  const onRefresh = () => {
+    setRefreshing(true);
+    
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 1000);
   };
 
   const getStatusColorAndTextColor = (status: string) => {
@@ -299,9 +308,7 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
         <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18) }]}>
           Danh sách báo lỗi
         </Text>
-        <TouchableOpacity onPress={() => navigation.navigate("LeaveRequest")} style={tw`p-${getScaledSize(2)}`} activeOpacity={0.7}>
-          <MaterialCommunityIcons name="plus-circle-outline" size={24} color={COLORS.black} />
-        </TouchableOpacity>
+
       </View>
 
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
@@ -319,7 +326,10 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
 
       {/* Chỉ hiển thị danh sách nếu có sản phẩm tìm thấy */}
       {search && filteredReports.length > 0 ? (
-        <ScrollView style={tw`p-${getScaledSize(4)}`}>
+        <ScrollView style={tw`p-${getScaledSize(4)}`}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
           {paginatedReports.map((report) => {
             const { statusColor, textColor } = getStatusColorAndTextColor(report.status);
             return (

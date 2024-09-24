@@ -1,3 +1,4 @@
+import CreateOutPut from "../employee/src/Product/CreateOutPut";
 
 export type DetailItem = {
   key: string;
@@ -148,7 +149,6 @@ export type RootStackParamList = {
   DetailLeftDept: {item: CreateLeftDept};
   CreateLeftDept: undefined;
   ApproveLeaveScreen: undefined;
-  OutputList: undefined;
   EvaluateScreen: undefined;
   VoteScreen: undefined;
   BenefitScreen: undefined;
@@ -164,17 +164,7 @@ export type RootStackParamList = {
   ManagerEvaluteScreen: undefined;
   ReportImageScreen: undefined;
   Output: undefined;
-  OutputScreen: {
-    product: Product;
-    productId: number;
-    components: Component[];
-    productName: string;
-    productClient: string;
-    productCode: string;
-    productImage: string;
-    productPDF: string;
-    remainingComponents: Component[];
-  };
+  CreateOutPut: undefined;
   DetailOvertime: { item: OvertimeRequest };
   DetailRequest: { item: LeaveRequest };
   ProductDetail: { item: DataItem };
