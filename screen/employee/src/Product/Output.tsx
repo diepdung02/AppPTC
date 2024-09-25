@@ -174,10 +174,6 @@ const Output: React.FC = ({ navigation }: any) => {
 
   const totalPages = Math.ceil(filteredReports.length / itemsPerPage);
 
-  const handleReportPress = (report: Report) => {
-    navigation.navigate("CheckGoodsDetailScreen", { report });
-  };
-
   return (
     <SafeAreaView
       style={[
