@@ -6,7 +6,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import tw from 'twrnc';
 import COLORS from '../../../../constants/Color';
 
-// Define types
 type RootStackParamList = {
   Product: undefined;
 };

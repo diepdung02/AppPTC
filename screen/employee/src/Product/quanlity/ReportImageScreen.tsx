@@ -823,10 +823,7 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
     }, 1000);
   };
   
-
-  // Hàm lọc báo cáo dựa trên từ khóa tìm kiếm
   const filteredReports = reports.filter((report) => {
-    // Chuyển đổi tất cả các trường thành chữ thường để tìm kiếm không phân biệt chữ hoa chữ thường
     const searchTerm = search.trim().toLowerCase();
     return (
       report.reportNo.toLowerCase().includes(searchTerm) ||
@@ -898,7 +895,6 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
         </Text>
         
       </View>
-
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
@@ -911,16 +907,14 @@ const ReportImageScreen:React.FC = ({ navigation }: any) => {
           inputStyle={{ fontSize: 16 }}
         />
       </View>
-
       <ScrollView style={tw`p-${getScaledSize(4)}`}
        refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-        {paginatedReports.map((report) => {
+                {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status
           );
-
           return (
             <TouchableOpacity
             key={report.stt}

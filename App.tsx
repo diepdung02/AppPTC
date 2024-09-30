@@ -55,8 +55,6 @@ import {
 import { RootStackParamList } from "./screen/navigator/navigation";
 import store, { persistor } from './redux/Slice/store';
 
-
-
 const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator();
 
@@ -203,7 +201,7 @@ const App: React.FC = () => (
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName="Login">
         <Stack.Screen
           name="Login"
           component={LoginScreen}

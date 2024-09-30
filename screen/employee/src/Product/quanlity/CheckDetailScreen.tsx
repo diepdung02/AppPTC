@@ -10,7 +10,6 @@ import {
   Image,
   TouchableOpacity,
   Modal,
-  Keyboard,
   RefreshControl
 } from "react-native";
 import tw from "twrnc";
@@ -44,10 +43,7 @@ const scaleHeight = initialHeight / 667;
 const getScaledSize = (size: number, isWidth = true) => {
   const minWidth = 320;  
   const maxWidth = 1024;
-
   const width = Dimensions.get('window').width; 
-
-
   if (width < minWidth) {
     return size * 0.5; 
   } 
@@ -55,7 +51,6 @@ const getScaledSize = (size: number, isWidth = true) => {
     return size * 1.2; 
   }
 
-  
   return isWidth ? size * scaleWidth : size * scaleHeight;
 };
 
@@ -75,7 +70,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   const { report, selectedItems }: { report: Report; selectedItems: string[] } =
     route.params;
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [reason, setReason] = useState("");
+  const [reason] = useState("");
   const [action, setAction] = useState("");
   const [itemDetails, setItemDetails] = useState<Record<string, { reason: string; action: string; isCompleted?: boolean; qtyCheck?: number; qtyReject?: number; solution?: string }>>({});
   const [refreshing, setRefreshing] = useState(false); 
@@ -140,7 +135,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
   };
 
 
-
   const handleAttachmentPress = (attachment: {
     uri: string;
     type: "image" | "video";
@@ -182,11 +176,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       }
     }));
   };
-  
-  
-  
-
-  const handleSubmit = () => {
+    const handleSubmit = () => {
     if (
       !status ||
       !errorState ||
@@ -199,7 +189,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       return;
     }
 
-    // Tạo đối tượng báo cáo để kiểm tra dữ liệu
     const reportData = {
       status,
       actualCheckedQuantity,
@@ -210,7 +199,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       action,
     };
 
-    // Log dữ liệu ra console
     console.log("Dữ liệu báo cáo đã gửi:", reportData);
 
     Alert.alert("Thông báo", "Báo cáo đã được gửi thành công.");
@@ -260,7 +248,7 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
             { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize:getScaledSize(18) },
           ]}
         >
-          Chi tiết báo lỗi
+          Kiểm tra báo lỗi
         </Text>
       </View>
       <ScrollView contentContainerStyle={tw`p-${getScaledSize(4)}`}
@@ -330,7 +318,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.confirmDate}
               </Text>
             </View>
-
             <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
@@ -355,7 +342,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.ponoOrRoute}
               </Text>
             </View>
-
             <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
@@ -380,7 +366,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.itemCode}
               </Text>
             </View>
-
             <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
@@ -405,7 +390,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.itemMaterial}
               </Text>
             </View>
-
             <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
@@ -430,7 +414,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.locationOrTeam}
               </Text>
             </View>
-
             <View style={tw`flex-row justify-between items-center mb-${getScaledSize(2)}`}>
               <Text
                 style={[
@@ -455,7 +438,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                 {report.checkAndVerifyBy}
               </Text>
             </View>
-
             <View style={tw`flex-row items-center`}>
               <Text
                 style={[
@@ -550,7 +532,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               onChangeText={(text) => setActualCheckedQuantity(Number(text))}
             />
           </View>
-
           <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
             <Text
               style={[
@@ -679,12 +660,12 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       Array.from(selectedItems).map((item, index) => (
         <View key={index} style={tw`mb-${getScaledSize(4)}`}>
           <TouchableOpacity
-            onPress={() => setSelectedItem(selectedItem === item ? null : item)} // Nếu item đã được chọn thì bỏ chọn, ngược lại chọn item mới
+            onPress={() => setSelectedItem(selectedItem === item ? null : item)} 
             style={[
               tw`flex-row items-center`,
-              itemDetails[item]?.isCompleted && tw`bg-gray-200` // Thay đổi giao diện nếu item đã được hoàn thành
+              itemDetails[item]?.isCompleted && tw`bg-gray-200` 
             ]}
-            disabled={itemDetails[item]?.isCompleted} // Vô hiệu hóa nếu item đã hoàn thành
+            disabled={itemDetails[item]?.isCompleted} 
           >
             <Text
               style={[
@@ -703,8 +684,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               {item}
             </Text>
           </TouchableOpacity>
-
-          {/* Hiển thị lý do và hành động nếu phần tử này được chọn và chưa hoàn thành */}
           {selectedItem === item && !itemDetails[item]?.isCompleted && (
             <View style={tw`pt-${getScaledSize(4)}`}>
               <View style={tw`mb-${getScaledSize(4)}`}>
@@ -732,8 +711,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   multiline
                 />
               </View>
-
-              {/* Thêm các trường nhập liệu cho số lượng */}
               <View style={tw`flex-row justify-around mb-${getScaledSize(4)}`}>
                 <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
                   <Text
@@ -764,7 +741,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                     }}
                   />
                 </View>
-
                 <View style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}>
                   <Text
                     style={[
@@ -795,15 +771,13 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   />
                 </View>
               </View>
-
-              {/* Thêm nút hoàn thành */}
               <TouchableOpacity
-                onPress={() => handleComplete(item)} // Thực hiện hành động hoàn thành cho item
+                onPress={() => handleComplete(item)} 
                 style={[
                   tw`bg-blue-500 p-${getScaledSize(3)} rounded-lg`,
-                  itemDetails[item]?.isCompleted && tw`bg-gray-500` // Thay đổi màu sắc nút nếu item đã hoàn thành
+                  itemDetails[item]?.isCompleted && tw`bg-gray-500` 
                 ]}
-                disabled={itemDetails[item]?.isCompleted} // Vô hiệu hóa nút nếu item đã hoàn thành
+                disabled={itemDetails[item]?.isCompleted} 
               >
                 <Text style={[tw`text-center `, {color:COLORS.white,fontFamily: "CustomFont-Bold", }]}>
                   Hoàn thành
@@ -811,8 +785,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </TouchableOpacity>
             </View>
           )}
-
-          {/* Hiển thị thông tin sau khi hoàn thành */}
           {itemDetails[item]?.isCompleted && (
             <View>
               <View style={tw`mb-${getScaledSize(4)} `}>
@@ -823,7 +795,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   {itemDetails[item]?.qtyCheck || 0}
                 </Text>
               </View>
-
               <View style={tw`mb-${getScaledSize(4)} `}>
               <Text style={[tw`  mb${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Số lượng bị từ chối:
@@ -832,7 +803,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   {itemDetails[item]?.qtyReject || 0}
                 </Text>
               </View>
-
               <View style={tw`mb-${getScaledSize(4)} `}>
               <Text style={[tw`  mb${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Nguyên nhân:
@@ -841,7 +811,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   {itemDetails[item]?.reason || 'Chưa có nguyên nhân'}
                 </Text>
               </View>
-
               <View style={tw`mb-${getScaledSize(4)} `}>
               <Text style={[tw`  mb-${getScaledSize(2)}`, {fontSize:getScaledSize(16), fontFamily: "CustomFont-Bold", color:COLORS.darkGray} ]}>
                   Giải pháp:
@@ -850,10 +819,8 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
                   {itemDetails[item]?.solution || 'Chưa có giải pháp'}
                 </Text>
               </View>
-
-              {/* Thêm nút xóa */}
               <TouchableOpacity
-                onPress={() => handleDelete(item)} // Thực hiện hành động xóa cho item
+                onPress={() => handleDelete(item)} 
                 style={tw`bg-red-500 p-3 rounded-lg`}
               >
                 <Text style={[tw`text-center`, {color:COLORS.white, fontFamily: "CustomFont-Bold"}]}>
@@ -875,8 +842,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
       </Text>
     )}
   </View>
-
-
         <View style={tw`border-t border-gray-300 pt-${getScaledSize(4)} px-${getScaledSize(4)} mb-${getScaledSize(6)}`}>
           <Text
             style={[
@@ -920,7 +885,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
               </Text>
             </TouchableOpacity>
           </View>
-
           <ScrollView style={tw`mt-${getScaledSize(4)}`} horizontal>
             {attachments.map((attachment, index) => (
               <TouchableOpacity
@@ -960,7 +924,6 @@ const CheckDetailScreen: React.FC = ({ navigation, route }: any) => {
           <Text style={[tw` text-center`, {color:COLORS.white, fontSize:getScaledSize(16)}]}>Hoàn thành</Text>
         </TouchableOpacity>
       </View>
-      {/* Modal */}
       {selectedAttachment && (
         <Modal
           visible={modalVisible}

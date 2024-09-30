@@ -198,7 +198,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
       </View>
     );
   };
-
   if (!report) {
     return (
       <SafeAreaView style={tw`flex-1 justify-center items-center`}>
@@ -235,7 +234,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           Chi tiết báo lỗi
         </Text>
       </View>
-
       <ScrollView style={tw`p-${getScaledSize(4)}`}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -253,7 +251,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           >
             Thông tin báo lỗi
           </Text>
-
           <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
             {[
               { label: "Report No", value: report.reportNo },
@@ -292,8 +289,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                 </Text>
               </View>
             ))}
-           
-
             <View style={tw`border-t border-gray-200 pt-${getScaledSize(4)}`}>
               <Text
                 style={[
@@ -338,7 +333,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                 </Text>
               )}
             </View>
-            
           </View>
         </View>
         <View style={tw`flex-row justify-around mt-${getScaledSize(5)}`}>
@@ -365,7 +359,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                   }
                 />
               </View>
-
               <View
                 style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded  w-${getScaledSize(40)}`, {backgroundColor:COLORS.white}]}
               >
@@ -388,7 +381,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
                 />
               </View>
             </View>
-
             <View style={tw`flex-1 justify-center items-center mt-${getScaledSize(2)}`}>
               <View
                 style={[tw`border border-gray-300 p-${getScaledSize(2)} rounded   w-${getScaledSize(40)} justify-center items-center`, {backgroundColor:COLORS.white}]}
@@ -448,7 +440,6 @@ const ErrorDetailScreen: React.FC = ({ navigation, route }: any) => {
           {renderDropdown("Planning", report.detail.planning)}
         </View>
       </ScrollView>
-
       <View
         style={tw`flex-row justify-around bg-white p-${getScaledSize(2)} border-t border-gray-300`}
       >

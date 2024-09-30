@@ -168,7 +168,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
   const paginatedSections = sections.slice(startIndex, endIndex);
 
   const totalPages = Math.ceil(sections.length / itemsPerPage);
-
   const pickImage = async (key: string) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -176,7 +175,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
       allowsEditing: false,
       quality: 1,
     });
-
     if (!result.canceled) {
       const selectedImages = result.assets.map((asset) => asset.uri);
       setImages((prev) => ({
@@ -252,7 +250,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
           />
         )}
       </TouchableOpacity>
-  
       {selectedKey === key && (
         <View style={{ marginTop: getScaledSize(10) }}>
           {images[key] && Array.isArray(images[key]) && (
@@ -271,7 +268,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
               ))}
             </ScrollView>
           )}
-  
           <TouchableOpacity
             onPress={() => pickImage(key)}
             style={{
@@ -338,8 +334,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
       Tạo mới
     </Text>
   </TouchableOpacity>
-  
-  {/* Nút Xem danh sách bên phải */}
   <TouchableOpacity
     style={[
       tw`py-${getScaledSize(2)} px-${getScaledSize(4)} rounded flex-row items-center w-${getScaledSize(35)}`,
@@ -353,7 +347,6 @@ const UploadCarCassScreen: React.FC<Props> = ({ navigation }) => {
     </Text>
   </TouchableOpacity>
 </View>
-
 <ScrollView contentContainerStyle={tw`flex-grow`}
 refreshControl={
   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -375,10 +368,7 @@ refreshControl={
     GV811551.GVZ.00 - Zig Zag Console Table, Macassar - WO-06-2024-00015_31
   </Text>
 </View>
-
   {paginatedSections.map(({ title, key }) => renderImageSection(title, key))}
-
-  {/* Pagination controls */}
   <View style={tw`flex-row justify-between p-4`}>
         <TouchableOpacity
           onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}
@@ -396,7 +386,6 @@ refreshControl={
           <Text style={[tw`w-${getScaledSize(15)} text-center`,{color:COLORS.white, fontFamily: "CustomFont-Regular", fontSize:getScaledSize(14)}]}>Next</Text>
         </TouchableOpacity>
       </View>
-
   {selectedAttachment && (
     <Modal
       visible={modalVisible}
@@ -441,7 +430,6 @@ refreshControl={
     </Modal>
   )}
 </ScrollView>
-
     </SafeAreaView>
   );
 };

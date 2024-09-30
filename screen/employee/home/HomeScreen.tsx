@@ -169,7 +169,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             placeholderTextColor={COLORS.black}
           />
         </View>
-
         <View style={tw`flex-1 mt-${getScaledSize(10)} px-${getScaledSize(2)}`}>
           {rows.map((row, rowIndex) => (
             <View
@@ -282,7 +281,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={tw`mt-2 text-lg`}>{t("error")}</Text>
     </TouchableOpacity>
   </View>
-
   <View style={tw`flex-row justify-around w-full mt-5`}>
     <TouchableOpacity
       style={tw`items-center`}
@@ -301,7 +299,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       />
       <Text style={[tw`text-center mt-${getScaledSize(2)} w-${getScaledSize(30)} `, {fontSize:getScaledSize(16)}]}>{t("uploadImage")}</Text>
     </TouchableOpacity>
-
     <TouchableOpacity
       style={tw`items-center`}
       onPress={() => {

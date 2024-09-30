@@ -79,7 +79,7 @@ type Report = {
   noted: string;
   reason: string;
   action: string;
-  detail: ReportDetail; // Thêm phần chi tiết vào kiểu dữ liệu Report
+  detail: ReportDetail; 
 };
 
 const reports: Report[] = [
@@ -200,8 +200,8 @@ const DetailRow = ({
   label,
   value,
   customValueStyle = {},
-  valueColor = "#666", // Mặc định màu chữ của giá trị
-  backgroundColor = "#fff", // Mặc định màu nền
+  valueColor = "#666", 
+  backgroundColor = "#fff",
 }: {
   label: string;
   value: string;
@@ -247,7 +247,6 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
   const itemsPerPage = 5
   const [refreshing, setRefreshing] = useState(false); 
 
-  
   const onRefresh = () => {
     setRefreshing(true);
     
@@ -258,8 +257,6 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
   const handleSearch = (text: string) => {
     setSearch(text.toLowerCase());
   };
-
-
   const filteredReports = reports.filter((report) => {
     const searchTerm = search.trim().toLowerCase();
     return (
@@ -350,16 +347,14 @@ const CheckGoodsScreen:React.FC = ({ navigation }: any) => {
           inputStyle={{ fontSize: 16 }}
         />
       </View>
-
       <ScrollView style={tw`p-4`}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }>
-      {paginatedReports.map((report) => {
+              {paginatedReports.map((report) => {
           const { statusColor, textColor } = getStatusColorAndTextColor(
             report.status
           );
-
           return (
             <TouchableOpacity
             key={report.stt}

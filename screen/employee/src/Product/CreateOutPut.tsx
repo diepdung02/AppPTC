@@ -67,13 +67,7 @@ const CreateOutPutScreen: React.FC<{ navigation: any }> = ({ navigation }) => {
               componentID: "COMP-67890",
               routeCode: "WO-05-2024-00015_124",
             },
-            {
-              orderID: "24-0040257",
-              itemCode: "RH887333.WLB.00",
-              clientPO: "PO-12345",
-              componentID: "COMP-67890",
-              routeCode: "WO-05-2024-00015_124",
-            },
+      
 
           ],
           MAC: [

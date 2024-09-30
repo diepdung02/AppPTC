@@ -76,7 +76,7 @@ type Report = {
   status: string;
   created: string;
   noted: string;
-  detail: ReportDetail; // Thêm phần chi tiết vào kiểu dữ liệu Report
+  detail: ReportDetail;
 };
 
 const reports: Report[] = [
@@ -191,8 +191,8 @@ const DetailRow = ({
   label,
   value,
   customValueStyle = {},
-  valueColor = "#666", // Mặc định màu chữ của giá trị
-  backgroundColor = "#fff", // Mặc định màu nền
+  valueColor = "#666",
+  backgroundColor = "#fff",
 }: {
   label: string;
   value: string;
@@ -240,7 +240,7 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
 
   const handleSearch = (text: string) => {
     setSearch(text);
-    setCurrentPage(1); // Đặt lại trang khi tìm kiếm
+    setCurrentPage(1); 
   };
 
   const filteredReports = reports.filter((report) => {
@@ -308,9 +308,7 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
         <Text style={[tw`flex-1 text-center`, { color: COLORS.black, fontFamily: "CustomFont-Bold", fontSize: getScaledSize(18) }]}>
           Danh sách báo lỗi
         </Text>
-
       </View>
-
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
@@ -323,14 +321,12 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
           inputStyle={{ fontSize: 16 }}
         />
       </View>
-
-      {/* Chỉ hiển thị danh sách nếu có sản phẩm tìm thấy */}
       {search && filteredReports.length > 0 ? (
         <ScrollView style={tw`p-${getScaledSize(4)}`}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }>
-          {paginatedReports.map((report) => {
+                    {paginatedReports.map((report) => {
             const { statusColor, textColor } = getStatusColorAndTextColor(report.status);
             return (
               <TouchableOpacity
@@ -367,8 +363,6 @@ const ErrorScreen: React.FC = ({ navigation }: any) => {
           </View>
         )
       )}
-
-      {/* Điều hướng trang chỉ hiển thị khi có báo lỗi tìm thấy */}
       {filteredReports.length > 0 && (
         <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
           <TouchableOpacity

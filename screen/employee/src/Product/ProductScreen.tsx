@@ -27,8 +27,6 @@ const getScaledSize = (size: number) => {
   const maxWidth = 1024; 
 
   const width = Dimensions.get('window').width;
-
-
   const scaleWidth = initialWidth / 375; 
   const scaleHeight = initialHeight / 667; 
 
@@ -88,7 +86,6 @@ type ButtonStyle = {
   backgroundColor: string;
   color: string;
 };
-
 
 const products: Product[] = [
   {
@@ -364,8 +361,6 @@ type ProductScreenProps = {
 };
 
 const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
-  const [showPdf, setShowPdf] = useState(false);
-  const [pdfUri, setPdfUri] = useState<string>("");
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [outputMenuVisible, setOutputMenuVisible] = useState<number | null>(null);
   const [selectedCollectionName, setSelectedCollectionName] = useState<string>("");
@@ -385,10 +380,7 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       ? { backgroundColor: COLORS.primary, color: COLORS.white }
       : { backgroundColor: COLORS.white, color: COLORS.primary };
   };
-  // const handleProductPress = (product: Product) => {
-  //   setPdfUri(product.pdfUri);
-  //   setShowPdf(true);
-  // };
+
 
   const toggleOutputMenu = (productId: number) => {
     if (outputMenuVisible === productId) {
@@ -421,22 +413,6 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
     });
   };
 
-  // const handleOutputPress = (product: Product) => {
-  //   const { id, collectionName, components, ClientCode, image, pdfUri, PTCcode, remainingComponents } = product;
-
-  //   navigation.navigate("OutputScreen", {
-  //     product: {
-  //       id,
-  //       collectionName,
-  //       components,
-  //       PTCcode,
-  //       ClientCode,
-  //       image,
-  //       pdfUri,
-  //       remainingComponents,
-  //     },
-  //   });
-  // };
 
   const handleSearch = (text: string) => {
     setSearchKeyword(text);
@@ -550,7 +526,6 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       >
         <FontAwesome name="bars" size={20} color="black" />
       </TouchableOpacity>
-
       {selectedProductId === item.id && (
         <Animated.View
           style={[
@@ -570,7 +545,6 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
           <TouchableOpacity
             style={tw`bg-blue-500 p-${getScaledSize(2)} rounded`}
             onPress={() => {
-              // handleOutputPress(item);
             }}
           >
             <Text
@@ -609,7 +583,6 @@ const ProductScreen: React.FC<ProductScreenProps> = ({ navigation }) => {
       </Text>
     </TouchableOpacity>
   );
-  
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View

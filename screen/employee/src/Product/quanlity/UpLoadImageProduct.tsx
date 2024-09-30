@@ -79,7 +79,7 @@ type Report = {
   noted: string;
   reason: string;
   action: string;
-  detail: ReportDetail; // Thêm phần chi tiết vào kiểu dữ liệu Report
+  detail: ReportDetail; 
 };
 
 const reports: Report[] = [
@@ -88,7 +88,6 @@ const reports: Report[] = [
     reportNo: "59888",
     ponoOrRoute: "\nPO:",
     itemCode: "WO-07-2021-00016_16",
-   
     itemMaterial: "RH832857.LCM.00",
     locationOrTeam: "\nLocation: 2_WAS\nTeam: 2_WAD2",
     qty: 6,
@@ -869,7 +868,6 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
     }
     return { statusColor, textColor };
   };
-
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
@@ -893,7 +891,6 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
           <MaterialCommunityIcons name="plus-circle-outline" size={getScaledSize(24)} color={COLORS.black} />
         </TouchableOpacity>
       </View>
-
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
@@ -906,7 +903,6 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
           inputStyle={{ fontSize: getScaledSize(16) }}
         />
       </View>
-
       <ScrollView style={tw`p-${getScaledSize(4)}`}
        refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -942,7 +938,6 @@ const UpLoadImageProduct: React.FC = ({ navigation }: any) => {
           );
         })}
       </ScrollView>
-
       <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
         <TouchableOpacity
           onPress={() => setCurrentPage(page => Math.max(page - 1, 1))}

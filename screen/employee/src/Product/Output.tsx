@@ -30,10 +30,8 @@ const getScaledSize = (size: number, isWidth = true) => {
   } else if (width > maxWidth) {
     return size * 1.2;
   }
-  
   return isWidth ? size * scaleWidth : size * scaleHeight;
 };
-
 type Report = {
   orderID: number;
   createDate: string;
@@ -70,7 +68,6 @@ const reports: Report[] = [
     ref: "123",
   },
 ];
-
 const DetailRow = ({
   label,
   value,
@@ -139,7 +136,6 @@ const DetailRow = ({
     )}
   </View>
 );
-
 const Output: React.FC = ({ navigation }: any) => {
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -148,7 +144,6 @@ const Output: React.FC = ({ navigation }: any) => {
 
   const onRefresh = () => {
     setRefreshing(true);
-
     setTimeout(() => {
       setRefreshing(false);
     }, 1000);
@@ -198,7 +193,6 @@ const Output: React.FC = ({ navigation }: any) => {
             color={COLORS.black}
           />
         </TouchableOpacity>
-
         <Text
           style={[
             tw`flex-1 text-center`,
@@ -207,7 +201,6 @@ const Output: React.FC = ({ navigation }: any) => {
         >
           Output
         </Text>
-
         <TouchableOpacity
           onPress={() => navigation.navigate("CreateOutPut")}
           style={tw`p-${getScaledSize(2)}`}
@@ -216,7 +209,6 @@ const Output: React.FC = ({ navigation }: any) => {
           <MaterialCommunityIcons name="plus-circle-outline" size={24} color={COLORS.black} />
         </TouchableOpacity>
       </View>
-
       <View style={tw`flex-row items-center justify-center mt-${getScaledSize(2.5)} px-${getScaledSize(5)}`}>
         <SearchBar
           placeholder="Tìm kiếm"
@@ -229,16 +221,14 @@ const Output: React.FC = ({ navigation }: any) => {
           inputStyle={{ fontSize: 16 }}
         />
       </View>
-
       <ScrollView
         style={tw`p-4`}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      >
-        {paginatedReports.map((report, index) => (
+      > 
+             {paginatedReports.map((report, index) => (
           <TouchableOpacity
             key={report.orderID}
             style={[tw`p-4 m-2 rounded-md shadow-md`, { backgroundColor: COLORS.white }]}
-            // onPress={() => handleReportPress(report)}
           >
             <View>
               <View style={tw`flex-row justify-between mt-${getScaledSize(2)}`}>
@@ -269,7 +259,6 @@ const Output: React.FC = ({ navigation }: any) => {
             </View>
           </TouchableOpacity>
         ))}
-       
       </ScrollView>
       <View style={tw`flex-row justify-between p-${getScaledSize(4)}`}>
         <TouchableOpacity

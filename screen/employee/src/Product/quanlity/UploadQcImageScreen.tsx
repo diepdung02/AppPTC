@@ -41,8 +41,6 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
   const [inspectionDate, setInspectionDate] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [refreshing, setRefreshing] = useState(false); 
-
-  // Các giá trị dropdown
   const [routeCode, setRouteCode] = useState('');
   const [clientPo, setClientPo] = useState('');
   const [drawingCodeCarCass, setDrawingCodeCarCass] = useState('');
@@ -69,7 +67,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     status: Option[];
   };
 
-  // Options cho các dropdown picker
+
   const options: Options = {
     routeCode: [
       { label: 'WO-05-2021-00031_17', value: 'WO-05-2021-00031_17' },
@@ -133,107 +131,106 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     }, 1000);
   };
 
-  const codeMapping: { [key: string]: string } = {
-    'GV8115': 'GV811551.GVZ.00',
-    'GV8116': 'GV811652.GVZ.01',
-    'GV8117': 'GV811753.GVZ.02',
+ // Mapping các mã sản phẩm
+const codeMapping: { [key: string]: string } = {
+  'GV8115': 'GV811551.GVZ.00',
+  'GV8116': 'GV811652.GVZ.01',
+  'GV8117': 'GV811753.GVZ.02',
+};
+
+// Hàm xử lý khi mã sản phẩm thay đổi
+const handleItemCodeChange = useCallback((code: string) => {
+  const normalizedCode = code.toLowerCase(); // Chuyển đổi mã nhập vào thành chữ thường
+  setItemCode(code); // Cập nhật itemCode từ đầu vào
+
+  const fullCode = Object.keys(codeMapping).find(key => normalizedCode.startsWith(key.toLowerCase())); // Tìm fullCode từ codeMapping
+  const completeCode = fullCode ? codeMapping[fullCode] : '';
+
+  // Định nghĩa chi tiết cho từng mã
+  const codeDetails: { [key: string]: { routeCode: string, clientPo: string, drawingCodeCarCass: string, drawingCodeHardware: string, colorCode: string } } = {
+    'gv811551.gvz.00': {
+      routeCode: 'WO-05-2021-00031_17',
+      clientPo: 'WO-05-2021-00031_17',
+      drawingCodeCarCass: 'DRA 23964',
+      drawingCodeHardware: 'DRA 23964',
+      colorCode: 'P-4531/GZ1.GV',
+    },
+    'gv811652.gvz.01': {
+      routeCode: 'WO-06-2022-00045_22',
+      clientPo: 'WO-06-2022-00045_22',
+      drawingCodeCarCass: 'DRA 34027',
+      drawingCodeHardware: 'DRA 34027',
+      colorCode: 'P-4532/GZ2.GV',
+    },
+    'gv811753.gvz.02': {
+      routeCode: 'WO-07-2023-00056_23',
+      clientPo: 'WO-07-2023-00056_23',
+      drawingCodeCarCass: 'DRA 45218',
+      drawingCodeHardware: 'DRA 45218',
+      colorCode: 'P-4533/GZ3.GV',
+    },
   };
-  
 
-  const handleItemCodeChange = useCallback((code: string) => {
-    const normalizedCode = code.toLowerCase(); // Chuyển đổi mã nhập vào thành chữ thường
-    setItemCode(code);
+  // Nếu mã trống thì đặt lại trạng thái
+  if (code.length === 0) {
+    setIsFullCodeSet(false);
+    return; // Dừng tại đây nếu mã trống
+  }
 
-    const fullCode = Object.keys(codeMapping).find(key => normalizedCode.startsWith(key.toLowerCase())); // Chuyển đổi key trong codeMapping thành chữ thường
-    const completeCode = fullCode ? codeMapping[fullCode] : '';
-    if (code.length === 0) {
-        setIsFullCodeSet(false);
-    }
+  // Nếu tìm thấy mã đầy đủ trong codeMapping
+  if (completeCode) {
+    // Khi nhập ít hơn 15 ký tự và chưa hoàn thành mã
+    if (code.length < 15) {
+      if (!isFullCodeSet) {
+        setItemCode(completeCode); // Cập nhật mã đầy đủ từ codeMapping vào itemCode
+        setIsFullCodeSet(true); // Đánh dấu đã có mã đầy đủ
 
-    if (completeCode) {
-        if (code.length >= 15 && completeCode.toLowerCase() === normalizedCode) { // Chuyển đổi completeCode thành chữ thường
-            if (itemCode.length > 15) {
-                setItemCode(prevCode => prevCode.slice(0, -1));
-            } else if (itemCode.length === 15) {
-                setRouteCode('');
-                setClientPo('');
-                setDrawingCodeCarCass('');
-                setDrawingCodeHardware('');
-                setColorCode('');
-                setIsFullCodeSet(false); 
-            }
-        } else if (code.length < 15) {
-            if (!isFullCodeSet) {
-                setItemCode(completeCode);
-                const codeDetails = {
-                    'gv811551.gvz.00': { // Chuyển đổi tất cả các key trong codeDetails thành chữ thường
-                        routeCode: 'WO-05-2021-00031_17',
-                        clientPo: 'WO-05-2021-00031_17',
-                        drawingCodeCarCass: 'DRA 23964',
-                        drawingCodeHardware: 'DRA 23964',
-                        colorCode: 'P-4531/GZ1.GV'
-                    },
-                    'gv811652.gvz.01': {
-                        routeCode: 'WO-06-2022-00045_22',
-                        clientPo: 'WO-06-2022-00045_22',
-                        drawingCodeCarCass: 'DRA 34027',
-                        drawingCodeHardware: 'DRA 34027',
-                        colorCode: 'P-4532/GZ2.GV'
-                    },
-                    'gv811753.gvz.02': {
-                        routeCode: 'WO-07-2023-00056_23',
-                        clientPo: 'WO-07-2023-00056_23',
-                        drawingCodeCarCass: 'DRA 45218',
-                        drawingCodeHardware: 'DRA 45218',
-                        colorCode: 'P-4533/GZ3.GV'
-                    }
-                };
-                let isMatchFound = false;
-                for (const [codeKey, details] of Object.entries(codeDetails)) {
-                    if (normalizedCode.startsWith(codeKey)) { // So sánh mã chuẩn hóa
-                        setRouteCode(details.routeCode);
-                        setClientPo(details.clientPo);
-                        setDrawingCodeCarCass(details.drawingCodeCarCass);
-                        setDrawingCodeHardware(details.drawingCodeHardware);
-                        setColorCode(details.colorCode);
-                        isMatchFound = true;
-                        break;
-                    }
-                }
-                if (!isMatchFound) {
-                    setRouteCode('');
-                    setClientPo('');
-                    setDrawingCodeCarCass('');
-                    setDrawingCodeHardware('');
-                    setColorCode('');
-                }
-                setIsFullCodeSet(true); 
-            }
+        // Cập nhật thông tin dựa trên mã đầy đủ
+        const details = codeDetails[completeCode.toLowerCase()];
+        if (details) {
+          setRouteCode(details.routeCode);
+          setClientPo(details.clientPo);
+          setDrawingCodeCarCass(details.drawingCodeCarCass);
+          setDrawingCodeHardware(details.drawingCodeHardware);
+          setColorCode(details.colorCode);
         }
-    } else {
-        if (code.length >= 15) {
-            setItemCode('');
-            setRouteCode('');
-            setClientPo('');
-            setDrawingCodeCarCass('');
-            setDrawingCodeHardware('');
-            setColorCode('');
-            setIsFullCodeSet(false); 
-        }
+      }
+    } 
+    // Khi nhập đủ 15 ký tự và mã đầy đủ đã khớp
+    else if (completeCode.toLowerCase() === normalizedCode) {
+      setRouteCode('');
+      setClientPo('');
+      setDrawingCodeCarCass('');
+      setDrawingCodeHardware('');
+      setColorCode('');
+      setIsFullCodeSet(false); // Đặt lại trạng thái mã đầy đủ khi đủ 15 ký tự
     }
+  } else {
+    // Khi nhập mã không có trong codeMapping
+    if (code.length >= 15) {
+      setItemCode(''); // Đặt lại itemCode khi mã không hợp lệ
+      setRouteCode('');
+      setClientPo('');
+      setDrawingCodeCarCass('');
+      setDrawingCodeHardware('');
+      setColorCode('');
+      setIsFullCodeSet(false); 
+    }
+  }
 }, [codeMapping, itemCode, isFullCodeSet]);
 
 
+// Lọc các giá trị cho dropdown chỉ hiển thị các giá trị khớp
+const filteredOptions = {
+  routeCode: options.routeCode.filter(option => option.value === routeCode),
+  clientPo: options.clientPo.filter(option => option.value === clientPo),
+  drawingCodeCarCass: options.drawingCodeCarCass.filter(option => option.value === drawingCodeCarCass),
+  drawingCodeHardware: options.drawingCodeHardware.filter(option => option.value === drawingCodeHardware),
+  inspector: options.inspector, // Luôn hiển thị tất cả
+  inspectionLocation: options.inspectionLocation, // Luôn hiển thị tất cả
+};
 
-  // Lọc các giá trị cho dropdown chỉ hiển thị các giá trị khớp
-  const filteredOptions = {
-    routeCode: options.routeCode.filter(option => option.value === routeCode),
-    clientPo: options.clientPo.filter(option => option.value === clientPo),
-    drawingCodeCarCass: options.drawingCodeCarCass.filter(option => option.value === drawingCodeCarCass),
-    drawingCodeHardware: options.drawingCodeHardware.filter(option => option.value === drawingCodeHardware),
-    inspector: options.inspector, // Luôn hiển thị tất cả
-    inspectionLocation: options.inspectionLocation, // Luôn hiển thị tất cả
-  };
+
 
   return (
     <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, {backgroundColor:COLORS.colorMain}]}>
@@ -276,7 +273,6 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
     maxLength={15}
   />
 </View>
-
         <View style={tw`mb-${getScaledSize(4)}`}>
           <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Item Code:</Text>
           <TextInput
@@ -286,16 +282,7 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             editable={false}
           />
         </View>
-        <View style={tw`mb-${getScaledSize(4)}`}>
-          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Status:</Text>
-          <TextInput
-            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
-            value={status}
-            onChangeText={setStatus}
-            placeholder="--Tình trạng--"
-            keyboardType="numeric"
-          />
-        </View>
+          <View style={tw`flex-row justify-between`}> 
         <View style={tw`mb-${getScaledSize(4)}`}>
           <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Số lượng kiểm:</Text>
           <TextInput
@@ -316,16 +303,6 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             keyboardType="numeric"
           />
         </View>
-        <View style={tw`mb-${getScaledSize(4)}`}>
-          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Ghi chú:</Text>
-          <TextInput
-            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
-            value={notes}
-            onChangeText={setNotes}
-            placeholder="--Ghi chú--"
-            multiline
-            numberOfLines={4}
-          />
         </View>
         <View style={tw`mb-${getScaledSize(4)}`}>
           <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Color Code:</Text>
@@ -394,6 +371,17 @@ const UploadQcImageScreen: React.FC<Props> = ({ navigation }) => {
             onValueChange={setInspectionLocation}
             value={inspectionLocation}
             style={pickerSelectStyles}
+          />
+        </View>
+        <View style={tw`mb-${getScaledSize(4)}`}>
+          <Text style={[tw` mb-${getScaledSize(2)}`, { color: COLORS.black, fontFamily: 'CustomFont-Bold', fontSize:getScaledSize(16) }]}>Ghi chú:</Text>
+          <TextInput
+            style={[tw`border rounded-lg p-${getScaledSize(2)}`, { backgroundColor: COLORS.white, borderColor: COLORS.primary }]}
+            value={notes}
+            onChangeText={setNotes}
+            placeholder="--Ghi chú--"
+            multiline
+            numberOfLines={4}
           />
         </View>
         <View style={tw`mb-${getScaledSize(4)}`}>

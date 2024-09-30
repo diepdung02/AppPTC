@@ -22,6 +22,7 @@ type ProductDetailScreenRouteProp = RouteProp<
   RootStackParamList,
   "ProductDetail"
 >;
+
 type ProductDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   "ProductDetail"
@@ -33,8 +34,6 @@ type Props = {
 };
 
 const { width: initialWidth, height: initialHeight } = Dimensions.get('window');
-
-// Hàm tính kích thước responsive
 const scaleWidth = initialWidth / 375; 
 const scaleHeight = initialHeight / 667; 
 
@@ -42,13 +41,12 @@ const getScaledSize = (size: number, isWidth = true) => {
   const minWidth = 320;
   const maxWidth = 1024;
   const width = Dimensions.get('window').width;
-
   if (width < minWidth) {
     return size * 0.5;
   } else if (width > maxWidth) {
     return size * 1.2;
   }
-  
+
   return isWidth ? size * scaleWidth : size * scaleHeight;
 };
 
@@ -56,6 +54,7 @@ const getButtonStyle = (tabName: string, selectedTab: string) => ({
   backgroundColor: selectedTab === tabName ? COLORS.primary : COLORS.white,
   color: selectedTab === tabName ? COLORS.white : COLORS.primary,
 });
+
 type TabData = {
   docNumber: string;
   docDescription: string;
@@ -71,8 +70,6 @@ type DataObject = {
   Instruction: TabData[];
   Detail: TabData[]; 
 };
-
-
 
 const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
   const { item } = route.params;
@@ -155,7 +152,6 @@ const DetailProductScreen: React.FC<Props> = ({ route, navigation }) => {
       item.docNumber.toLowerCase().includes(searchText.toLowerCase()) ||
       item.docDescription.toLowerCase().includes(searchText.toLowerCase())
   );
-
   const renderTabContent = useCallback(() => {
     switch (selectedTab) {
       case "Detail":
@@ -294,7 +290,6 @@ Length: ${dim.length} cm  `
         return null;
     }
   }, [selectedTab, filteredData, item]);
-
   return (
      <SafeAreaView style={[tw`flex-1 mt-${getScaledSize(5)}`, { backgroundColor: COLORS.colorMain }]}>
       <View
@@ -380,7 +375,6 @@ Length: ${dim.length} cm  `
         />
       </View>
       <View style={tw`flex-1 bg-transparent px-${getScaledSize(3)}`}>{renderTabContent()}</View>
-
       <Modal
         visible={modalVisible}
         transparent
@@ -409,7 +403,6 @@ Length: ${dim.length} cm  `
           </TouchableOpacity>
         </TouchableOpacity>
       </Modal>
-
       <Modal
         visible={pdfModalVisible}
         transparent={true}
@@ -438,5 +431,4 @@ Length: ${dim.length} cm  `
     </SafeAreaView>
   );
 };
-
 export default DetailProductScreen;
